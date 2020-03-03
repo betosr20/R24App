@@ -3,9 +3,6 @@ package com.example.r24app;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,7 +19,8 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
-import Model.User;
+import Activities.MapActivity;
+import Models.POJOS.User;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase database;
@@ -77,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     User testUser = dataSnapshot.getValue(User.class);
                     TextView id = findViewById(R.id.textViewMain);
-                    id.setText(testUser.getiD());
+                    id.setText(testUser.getId());
 
                 } else {
                     TextView notFound = findViewById(R.id.textViewMain);
