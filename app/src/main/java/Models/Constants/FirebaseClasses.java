@@ -1,7 +1,7 @@
 package Models.Constants;
 
 public final class FirebaseClasses {
-    public static final String User = "User";
+    public static final String User = "Users";
     public static final String MapSettings = "MapSetting";
     public static final String Report = "Report";
     public static final String Menace = "Menace";
