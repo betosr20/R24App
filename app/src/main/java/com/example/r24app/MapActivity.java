@@ -29,7 +29,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-// Obtiene el SupportMapFragment y es notificado cuando el mapa esta listo para ser usado llamando al metodo OnMapReady00000000000000000000000
+// Obtiene el SupportMapFragment y es notificado cuando el mapa esta listo para ser usado llamando al metodo OnMapReady
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map2);
         mapFragment.getMapAsync(this);
@@ -45,9 +45,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onCheckedChanged(SwitchButton view, boolean isChecked) {
                 if(isChecked){
-                    populateMap(mMap);
+                    populatePins(mMap);
                 }else{
-                    clearMap(mMap);
+                    clearPins(mMap);
                 }
             }
         });
@@ -55,7 +55,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        populateMap(googleMap);
+        populatePins(googleMap);
 
 
     }
@@ -66,7 +66,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return false;
     }
 
-    public void populateMap(GoogleMap googleMap){
+    public void populatePins(GoogleMap googleMap){
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
@@ -90,7 +90,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
     }
 
-    public void clearMap(GoogleMap googleMap){
+    public void clearPins(GoogleMap googleMap){
         googleMap.clear();
     }
 }
