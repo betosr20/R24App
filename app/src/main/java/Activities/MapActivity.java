@@ -1,7 +1,8 @@
-package com.example.r24app;
+package Activities;
 
 import android.os.Bundle;
 
+import com.example.r24app.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -19,6 +20,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
 import android.widget.Toast;
+
+import Models.Constants.FirebaseClasses;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     GoogleMap mMap;
