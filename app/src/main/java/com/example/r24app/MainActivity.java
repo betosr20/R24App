@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import Activities.MapActivity;
+import Models.Constants.FirebaseClasses;
 import Models.POJOS.User;
 
 public class MainActivity extends AppCompatActivity {
@@ -65,10 +66,14 @@ public class MainActivity extends AppCompatActivity {
     private void loadUser(){
 
         database = FirebaseDatabase.getInstance();
+        User usuario = new User("betico2", "Alberto", "Guerra", "betico2", "betog19@gmail.com",
+                                "88880666", "mi choza", "añlksdfjlaksdfljskdf", true, true, true, true, true, true);
+        //databaseReference =  database.getReference("Users").child(usuario.getUserName());
+        //databaseReference.setValue(usuario);
 
         //Aqui va el Id del usuario que se uso para guardar en la bbdd. En este caso se guardo
         //como Betico porque es solo para cargar un usuario y que se vea que hay conexion
-        databaseReference = database.getReference("Users").child("betico");
+        databaseReference = database.getReference(FirebaseClasses.User).child("betico2");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
