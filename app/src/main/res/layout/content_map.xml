@@ -8,6 +8,25 @@
     tools:context="Activities.MapActivity"
     tools:showIn="@layout/activity_map">
 
+    <TextView
+        android:id="@+id/textViewCalor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="8dp"
+        android:text="Calor"
+        app:layout_constraintStart_toEndOf="@+id/textViewPines"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.suke.widget.SwitchButton
+        android:id="@+id/switchButtonHeat"
+        android:layout_width="41dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="49dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/switchButtonPins"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCalor" />
+
     <fragment
         android:id="@+id/map2"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -24,21 +43,19 @@
     <com.suke.widget.SwitchButton
         android:id="@+id/switchButtonPins"
         android:layout_width="41dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.07"
+        android:layout_height="26dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPines"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/textViewPines" />
 
     <TextView
         android:id="@+id/textViewPines"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="8dp"
-        android:text="Ver pines"
+        android:text="Pines"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

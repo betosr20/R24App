@@ -21,10 +21,15 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import Models.Constants.FirebaseClasses;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     GoogleMap mMap;
+    Marker lastClicked;
+    List<Marker> markerList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,12 +37,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-// Obtiene el SupportMapFragment y es notificado cuando el mapa esta listo para ser usado llamando al metodo OnMapReady
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map2);
-        mapFragment.getMapAsync(this);
-
         //Setear las actividades del boton te toggle de pines
+
         com.suke.widget.SwitchButton switchButtonPins;
         switchButtonPins = (com.suke.widget.SwitchButton)
                 findViewById(R.id.switchButtonPins);
@@ -46,6 +47,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         switchButtonPins.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
+            
             public void onCheckedChanged(SwitchButton view, boolean isChecked) {
                 if(isChecked){
                     populatePins(mMap);
@@ -54,6 +56,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 }
             }
         });
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map2);
+        mapFragment.getMapAsync(this);
     }
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -65,25 +71,37 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+
         return false;
     }
 
     public void populatePins(GoogleMap googleMap){
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
         LatLng mamiHouse = new LatLng(9.917467, -84.022291);
         LatLng myHouse = new LatLng(9.930363, -84.027100);
-        mMap.addMarker(new MarkerOptions()
+        Marker marker1, marker2;
+
+        marker1 = mMap.addMarker(new MarkerOptions()
                 .position(myHouse)
                 .title("My house madafackas")
-        );
-        mMap.addMarker(new MarkerOptions()
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+        marker1.setTag(0);
+        markerList.add(marker1);
+
+        marker2 = mMap.addMarker(new MarkerOptions()
                 .position(mamiHouse)
                 .title("Casa de mami")
-        );
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+        marker2.setTag(0);
+        markerList.add(marker2);
+
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myHouse, 13));
+
+        for (Marker m: markerList) {
+            LatLng latLng = new LatLng(m.getPosition().latitude, m.getPosition().longitude);
+            mMap.addMarker(new MarkerOptions().position(latLng));
+        }
+
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
