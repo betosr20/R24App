@@ -11,8 +11,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.TileOverlay;
+import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.maps.android.heatmaps.HeatmapTileProvider;
 import com.suke.widget.SwitchButton;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,8 +31,14 @@ import Models.Constants.FirebaseClasses;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     GoogleMap mMap;
+<<<<<<< HEAD
     Marker lastClicked;
     List<Marker> markerList = new ArrayList<>();
+=======
+    //To check which to delete if marker or heat
+    Boolean activeMarker = true;
+    Boolean activeHeatMap = true;
+>>>>>>> cf2cedb85ed349b4c0955393d584daa55e42ff8f
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,16 +52,33 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         switchButtonPins = (com.suke.widget.SwitchButton)
                 findViewById(R.id.switchButtonPins);
 
+        SwitchButton heatCheck = findViewById(R.id.sb_heatCheck);
+
         switchButtonPins.setChecked(true);
+        heatCheck.setChecked(true);
 
         switchButtonPins.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
             
             public void onCheckedChanged(SwitchButton view, boolean isChecked) {
                 if(isChecked){
+                    activeMarker = true;
                     populatePins(mMap);
+
                 }else{
-                    clearPins(mMap);
+                    clearPins(mMap, false, activeHeatMap);
+                }
+            }
+        });
+
+        heatCheck.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(SwitchButton view, boolean isChecked) {
+                if(isChecked){
+                    activeHeatMap = true;
+                    addHeatMap(mMap);
+                } else {
+                    clearPins(mMap, activeMarker, false);
                 }
             }
         });
@@ -64,6 +90,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         populatePins(googleMap);
+        addHeatMap(googleMap);
     }
 
     @Override
@@ -108,7 +135,50 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
     }
 
-    public void clearPins(GoogleMap googleMap){
-        googleMap.clear();
+    public void clearPins(GoogleMap googleMap, Boolean activeMarker, Boolean activeHeatMap) {
+        if (!activeMarker) {
+            googleMap.clear();
+            this.activeMarker = false;
+            if(this.activeHeatMap) {
+                addHeatMap(googleMap);
+            }
+        }
+        if(!activeHeatMap) {
+            googleMap.clear();
+            this.activeHeatMap = false;
+            if (this.activeMarker) {
+                populatePins(googleMap);
+            }
+        }
     }
+
+    private void addHeatMap(GoogleMap googleMap) {
+        mMap = googleMap;
+        List<LatLng> list = new ArrayList<>();
+
+        LatLng rest1 = new LatLng(9.925602, -84.041371);
+        list.add(rest1);
+        LatLng rest2 = new LatLng(9.925898, -84.041281);
+        list.add(rest2);
+        LatLng rest3 = new LatLng(9.925834, -84.041007);
+        list.add(rest3);
+        LatLng rest4 = new LatLng(9.926180, -84.041536);
+        list.add(rest4);
+        LatLng rest5 = new LatLng(9.926051, -84.040785);
+        list.add(rest5);
+        LatLng rest6 = new LatLng(9.926364, -84.040937);
+        list.add(rest6);
+
+
+        HeatmapTileProvider mProvider;
+        TileOverlay mOverlay;
+
+        mProvider = new HeatmapTileProvider.Builder()
+                .data(list)
+                .build();
+
+        mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
+//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(rest1, 13));
+    }
+
 }
