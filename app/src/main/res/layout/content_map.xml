@@ -16,10 +16,8 @@
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/switchButtonPins"
-        app:layout_constraintVertical_bias="1.0"
         tools:context=".Map
         sActivity" />
 
@@ -27,12 +25,12 @@
         android:id="@+id/switchButtonPins"
         android:layout_width="41dp"
         android:layout_height="20dp"
-        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/sb_heatCheck"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.07"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPines" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewPines"
+        />
 
     <TextView
         android:id="@+id/textViewPines"
@@ -42,26 +40,5 @@
         android:layout_marginTop="8dp"
         android:text="Ver pines"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.suke.widget.SwitchButton
-        android:id="@+id/sb_heatCheck"
-        android:layout_width="41dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.413"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/t_heatCheckText" />
-
-    <TextView
-        android:id="@+id/t_heatCheckText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Mapa de calor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.219"
-        app:layout_constraintStart_toEndOf="@+id/textViewPines"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
