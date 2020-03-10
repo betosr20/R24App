@@ -10,4 +10,5 @@
     <color name="skinColor">#FFD796</color>
     <color name="redButtonColor">#D21F3C</color>
     <color name="greenButtonColor">#3F704D</color>
+    <color name="whiteHeader">#ffffff</color>
 </resources>

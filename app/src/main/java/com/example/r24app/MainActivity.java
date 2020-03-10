@@ -2,43 +2,37 @@ package com.example.r24app;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.TextView;
 
-import Activities.MapActivity;
-import Models.Constants.FirebaseClasses;
-import Models.POJOS.User;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import Activities.ReportIncidentActivity;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        /*Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);*/
+
+        Intent intent = new Intent(this, ReportIncidentActivity.class);
+        startActivity(intent);
 
         //Este metodo carga un dummy user solo para probar las primeras veces que efectivamente
         //haya conexion con la bbdd
-        loadUser();
+        //loadUser();
 
         //implementar el onclick del boton de Go To Map
-        goToMap();
+        //goToMap();
     }
 
     @Override
@@ -63,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void loadUser(){
+    /*private void loadUser(){
 
         database = FirebaseDatabase.getInstance();
         User usuario = new User("betico2", "Alberto", "Guerra", "betico2", "betog19@gmail.com",
@@ -73,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Aqui va el Id del usuario que se uso para guardar en la bbdd. En este caso se guardo
         //como Betico porque es solo para cargar un usuario y que se vea que hay conexion
-        databaseReference = database.getReference(FirebaseClasses.User).child("betico2");
+        /*databaseReference = database.getReference(FirebaseClasses.User).child("betico2");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -103,5 +97,5 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, MapActivity.class));
             }
         });
-    }
+    }*/
 }
