@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
             inputLayoutEmail.setError("Espacio requerido *");
         } else {
             inputLayoutEmail.setError(null);
+            Intent intent = new Intent(this, SignUp.class);
+            startActivity(intent);
         }
     }
 

@@ -1,110 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignUp">
+    tools:context=".SignUp" >
 
-    <ImageView
-        android:id="@+id/backimage3"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginEnd="300dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.183"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_action_back"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="13dp" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:text="Bienvenido a la página de registro"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.11" />
-
-    <TextView
-        android:id="@+id/backText3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="270dp"
-        android:background="#FFFFFF"
-        android:text="Regresar"
-        android:textColor="@color/bluePrimary"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="13dp" />
-
-    <FrameLayout
-        android:layout_width="331dp"
-        android:layout_height="604dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.214"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-            <TableRow
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="83dp">
+                android:layout_height="127dp">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="163dp"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="hint" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgBigFoto"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="127dp"
+                    android:src="@drawable/ic_person"
+                    android:tint="#000000" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="hint" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </TableRow>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:orientation="vertical">
 
-            <TableRow
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imgDeleteFoto"
+                        style="@style/ImageViewButton"
+                        android:src="@drawable/ic_close_box" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imgFromGallery"
+                        style="@style/ImageViewButton"
+                        android:src="@drawable/ic_image" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/LayoutName"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="wrap_content"
+                app:helperText="Ingrese su Nombre"
+                app:startIconDrawable="@drawable/ic_person"
+                style="@style/MyTheme.DayNight.TextInputLayout">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etName"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:hint="Nombre"
+                    android:inputType="textPersonName|textCapWords"
+                    android:maxLength="30"/>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="hint" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </TableRow>
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/LayoutLast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:helperText="Ingrese sus apellidos"
+                app:startIconDrawable="@drawable/ic_person"
+                style="@style/MyTheme.DayNight.TextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etLastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Apellidos"
+                    android:inputType="textPersonName|textCapWords"
+                    android:maxLength="30"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/LayoutUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:helperText="Ingrese su nombre de usuario"
+                app:startIconDrawable="@drawable/ic_person"
+                style="@style/MyTheme.DayNight.TextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etUserName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nombre de Usuario"
+                    android:inputType="textPersonName|textCapWords"
+                    android:maxLength="30"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/LayoutCellPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:helperText="Ingrese su número de teléfono"
+                app:startIconDrawable="@drawable/ic_person"
+                style="@style/MyTheme.DayNight.TextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etCellPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Número de teléfono"
+                    android:inputType="phone"
+                    android:digits="0123456789+"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/LayoutAddress"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="12dp"
+                style="@style/MyTheme.DayNight.TextInputLayout">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etAddres"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Dirección"
+                    android:gravity="top|start"
+                    android:inputType="textMultiLine"
+                    android:maxLength="1000"/>
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
-    </FrameLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
