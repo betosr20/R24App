@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import Activities.MapActivity;
+import Activities.ReportIncidentActivity;
 import Models.Constants.FirebaseClasses;
 import Models.POJOS.User;
 
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     private void verifyIfUserExits() {
-        if (email.getText() != null && email.getText().toString().trim().isEmpty()) {
+        /*if (email.getText() != null && email.getText().toString().trim().isEmpty()) {
             inputLayoutEmail.setError("Espacio requerido *");
         } else {
             inputLayoutEmail.setError(null);
@@ -56,7 +57,10 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("emailValue", email.getText().toString());
             startActivity(intent);
             finish();
-        }
+        }*/
+
+        Intent intent = new Intent(this, ReportIncidentActivity.class);
+        startActivity(intent);
     }
 
 

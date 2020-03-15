@@ -10,22 +10,11 @@
     <string name="affectedAnimalsLabel">Cantidad animales afectados</string>
     <string name="pathDisabledLabel">Camino bloqueado</string>
     <string name="addImagesLabel">Presione para añadir imagenes</string>
-    <string name="disasTerTypeLabel">Seleccione el tipo de desastre *</string>
+    <string name="disasTerTypeLabel">Seleccione el tipo de desastre</string>
     <string name="enableMapLocation">Mostrar ubicación en el mapa</string>
     <string name="disasterLocation">Lugar del desastre</string>
     <string name="saveReportButton">REPORTAR</string>
 
-    <string name="country_prompt">Choose a country</string>
-    <string-array name="country_arrays">
-        <item>Malaysia</item>
-        <item>United States</item>
-        <item>Indonesia</item>
-        <item>France</item>
-        <item>Italy</item>
-        <item>Singapore</item>
-        <item>New Zealand</item>
-        <item>India</item>
-    </string-array>
 </resources>
 
 
