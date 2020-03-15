@@ -53,7 +53,9 @@ public class MainActivity extends AppCompatActivity {
         } else {
             inputLayoutEmail.setError(null);
             Intent intent = new Intent(this, SignUp.class);
+            intent.putExtra("emailValue", email.getText().toString());
             startActivity(intent);
+            finish();
         }
     }
 

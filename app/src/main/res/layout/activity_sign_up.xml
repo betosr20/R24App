@@ -50,6 +50,8 @@
                 android:id="@+id/LayoutName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:boxBackgroundMode="outline"
+                app:endIconMode="clear_text"
                 app:helperText="Ingrese su Nombre"
                 app:startIconDrawable="@drawable/ic_person"
                 style="@style/MyTheme.DayNight.TextInputLayout">
@@ -68,6 +70,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:helperText="Ingrese sus apellidos"
+                app:boxBackgroundMode="outline"
+                app:endIconMode="clear_text"
                 app:startIconDrawable="@drawable/ic_person"
                 style="@style/MyTheme.DayNight.TextInputLayout">
 
@@ -85,6 +89,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:helperText="Ingrese su nombre de usuario"
+                app:boxBackgroundMode="outline"
+                app:endIconMode="clear_text"
                 app:startIconDrawable="@drawable/ic_person"
                 style="@style/MyTheme.DayNight.TextInputLayout">
 
@@ -102,7 +108,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:helperText="Ingrese su número de teléfono"
-                app:startIconDrawable="@drawable/ic_person"
+                app:boxBackgroundMode="outline"
+                app:endIconMode="clear_text"
+                app:startIconDrawable="@drawable/contactphone"
                 style="@style/MyTheme.DayNight.TextInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -114,21 +122,34 @@
                     android:digits="0123456789+"/>
 
             </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/LayoutAddress"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="12dp"
-                style="@style/MyTheme.DayNight.TextInputLayout">
+                style="@style/MyTheme.DayNight.TextInputLayout"
+                app:boxBackgroundMode="outline"
+                app:endIconMode="clear_text"
+                android:layout_width="380dp"
+                android:layout_height="97dp"
+                android:layout_marginBottom="12dp">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etAddres"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="Dirección"
+                    android:layout_height="88dp"
                     android:gravity="top|start"
+                    android:hint="Dirección"
                     android:inputType="textMultiLine"
-                    android:maxLength="1000"/>
+                    android:maxLength="1000" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btnSignUp"
+                style="@style/MyTheme.DayNight.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Registrase"
+                app:icon="@drawable/add"
+                app:iconGravity="textStart"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
