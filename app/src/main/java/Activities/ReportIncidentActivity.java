@@ -1,13 +1,18 @@
 package Activities;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.r24app.R;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,23 +29,15 @@ public class ReportIncidentActivity extends AppCompatActivity {
 
     private void addItemsToSpinner() {
         spinner = findViewById(R.id.disasterTypeSpinner);
-        List<String> disasterTypeList = new ArrayList<>();
-        disasterTypeList.add("Seleccione el tipo de desastre");
-        disasterTypeList.add("Costa Rica");
-        disasterTypeList.add("Nueva Zelanda");
-        disasterTypeList.add("Holanda");
-        disasterTypeList.add("Dubai");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, disasterTypeList) {
-            @Override
-            public boolean isEnabled(int position) {
-                if (position == 0) {
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-        };
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        String[] disasterTypeList = new String[5];
+        disasterTypeList[0] = "Seleccione el tipo de desastre";
+        disasterTypeList[1] = "Costa Rica";
+        disasterTypeList[2] = "Nueva Zelanda";
+        disasterTypeList[3] = "Holanda";
+        disasterTypeList[4] = "Dubai";
+
+        ArrayAdapter dataAdapter = ArrayAdapter.createFromResource(this, R.array.planets_array, R.layout.spinner_layout);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         spinner.setAdapter(dataAdapter);
     }
 

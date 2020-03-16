@@ -6,6 +6,7 @@
     <color name="bluePrimary">#469AE8</color>
     <color name="blueSecondary">#B0D9FF</color>
     <color name="blueTertiary">#96CCFF</color>
+    <color name="blackColor">#000000</color>
     <color name="brownColor">#B38946</color>
     <color name="skinColor">#FFD796</color>
     <color name="redButtonColor">#D21F3C</color>

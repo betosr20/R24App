@@ -4,16 +4,24 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="title_register_report">Reportar Incidente</string>
-    <string name="reportDetailLabel">Detalle del reporte *</string>
-    <string name="reportDetailHint">Escriba aqui el detalle</string>
+    <string name="reportDetailLabel">Detalle del reporte</string>
+    <string name="reportDetailHint">Escriba aquí el detalle</string>
     <string name="affectedPeopleLabel">Cantidad personas afectadas</string>
     <string name="affectedAnimalsLabel">Cantidad animales afectados</string>
     <string name="pathDisabledLabel">Camino bloqueado</string>
-    <string name="addImagesLabel">Presione para añadir imagenes</string>
+    <string name="addImagesLabel">Añadir imagenes</string>
     <string name="disasTerTypeLabel">Seleccione el tipo de desastre</string>
     <string name="enableMapLocation">Mostrar ubicación en el mapa</string>
     <string name="disasterLocation">Lugar del desastre</string>
     <string name="saveReportButton">REPORTAR</string>
+
+    <string-array name="planets_array">
+        <item>Seleccione el tipo de desastre</item>
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+    </string-array>
 
 </resources>
 
