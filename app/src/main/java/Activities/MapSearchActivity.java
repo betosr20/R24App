@@ -8,8 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.r24app.R;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.AutocompleteFilter;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -91,8 +89,7 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        LatLngBounds CR = new LatLngBounds(new LatLng(9.934739, -84.087502),
-                new LatLng(9.934739, -84.087502));
+        LatLngBounds CR = new LatLngBounds(new LatLng(9.934739, -84.087502), new LatLng(9.934739, -84.087502));
         this.googleMap.setLatLngBoundsForCameraTarget(CR);
         this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(9.934739, -84.087502), 8));
     }
