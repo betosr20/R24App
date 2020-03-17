@@ -42,14 +42,13 @@ public class ReportIncidentActivity extends AppCompatActivity {
 
     }
 
-    private void addActivateLocationListener(){
+    private void addActivateLocationListener() {
         activateMapLocation = findViewById(R.id.mapActivated);
         activateMapLocation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) {
+                if (isChecked) {
                     Intent intent = new Intent(ReportIncidentActivity.this, MapSearchActivity.class);
                     startActivity(intent);
-
                 }
             }
         });

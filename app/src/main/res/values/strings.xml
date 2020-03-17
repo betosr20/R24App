@@ -14,7 +14,7 @@
     <string name="enableMapLocation">Mostrar ubicación en el mapa</string>
     <string name="disasterLocation">Lugar del desastre</string>
     <string name="saveReportButton">REPORTAR</string>
-    <string name="incidentPlace">Lugar del accidente...</string>
+    <string name="incidentPlace">Lugar del accidente…</string>
 
     <string-array name="planets_array">
         <item>Seleccione el tipo de desastre</item>
