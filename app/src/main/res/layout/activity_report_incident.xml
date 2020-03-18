@@ -207,7 +207,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mapLocationLayout" />
 
-    <EditText
+
+
+    <!--<EditText
         android:id="@+id/disasterDetail"
         android:layout_width="0dp"
         android:layout_height="140dp"
@@ -221,7 +223,7 @@
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addImagesButton" />
+        app:layout_constraintTop_toBottomOf="@+id/addImagesButton" />-->
 
     <Button
         android:id="@+id/btnSubmitReport"
@@ -230,7 +232,7 @@
         android:layout_height="70dp"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:text="@string/saveReportButton"
@@ -240,5 +242,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_content" />
+        app:layout_constraintTop_toBottomOf="@+id/reportDetailLayout" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/reportDetailLayout"
+        style="@style/MyTheme.DayNight.TextInputLayout"
+        android:layout_width="386dp"
+        android:layout_height="142dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        app:boxBackgroundMode="outline"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addImagesButton">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/reportDetailInput"
+            android:layout_width="match_parent"
+            android:layout_height="111dp"
+            android:gravity="top"
+            android:hint="@string/reportDetailHint"
+            android:inputType="textMultiLine"
+            android:maxLength="1000" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,10 +3,10 @@ package Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -15,22 +15,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.r24app.R;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.core.Repo;
 
-import Models.Constants.FirebaseClasses;
-import Models.POJOS.NaturalDisaster;
 import Models.POJOS.Report;
 import Services.ReportService;
 
 public class ReportIncidentActivity extends AppCompatActivity {
 
     private Spinner spinner;
-    ImageButton returnButton;
-    Button submitReportButton, addImagesButton;
-    private Switch activateMapLocation;
+    private ImageButton returnButton;
+    private Button submitReportButton, addImagesButton;
+    private Switch activateMapLocation, isPathDisabled;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
 
@@ -43,6 +39,7 @@ public class ReportIncidentActivity extends AppCompatActivity {
         addReturnButtonListener();
         addSubmitReportListener();
         addImagesButtonListener();
+        addSpinnerListener();
         // saveReportTypeInfo();
     }
 
@@ -139,7 +136,6 @@ public class ReportIncidentActivity extends AppCompatActivity {
 
     private void addSubmitReportListener() {
         submitReportButton = findViewById(R.id.btnSubmitReport);
-
         submitReportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,14 +145,14 @@ public class ReportIncidentActivity extends AppCompatActivity {
     }
 
     private void saveReportInfo() {
-        Switch isPathDisbaled = findViewById(R.id.isPathDisabled);
+        boolean isPathDisabled = ((Switch) findViewById(R.id.isPathDisabled)).isChecked();
         TextInputEditText affectedPeople = findViewById(R.id.affectedPeopleInput);
         TextInputEditText affectedAnimals = findViewById(R.id.affectedAnimalsInput);
         TextInputEditText place = findViewById(R.id.mapLocationInput);
-        EditText description = findViewById(R.id.disasterDetail);
+        TextInputEditText description = findViewById(R.id.reportDetailInput);
 
         Report report = new Report();
-        new ReportService().addNewReport();
+        new ReportService().addNewReport(report);
     }
 
     private void addReturnButtonListener() {
@@ -165,8 +161,7 @@ public class ReportIncidentActivity extends AppCompatActivity {
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ReportIncidentActivity.this, MapSearchActivity.class);
-                startActivity(intent);
+                ReportIncidentActivity.this.addSpinnerListener();
             }
         });
     }
@@ -186,7 +181,20 @@ public class ReportIncidentActivity extends AppCompatActivity {
     }
 
     private void addSpinnerListener() {
+        spinner = findViewById(R.id.disasterTypeSpinner);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position > 0) {
+                    System.out.println(parent.getItemAtPosition(position).toString());
+                }
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void addActivateLocationListener() {
