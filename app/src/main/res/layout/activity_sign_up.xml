@@ -147,9 +147,10 @@
                 style="@style/MyTheme.DayNight.TextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Registrase"
-                app:icon="@drawable/add"
-                app:iconGravity="textStart"/>
+                android:text="Siguiente"
+                app:icon="@drawable/navigatenext"
+                app:iconGravity="textEnd"
+                app:iconPadding="1dp"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

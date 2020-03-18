@@ -43,11 +43,11 @@ public class MainActivity extends AppCompatActivity {
         nextStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                verifyIfUserExits();
+                validateInputs();
             }
         });
     }
-    private void verifyIfUserExits() {
+    private void validateInputs() {
         if (email.getText() != null && email.getText().toString().trim().isEmpty()) {
             inputLayoutEmail.setError("Espacio requerido *");
         } else {
