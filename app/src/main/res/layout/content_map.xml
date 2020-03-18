@@ -4,9 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/blueSecondary"
+    android:backgroundTint="@color/blueSecondary"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="Activities.MapActivity"
     tools:showIn="@layout/activity_map">
+
+    <TextView
+        android:id="@+id/textViewCalor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="8dp"
+        android:text="Calor"
+        app:layout_constraintStart_toEndOf="@+id/textViewPines"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.suke.widget.SwitchButton
+        android:id="@+id/switchButtonHeat"
+        android:layout_width="41dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="49dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/switchButtonPins"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCalor" />
 
     <fragment
         android:id="@+id/map2"
@@ -16,21 +37,17 @@
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/switchButtonPins"
-        app:layout_constraintVertical_bias="1.0"
         tools:context=".Map
         sActivity" />
 
     <com.suke.widget.SwitchButton
         android:id="@+id/switchButtonPins"
         android:layout_width="41dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/sb_heatCheck"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_height="26dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewPines" />
 
@@ -38,30 +55,9 @@
         android:id="@+id/textViewPines"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="8dp"
-        android:text="Ver pines"
+        android:text="Pines"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.suke.widget.SwitchButton
-        android:id="@+id/sb_heatCheck"
-        android:layout_width="41dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.413"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/t_heatCheckText" />
-
-    <TextView
-        android:id="@+id/t_heatCheckText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Mapa de calor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.219"
-        app:layout_constraintStart_toEndOf="@+id/textViewPines"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

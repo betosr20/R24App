@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         User usuario = new User("betico2", "Alberto", "Guerra", "betico2", "betog19@gmail.com",
                                 "88880666", "mi choza", "añlksdfjlaksdfljskdf", true, true, true, true, true, true);
-        //databaseReference =  database.getReference("Users").child(usuario.getUserName());
+        //databaseReference =  database.getReference(FirebaseClasses.User).child(usuario.getUserName());
         //databaseReference.setValue(usuario);
 
         //Aqui va el Id del usuario que se uso para guardar en la bbdd. En este caso se guardo
