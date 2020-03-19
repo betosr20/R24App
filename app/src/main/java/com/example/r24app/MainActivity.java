@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +22,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import Activities.MapActivity;
+import Activities.ReportIncidentActivity;
 import Models.Constants.FirebaseClasses;
 import Models.POJOS.User;
 
@@ -44,12 +44,12 @@ public class MainActivity extends AppCompatActivity {
         nextStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                validateInputs();
+                verifyIfUserExits();
             }
         });
     }
-    private void validateInputs() {
-        if (email.getText() != null && email.getText().toString().trim().isEmpty()) {
+    private void verifyIfUserExits() {
+        /*if (email.getText() != null && email.getText().toString().trim().isEmpty()) {
             inputLayoutEmail.setError("Espacio requerido *");
         } else {
             inputLayoutEmail.setError(null);
@@ -57,14 +57,14 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("emailValue", email.getText().toString());
             startActivity(intent);
             finish();
-        }
+        }*/
+
+        Intent intent = new Intent(this, ReportIncidentActivity.class);
+        startActivity(intent);
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        // Es el xml en res/menu
-        inflater.inflate(R.menu.menu_main, menu);
-        return true;
-    }
+
+
+
+
 
 }
