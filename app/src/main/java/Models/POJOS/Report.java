@@ -5,7 +5,7 @@ import java.util.Date;
 public class Report {
     private String Id, type, detail, latitude, longitude, place;
     private boolean pathDisabled, isActive;
-    private Date startDate, endDate, hour;
+    private Date startDate, endDate;
     private int affectedPeople, affectedAnimals;
 
     public Report() {
@@ -13,7 +13,7 @@ public class Report {
 
     public Report(String Id, String type, String detail, String latitude, String longitude, String place,
                   boolean pathDisabled, boolean isActive, Date startDate, Date endDate, int affectedAnimals,
-                  int affectedPeople, Date hour) {
+                  int affectedPeople) {
         this.Id = Id;
         this.place = place;
         this.type = type;
@@ -26,7 +26,6 @@ public class Report {
         this.endDate = endDate;
         this.affectedAnimals = affectedAnimals;
         this.affectedPeople = affectedPeople;
-        this.hour = hour;
     }
 
     public String getId() {
@@ -69,6 +68,14 @@ public class Report {
         this.longitude = longitude;
     }
 
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
+    }
+
     public boolean isPathDisabled() {
         return pathDisabled;
     }
@@ -99,14 +106,6 @@ public class Report {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
-    }
-
-    public Date getHour() {
-        return hour;
-    }
-
-    public void setHour(Date hour) {
-        this.hour = hour;
     }
 
     public int getAffectedPeople() {

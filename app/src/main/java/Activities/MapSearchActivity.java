@@ -57,6 +57,7 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
                     returnIntent.putExtra("latitude", String.valueOf(place.getLatLng().longitude));
                     setResult(Activity.RESULT_OK, returnIntent);
                 }
+
                 finish();
             }
         });

@@ -15,10 +15,11 @@ import android.widget.Switch;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.r24app.R;
-import com.google.android.gms.location.places.Place;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import Models.POJOS.Report;
 import Services.ReportService;
@@ -28,12 +29,9 @@ public class ReportIncidentActivity extends AppCompatActivity {
     private Spinner spinner;
     private ImageButton returnButton;
     private Button submitReportButton, addImagesButton;
-    private Switch activateMapLocation, isPathDisabled;
-    private FirebaseDatabase database;
-    private Place placeSelected;
-    private DatabaseReference databaseReference;
-    String selectedPlace, latitude, longitude;
-    TextInputEditText reportLocation;
+    private Switch activateMapLocation;
+    private String selectedPlace, latitude, longitude, disasterType;
+    private TextInputEditText reportLocation;
     private final int LAUNCH_SECOND_ACTIVITY = 1;
 
     @Override
@@ -54,8 +52,8 @@ public class ReportIncidentActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == LAUNCH_SECOND_ACTIVITY) {
-            if(resultCode == Activity.RESULT_OK){
-                selectedPlace = data.getStringExtra ("selectedPlace");
+            if (resultCode == Activity.RESULT_OK) {
+                selectedPlace = data.getStringExtra("selectedPlace");
                 latitude = data.getStringExtra("latitude");
                 longitude = data.getStringExtra("longitude");
                 reportLocation = findViewById(R.id.mapLocationInput);
@@ -170,12 +168,23 @@ public class ReportIncidentActivity extends AppCompatActivity {
 
     private void saveReportInfo() {
         boolean isPathDisabled = ((Switch) findViewById(R.id.isPathDisabled)).isChecked();
-        TextInputEditText affectedPeople = findViewById(R.id.affectedPeopleInput);
-        TextInputEditText affectedAnimals = findViewById(R.id.affectedAnimalsInput);
+        TextInputEditText affectedPeopleInput = findViewById(R.id.affectedPeopleInput);
+        TextInputEditText affectedAnimalsInput = findViewById(R.id.affectedAnimalsInput);
         TextInputEditText place = findViewById(R.id.mapLocationInput);
         TextInputEditText description = findViewById(R.id.reportDetailInput);
+        int affectedPeople = !affectedPeopleInput.getText().toString().equals("") ? Integer.parseInt(affectedPeopleInput.getText().toString()) : 0;
+        int affectedAnimals = !affectedAnimalsInput.getText().toString().equals("") ? Integer.parseInt(affectedAnimalsInput.getText().toString()) : 0;
+        Calendar endDate = Calendar.getInstance();
+        endDate.setTime(new Date());
+        endDate.add(Calendar.DATE, 1);
+        endDate.add(Calendar.MONTH, 1);
 
-        Report report = new Report();
+        Calendar startDate = Calendar.getInstance();
+        startDate.setTime(new Date());
+        startDate.add(Calendar.MONTH, 1);
+
+        Report report = new Report("1", disasterType, description.getText().toString(), latitude, longitude, place.getText().toString(), isPathDisabled,
+                true, startDate.getTime(), endDate.getTime(), affectedAnimals, affectedPeople);
         new ReportService().addNewReport(report);
     }
 
@@ -210,7 +219,7 @@ public class ReportIncidentActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) {
-                    System.out.println(parent.getItemAtPosition(position).toString());
+                    disasterType = parent.getItemAtPosition(position).toString();
                 }
             }
 

@@ -177,7 +177,7 @@
             android:layout_marginEnd="20dp"
             android:hint="@string/disasterLocation"
             app:boxBackgroundMode="outline"
-            app:endIconMode="clear_text"
+            app:endIconMode="none"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -191,8 +191,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
+                android:background="@null"
                 android:imeOptions="actionNext"
-                android:inputType="text"
+                android:inputType="textMultiLine"
                 android:maxLength="100" />
         </com.google.android.material.textfield.TextInputLayout>
 
