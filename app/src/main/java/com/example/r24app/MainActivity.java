@@ -3,8 +3,13 @@ package com.example.r24app;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import Activities.MapActivity;
 import Models.Constants.FirebaseClasses;
@@ -28,9 +34,11 @@ import Models.POJOS.User;
 public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
-    TextInputEditText email;
-    TextInputLayout inputLayoutEmail;
-    Button nextStep;
+    private FirebaseAuth mAuth;
+    TextInputEditText email, password;
+    TextInputLayout inputLayoutEmail, inputLayoutPassword;
+    private TextView recoveryPassword, singUpLink;
+    Button ingresar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,29 +46,57 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         email = findViewById(R.id.emailInput);
-        nextStep = findViewById(R.id.btnNextSignUp);
+        password = findViewById(R.id.etLoginPassword);
+        ingresar = findViewById(R.id.btnNextSignUp);
         inputLayoutEmail = findViewById(R.id.emailInputLayout);
-        nextStep.setOnClickListener(new View.OnClickListener() {
+        inputLayoutPassword = findViewById(R.id.LayoutLoginPassword);
+        ingresar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                validateInputs();
+                login();
             }
         });
+        mAuth = FirebaseAuth.getInstance();
     }
-    private void validateInputs() {
-        if (email.getText() != null && email.getText().toString().trim().isEmpty()) {
-            inputLayoutEmail.setError("Espacio requerido *");
-        } else {
-            inputLayoutEmail.setError(null);
-            Intent intent = new Intent(this, SignUp.class);
-            intent.putExtra("emailValue", email.getText().toString());
-            startActivity(intent);
-            finish();
+    private void login() {
+        if (validateInputs() != false) {
+            mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()){
+                        Toast.makeText(MainActivity.this, "Se ingresaron correctamente las credenciales", Toast.LENGTH_LONG).show();
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        getTransitionIntoMainView();
+                    }else {
+                        Toast.makeText(MainActivity.this, "Este usuario no existe en la base de datos.", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
         }
     }
+    private void getTransitionIntoMainView() {
+        Intent intent =  new Intent(this, MapActivity.class);
+        startActivity(intent);
+        finish();
+    }
+    private boolean validateInputs() {
+        boolean isValid = true;
+        if (email.getText() != null && email.getText().toString().trim().isEmpty()) {
+            inputLayoutEmail.setError("Espacio requerido *");
+            inputLayoutEmail.requestFocus();
+            isValid =  false;
+        }
+        else {
+            inputLayoutEmail.setError(null);
+        }
 
-
-
-
+        if (password.getText() != null && password.getText().toString().trim().isEmpty()) {
+            inputLayoutPassword.setError("Espacio requerido *");
+            isValid =  false;
+        } else {
+            inputLayoutPassword.setError(null);
+        }
+        return isValid;
+    }
 
 }
