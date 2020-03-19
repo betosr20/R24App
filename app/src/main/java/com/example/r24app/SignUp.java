@@ -30,8 +30,6 @@ public class SignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 //        mAuth = FirebaseAuth.getInstance();
-        // Valor del email
-        email = getIntent().getStringExtra("emailValue");
         // Input y editText de Nombre
         inputLayoutName =  findViewById(R.id.LayoutName);
         name = findViewById(R.id.etName);
@@ -52,7 +50,7 @@ public class SignUp extends AppCompatActivity {
         btnNextStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nextStepTorRegisterUser();
+                nextStepToRegisterUser();
             }
         });
         // boleanos por default
@@ -66,17 +64,58 @@ public class SignUp extends AppCompatActivity {
     /*
         Metodo que se encarga de extraer los datos de la vista sign_up y enviarlos a Firebase.
      */
-   public void nextStepTorRegisterUser() {
-       Intent intent =  new Intent(this, PasswordValidation.class);
-       intent.putExtra("email", email);
-       intent.putExtra("name", name.getText().toString());
-       intent.putExtra("lastName", lastName.getText().toString());
-       intent.putExtra("userName", userName.getText().toString());
-       intent.putExtra("cellPhone", cellPhone.getText().toString());
-       intent.putExtra("address", address.getText().toString());
-       startActivity(intent);
-       finish();
-
+   public void nextStepToRegisterUser() {
+        if (validateInputs() != false) {
+            Intent intent =  new Intent(this, PasswordValidation.class);
+            intent.putExtra("name", name.getText().toString());
+            intent.putExtra("lastName", lastName.getText().toString());
+            intent.putExtra("userName", userName.getText().toString());
+            intent.putExtra("cellPhone", cellPhone.getText().toString());
+            intent.putExtra("address", address.getText().toString());
+            startActivity(intent);
+            finish();
+        }
    }
+   public boolean validateInputs() {
+       boolean isValid = true;
+       if (name.getText() != null && name.getText().toString().trim().isEmpty()) {
+           inputLayoutName.setError("Espacio requerido *");
+           inputLayoutName.requestFocus();
+           isValid = false;
+       } else {
+           inputLayoutName.setError(null);
+       }
+       if (lastName.getText() != null && lastName.getText().toString().trim().isEmpty()) {
+           inputLayoutLastName.setError("Espacio requerido *");
+           inputLayoutLastName.requestFocus();
+           isValid = false;
+       } else {
+           inputLayoutLastName.setError(null);
+       }
+       if (userName.getText() != null && userName.getText().toString().trim().isEmpty()) {
+           inputLayoutUserName.setError("Espacio requerido *");
+           inputLayoutUserName.requestFocus();
+           isValid = false;
+       } else {
+           inputLayoutUserName.setError(null);
+       }
+       if (cellPhone.getText() != null && cellPhone.getText().toString().trim().isEmpty()) {
+           inputLayoutCellPhone.setError("Espacio requerido *");
+           inputLayoutCellPhone.requestFocus();
+           isValid = false;
+       } else {
+           inputLayoutCellPhone.setError(null);
+       }
+       if (address.getText() != null && address.getText().toString().trim().isEmpty()) {
+           inputLayoutAddress.setError("Espacio requerido *");
+           inputLayoutAddress.requestFocus();
+           isValid = false;
+       } else {
+           inputLayoutAddress.setError(null);
+       }
+
+       return isValid;
+   }
+
 
 }

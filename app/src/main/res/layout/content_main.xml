@@ -62,7 +62,7 @@
         android:layout_marginEnd="32dp"
         app:boxBackgroundMode="outline"
         app:endIconMode="password_toggle"
-        app:helperText="Ingrese su electrónico "
+        app:helperText="Ingrese su contraseña"
         app:layout_constraintBottom_toTopOf="@+id/btnNextSignUp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
