@@ -1,5 +1,6 @@
 package Activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.Switch;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.r24app.R;
+import com.google.android.gms.location.places.Place;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -28,7 +30,11 @@ public class ReportIncidentActivity extends AppCompatActivity {
     private Button submitReportButton, addImagesButton;
     private Switch activateMapLocation, isPathDisabled;
     private FirebaseDatabase database;
+    private Place placeSelected;
     private DatabaseReference databaseReference;
+    String selectedPlace, latitude, longitude;
+    TextInputEditText reportLocation;
+    private final int LAUNCH_SECOND_ACTIVITY = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +47,24 @@ public class ReportIncidentActivity extends AppCompatActivity {
         addImagesButtonListener();
         addSpinnerListener();
         // saveReportTypeInfo();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == LAUNCH_SECOND_ACTIVITY) {
+            if(resultCode == Activity.RESULT_OK){
+                selectedPlace = data.getStringExtra ("selectedPlace");
+                latitude = data.getStringExtra("latitude");
+                longitude = data.getStringExtra("longitude");
+                reportLocation = findViewById(R.id.mapLocationInput);
+                reportLocation.setText(selectedPlace);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+
+            }
+        }
     }
 
     /*private void saveReportTypeInfo() {
@@ -203,7 +227,7 @@ public class ReportIncidentActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     Intent intent = new Intent(ReportIncidentActivity.this, MapSearchActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, LAUNCH_SECOND_ACTIVITY);
                 }
             }
         });

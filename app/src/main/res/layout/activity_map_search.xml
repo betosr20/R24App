@@ -7,10 +7,12 @@
     tools:context="Activities.MapSearchActivity">
 
     <fragment
+        android:id="@+id/mapSearchViewFragment"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/mapSearchViewFragment"
-        android:name="com.google.android.gms.maps.SupportMapFragment"/>
+        tools:layout_editor_absoluteX="80dp"
+        tools:layout_editor_absoluteY="16dp" />
 
     <fragment
         android:id="@+id/autocomplete_fragment"
@@ -21,6 +23,20 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toStartOf="@+id/mapSearchViewFragment"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/checkButton"
+        android:layout_width="70dp"
+        android:layout_height="59dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="@+id/mapSearchViewFragment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/successcheck" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

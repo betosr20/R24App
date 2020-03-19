@@ -18,12 +18,10 @@
 
     <string-array name="planets_array">
         <item>Seleccione el tipo de desastre</item>
-        <item>Mercury</item>
-        <item>Venus</item>
-        <item>Earth</item>
-        <item>Mars</item>
+        <item>Erupción Volcánica</item>
+        <item>Terremoto</item>
+        <item>Inundación</item>
     </string-array>
-
 </resources>
 
 
