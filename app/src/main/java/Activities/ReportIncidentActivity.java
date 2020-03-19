@@ -161,7 +161,7 @@ public class ReportIncidentActivity extends AppCompatActivity {
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ReportIncidentActivity.this.addSpinnerListener();
+                System.out.println("dkfhgkdfjghdfkjghdjghdkjgfhdkf");
             }
         });
     }
