@@ -8,6 +8,18 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="271dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:maxLength="100"
+        android:text="Bienvenida a la página de inicio de sesión"
+        app:layout_constraintBottom_toTopOf="@+id/emailInputLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/emailInputLayout"
@@ -26,7 +38,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.22000003"
+        app:layout_constraintVertical_bias="0.206"
         app:startIconDrawable="@drawable/email"
         tools:ignore="MissingConstraints">
 
@@ -41,37 +53,74 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/LayoutLoginPassword"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        app:boxBackgroundMode="outline"
+        app:endIconMode="password_toggle"
+        app:helperText="Ingrese su contraseña"
+        app:layout_constraintBottom_toTopOf="@+id/btnNextSignUp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailInputLayout"
+        app:startIconDrawable="@drawable/lockopen"
+        tools:ignore="MissingConstraints">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etLoginPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Contraseña"
+            android:imeOptions="actionNext"
+            android:inputType="textPassword"
+            android:maxLength="50" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <Button
         android:id="@+id/btnNextSignUp"
         style="@style/Widget.MaterialComponents.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
-        android:text="Siguiente"
+        android:layout_marginBottom="224dp"
+        android:text="Ingresar"
         app:icon="@drawable/navigatenext"
         app:iconGravity="textEnd"
         app:iconPadding="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailInputLayout"
-        app:layout_constraintVertical_bias="0.100000024" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textCreateAcount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:text="Bienvenido, por favor ingrese su correo electrónico."
-        app:layout_constraintBottom_toTopOf="@+id/emailInputLayout"
+        android:text="Si no tiene cuenta registrese aquí"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:maxLength="30"/>
+        app:layout_constraintTop_toBottomOf="@+id/btnNextSignUp"
+        app:layout_constraintVertical_bias="0.145" />
+
+    <TextView
+        android:id="@+id/textRecoveryPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recuperar Contraseña"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textCreateAcount"
+        app:layout_constraintVertical_bias="0.178" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
