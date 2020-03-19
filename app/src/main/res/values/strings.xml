@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">R24App</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">salir</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_map">MapActivity</string>
+    <string name="reports_activity">Reports</string>
 </resources>
