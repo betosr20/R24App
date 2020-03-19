@@ -46,7 +46,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         switchButtonPins = (com.suke.widget.SwitchButton)
                 findViewById(R.id.switchButtonPins);
 
-        SwitchButton heatCheck = findViewById(R.id.sb_heatCheck);
+        SwitchButton heatCheck = findViewById(R.id.switchButtonHeat);
 
         switchButtonPins.setChecked(true);
         heatCheck.setChecked(true);
@@ -96,7 +96,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         LatLng myHouse = new LatLng(9.930363, -84.027100);
         mMap.addMarker(new MarkerOptions()
                 .position(myHouse)
-                .title("My house madafackas")
+                .title("Mi casa")
         );
         mMap.addMarker(new MarkerOptions()
                 .position(mamiHouse)

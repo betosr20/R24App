@@ -2,36 +2,27 @@ package com.example.r24app;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.TextView;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import Activities.MapActivity;
 import Activities.ReportIncidentActivity;
-import Models.Constants.FirebaseClasses;
-import Models.POJOS.User;
 
 public class MainActivity extends AppCompatActivity {
-    private FirebaseDatabase database;
-    private DatabaseReference databaseReference;
     TextInputEditText email;
     TextInputLayout inputLayoutEmail;
     Button nextStep;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,12 +35,13 @@ public class MainActivity extends AppCompatActivity {
         nextStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                verifyIfUserExits();
+                validateInputs();
             }
         });
     }
-    private void verifyIfUserExits() {
-        /*if (email.getText() != null && email.getText().toString().trim().isEmpty()) {
+
+    private void validateInputs() {
+        if (email.getText() != null && email.getText().toString().trim().isEmpty()) {
             inputLayoutEmail.setError("Espacio requerido *");
         } else {
             inputLayoutEmail.setError(null);
@@ -57,14 +49,30 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("emailValue", email.getText().toString());
             startActivity(intent);
             finish();
-        }*/
-
-        Intent intent = new Intent(this, ReportIncidentActivity.class);
-        startActivity(intent);
+        }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
-
-
-
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                return true;
+            case R.id.map2:
+                Intent intent = new Intent(this, MapActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.report:
+                Intent reportActivity = new Intent(this, ReportIncidentActivity.class);
+                startActivity(reportActivity);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

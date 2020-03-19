@@ -2,7 +2,7 @@
     <string name="app_name">R24App</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps">Map</string>
-    <string name="title_activity_map">MapActivity</string>
+    <string name="title_activity_map">Mapa reportes</string>
     <string name="title_register_report">Reportar Incidente</string>
     <string name="reportDetailLabel">Detalle del reporte</string>
     <string name="reportDetailHint">Escriba aquí el detalle</string>
@@ -18,10 +18,9 @@
 
     <string-array name="planets_array">
         <item>Seleccione el tipo de desastre</item>
-        <item>Mercury</item>
-        <item>Venus</item>
-        <item>Earth</item>
-        <item>Mars</item>
+        <item>Erupción Volcánica</item>
+        <item>Terremoto</item>
+        <item>Inundación</item>
     </string-array>
 
 </resources>
