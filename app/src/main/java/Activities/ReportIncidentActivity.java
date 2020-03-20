@@ -161,9 +161,13 @@ public class ReportIncidentActivity extends AppCompatActivity {
         submitReportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveReportInfo();
+                validateFields();
             }
         });
+    }
+
+    private void validateFields() {
+        boolean validFields = true;
     }
 
     private void saveReportInfo() {
