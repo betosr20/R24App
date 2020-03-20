@@ -53,8 +53,8 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
                 if (place != null) {
                     Intent returnIntent = new Intent();
                     returnIntent.putExtra("selectedPlace", String.valueOf(place.getName()));
-                    returnIntent.putExtra("longitude", String.valueOf(place.getLatLng().latitude));
-                    returnIntent.putExtra("latitude", String.valueOf(place.getLatLng().longitude));
+                    returnIntent.putExtra("longitude", String.valueOf(place.getLatLng().longitude));
+                    returnIntent.putExtra("latitude", String.valueOf(place.getLatLng().latitude));
                     setResult(Activity.RESULT_OK, returnIntent);
                 }
 

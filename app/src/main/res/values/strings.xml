@@ -16,7 +16,7 @@
     <string name="saveReportButton">REPORTAR</string>
     <string name="incidentPlace">Lugar del accidente…</string>
 
-    <string-array name="planets_array">
+    <string-array name="disasterTypes_array">
         <item>Seleccione el tipo de desastre</item>
         <item>Erupción Volcánica</item>
         <item>Terremoto</item>

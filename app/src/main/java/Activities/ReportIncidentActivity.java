@@ -17,10 +17,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.r24app.R;
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import Models.POJOS.NaturalDisaster;
 import Models.POJOS.Report;
 import Services.ReportService;
 
@@ -50,6 +51,7 @@ public class ReportIncidentActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        activateMapLocation.setChecked(false);
 
         if (requestCode == LAUNCH_SECOND_ACTIVITY) {
             if (resultCode == Activity.RESULT_OK) {
@@ -161,7 +163,7 @@ public class ReportIncidentActivity extends AppCompatActivity {
         submitReportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                validateFields();
+                saveReportInfo();
             }
         });
     }
@@ -204,7 +206,9 @@ public class ReportIncidentActivity extends AppCompatActivity {
     }
 
     private void addItemsToSpinner() {
+        ArrayList<NaturalDisaster> disasterTypeList = new ReportService().getDisasterTypes();
         spinner = findViewById(R.id.disasterTypeSpinner);
+        //ArrayList<String> disasterTypeList = new ArrayList<>();
         /*String[] disasterTypeList = new String[5];
         disasterTypeList[0] = "Seleccione el tipo de desastre";
         disasterTypeList[1] = "Costa Rica";
@@ -212,9 +216,15 @@ public class ReportIncidentActivity extends AppCompatActivity {
         disasterTypeList[3] = "Holanda";
         disasterTypeList[4] = "Dubai";*/
 
-        ArrayAdapter dataAdapter = ArrayAdapter.createFromResource(this, R.array.planets_array, R.layout.spinner_layout);
-        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
-        spinner.setAdapter(dataAdapter);
+        // Estas lineas permiten hacer un spinner donde los elementos sean de color
+        // Assets en strings.xml y en layout spinner_dropdown y spinner_layout
+        /*ArrayAdapter dataAdapter = ArrayAdapter.createFromResource(this, R.array.disasterTypes_array, R.layout.spinner_layout);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown);*/
+
+        /*ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, disasterTypeList);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(dataAdapter);*/
     }
 
     private void addSpinnerListener() {

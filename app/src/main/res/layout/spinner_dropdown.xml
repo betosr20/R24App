@@ -4,6 +4,5 @@
     android:layout_height="match_parent"
     android:paddingLeft="15dp"
     android:paddingBottom="10dp"
-    android:textColor="@color/brownColor"
-    android:textSize="18sp"
-    android:textStyle="bold" />
+    android:textColor="@color/blackColor"
+    android:textSize="14sp" />
