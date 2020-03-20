@@ -55,13 +55,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         com.suke.widget.SwitchButton switchButtonPins;
         com.suke.widget.SwitchButton switchButtonHeatMap;
 
-        switchButtonPins = (com.suke.widget.SwitchButton)
-                findViewById(R.id.switchButtonPins);
-        switchButtonHeatMap = (com.suke.widget.SwitchButton)
-                findViewById(R.id.switchButtonHeat);
+        //switchButtonPins = (com.suke.widget.SwitchButton)
+              //  findViewById(R.id.switchButtonPins);
+      //  switchButtonHeatMap = (com.suke.widget.SwitchButton)
+           //     findViewById(R.id.switchButtonHeat);
 
-       switchButtonPins.setChecked(true);
-       switchButtonHeatMap.setChecked(true);
+    //   switchButtonPins.setChecked(true);
+     //  switchButtonHeatMap.setChecked(true);
         //SE COMENTA PORQUE FALTA PARA EL SPRINT
        /*
         switchButtonPins.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
@@ -105,15 +105,20 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap = googleMap;
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference(FirebaseClasses.Report);
-        System.out.println("ESTOY EN EL ON MAP READY");
+
+        //Agrega el Event Listener
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                //Valida si existe el arreglo, osea si hay datos
                 if(dataSnapshot.exists()){
                     Report report;
                     Marker marker;
                     LatLng latLng;
                     double latitude, longitude;
+
+                    //Itera el contenido del arreglo
                     for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
 
                         report = snapshot.getValue(Report.class);
