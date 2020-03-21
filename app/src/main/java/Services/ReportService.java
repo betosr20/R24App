@@ -9,6 +9,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
 
 import Models.Constants.FirebaseClasses;
 import Models.POJOS.NaturalDisaster;
@@ -25,18 +26,19 @@ public class ReportService {
     public void addNewReport(Report report) {
         databaseReference = database.getReference(FirebaseClasses.Report).child(report.getId());
         databaseReference.setValue(report);
-        databaseReference.setValue(report);
     }
 
-    public ArrayList<NaturalDisaster> getDisasterTypes() {
-        final ArrayList<NaturalDisaster> disasterTypes = new ArrayList<>();
-
-        databaseReference = database.getReference().child(FirebaseClasses.NaturalDisaster);
-        databaseReference.addValueEventListener(new ValueEventListener() {
+    public void getDisasterTypes(final ArrayList<String> disasterTypeList) {
+        databaseReference = database.getReference(FirebaseClasses.NaturalDisaster);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    disasterTypes.add(data.getValue(NaturalDisaster.class));
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    NaturalDisaster naturalDisaster;
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        naturalDisaster = snapshot.getValue(NaturalDisaster.class);
+                        disasterTypeList.add(naturalDisaster.getName());
+                    }
                 }
             }
 
@@ -45,7 +47,5 @@ public class ReportService {
 
             }
         });
-
-        return disasterTypes;
     }
 }

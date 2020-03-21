@@ -105,6 +105,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Spinner
+            android:theme="@style/SpinnerTheme"
             android:id="@+id/disasterTypeSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -128,7 +129,7 @@
             android:text="@string/pathDisabledLabel"
             style="@style/ThemeOverlay.MySwitch"
             android:textColor="@color/blackColor"
-            android:textSize="14sp"
+            android:textSize="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/disasterTypeSpinner" />
 
@@ -153,7 +154,7 @@
             android:lineSpacingExtra="0dp"
             android:text="@string/enableMapLocation"
             android:textColor="@color/blackColor"
-            android:textSize="14sp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toStartOf="@+id/mapActivated"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
@@ -211,7 +212,7 @@
             android:textAlignment="textStart"
             android:textAllCaps="false"
             android:textColor="@color/blackColor"
-            android:textSize="14sp"
+            android:textSize="16sp"
             app:icon="@drawable/add"
             app:iconGravity="end"
             app:iconTint="@color/blackColor"

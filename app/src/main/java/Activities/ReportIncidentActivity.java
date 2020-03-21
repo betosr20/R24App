@@ -12,15 +12,22 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.r24app.R;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import Models.Constants.FirebaseClasses;
 import Models.POJOS.NaturalDisaster;
 import Models.POJOS.Report;
 import Services.ReportService;
@@ -34,11 +41,13 @@ public class ReportIncidentActivity extends AppCompatActivity {
     private String selectedPlace, latitude, longitude, disasterType;
     private TextInputEditText reportLocation;
     private final int LAUNCH_SECOND_ACTIVITY = 1;
+    private ReportService reportService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_incident);
+        reportService = new ReportService();
         addItemsToSpinner();
         addActivateLocationListener();
         addReturnButtonListener();
@@ -206,7 +215,9 @@ public class ReportIncidentActivity extends AppCompatActivity {
     }
 
     private void addItemsToSpinner() {
-        ArrayList<NaturalDisaster> disasterTypeList = new ReportService().getDisasterTypes();
+        ArrayList<String> disasterTypeList = new ArrayList<>();
+        disasterTypeList.add("Seleccione el tipo de desastre");
+        reportService.getDisasterTypes(disasterTypeList);
         spinner = findViewById(R.id.disasterTypeSpinner);
         //ArrayList<String> disasterTypeList = new ArrayList<>();
         /*String[] disasterTypeList = new String[5];
@@ -216,15 +227,22 @@ public class ReportIncidentActivity extends AppCompatActivity {
         disasterTypeList[3] = "Holanda";
         disasterTypeList[4] = "Dubai";*/
 
+        /*ArrayList<String> disasterTypeList = new ArrayList<>();
+        disasterTypeList.add("Seleccione el tipo de desastre");
+        disasterTypeList.add("Costa Rica");
+        disasterTypeList.add("Nueva Zelanda");
+        disasterTypeList.add("Holanda");
+        disasterTypeList.add("Dubai");*/
+
         // Estas lineas permiten hacer un spinner donde los elementos sean de color
         // Assets en strings.xml y en layout spinner_dropdown y spinner_layout
         /*ArrayAdapter dataAdapter = ArrayAdapter.createFromResource(this, R.array.disasterTypes_array, R.layout.spinner_layout);
         dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown);*/
 
-        /*ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, disasterTypeList);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item, disasterTypeList);
+        dataAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
 
-        spinner.setAdapter(dataAdapter);*/
+        spinner.setAdapter(dataAdapter);
     }
 
     private void addSpinnerListener() {
@@ -234,6 +252,8 @@ public class ReportIncidentActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) {
                     disasterType = parent.getItemAtPosition(position).toString();
+                } else {
+                    disasterType = "";
                 }
             }
 
