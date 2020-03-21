@@ -3,7 +3,7 @@ package Models.POJOS;
 import java.util.Date;
 
 public class Report {
-    private String Id, type, detail, latitude, longitude, place;
+    private String Id, type, detail, latitude, longitude, place, ownerId;
     private boolean pathDisabled, isActive;
     private Date startDate, endDate;
     private int affectedPeople, affectedAnimals;
@@ -13,7 +13,7 @@ public class Report {
 
     public Report(String Id, String type, String detail, String latitude, String longitude, String place,
                   boolean pathDisabled, boolean isActive, Date startDate, Date endDate, int affectedAnimals,
-                  int affectedPeople) {
+                  int affectedPeople, String ownerId) {
         this.Id = Id;
         this.place = place;
         this.type = type;
@@ -26,6 +26,7 @@ public class Report {
         this.endDate = endDate;
         this.affectedAnimals = affectedAnimals;
         this.affectedPeople = affectedPeople;
+        this.ownerId = ownerId;
     }
 
     public String getId() {
@@ -74,6 +75,14 @@ public class Report {
 
     public void setPlace(String place) {
         this.place = place;
+    }
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
     }
 
     public boolean isPathDisabled() {

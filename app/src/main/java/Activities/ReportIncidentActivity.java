@@ -3,6 +3,7 @@ package Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -11,49 +12,57 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.r24app.R;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import Models.Constants.FirebaseClasses;
-import Models.POJOS.NaturalDisaster;
 import Models.POJOS.Report;
 import Services.ReportService;
+import Services.UserService;
 
 public class ReportIncidentActivity extends AppCompatActivity {
 
-    private Spinner spinner;
-    private ImageButton returnButton;
-    private Button submitReportButton, addImagesButton;
+    private Spinner disasterTypeSpinner;
     private Switch activateMapLocation;
-    private String selectedPlace, latitude, longitude, disasterType;
-    private TextInputEditText reportLocation;
+    private String latitude, longitude, disasterType;
+    private TextInputEditText reportLocation, place, description;
+    private TextInputLayout mapLocationLayout, reportDetailLayout;
     private final int LAUNCH_SECOND_ACTIVITY = 1;
     private ReportService reportService;
+    private UserService userService;
+    private TextView spinnerErrorText;
+    private FirebaseAuth mAuth;
+    private boolean validFields;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_incident);
         reportService = new ReportService();
+        userService = new UserService();
         addItemsToSpinner();
         addActivateLocationListener();
         addReturnButtonListener();
         addSubmitReportListener();
         addImagesButtonListener();
         addSpinnerListener();
+        reportLocation = findViewById(R.id.mapLocationInput);
+        place = findViewById(R.id.mapLocationInput);
+        mapLocationLayout = findViewById(R.id.mapLocationLayout);
+        reportDetailLayout = findViewById(R.id.reportDetailLayout);
+        description = findViewById(R.id.reportDetailInput);
+        mAuth = FirebaseAuth.getInstance();
+        validFields = true;
         // saveReportTypeInfo();
     }
 
@@ -64,14 +73,10 @@ public class ReportIncidentActivity extends AppCompatActivity {
 
         if (requestCode == LAUNCH_SECOND_ACTIVITY) {
             if (resultCode == Activity.RESULT_OK) {
-                selectedPlace = data.getStringExtra("selectedPlace");
+                String selectedPlace = data.getStringExtra("selectedPlace");
                 latitude = data.getStringExtra("latitude");
                 longitude = data.getStringExtra("longitude");
-                reportLocation = findViewById(R.id.mapLocationInput);
                 reportLocation.setText(selectedPlace);
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-
             }
         }
     }
@@ -156,7 +161,7 @@ public class ReportIncidentActivity extends AppCompatActivity {
     }*/
 
     private void addImagesButtonListener() {
-        addImagesButton = findViewById(R.id.addImagesButton);
+        Button addImagesButton = findViewById(R.id.addImagesButton);
 
         addImagesButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,25 +173,56 @@ public class ReportIncidentActivity extends AppCompatActivity {
     }
 
     private void addSubmitReportListener() {
-        submitReportButton = findViewById(R.id.btnSubmitReport);
+        Button submitReportButton = findViewById(R.id.btnSubmitReport);
+
         submitReportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveReportInfo();
+                if (validateFields()) {
+                    saveReportInfo();
+                }
             }
         });
     }
 
-    private void validateFields() {
-        boolean validFields = true;
+    private boolean validateFields() {
+        if (TextUtils.isEmpty(place.getText().toString())) {
+            mapLocationLayout.setError("Espacio requerido *");
+            mapLocationLayout.requestFocus();
+            validFields = false;
+        } else {
+            mapLocationLayout.setError(null);
+            validFields = true;
+        }
+
+        if (TextUtils.isEmpty(description.getText().toString())) {
+            reportDetailLayout.setError("Espacio requerido *");
+            reportDetailLayout.requestFocus();
+            validFields = false;
+        } else {
+            reportDetailLayout.setError(null);
+            validFields = true;
+        }
+
+        if (TextUtils.isEmpty(disasterType)) {
+            spinnerErrorText = (TextView) disasterTypeSpinner.getSelectedView();
+            spinnerErrorText.setError(null);
+            spinnerErrorText.setTextColor(getResources().getColor(R.color.errorColor, null));
+            spinnerErrorText.setText("Espacio requerido *");
+            validFields = false;
+        } else {
+            spinnerErrorText = null;
+            validFields = true;
+        }
+
+        return validFields;
     }
 
     private void saveReportInfo() {
+        String reportOwnerId = userService.getCurrentFirebaseUserId();
         boolean isPathDisabled = ((Switch) findViewById(R.id.isPathDisabled)).isChecked();
         TextInputEditText affectedPeopleInput = findViewById(R.id.affectedPeopleInput);
         TextInputEditText affectedAnimalsInput = findViewById(R.id.affectedAnimalsInput);
-        TextInputEditText place = findViewById(R.id.mapLocationInput);
-        TextInputEditText description = findViewById(R.id.reportDetailInput);
         int affectedPeople = !affectedPeopleInput.getText().toString().equals("") ? Integer.parseInt(affectedPeopleInput.getText().toString()) : 0;
         int affectedAnimals = !affectedAnimalsInput.getText().toString().equals("") ? Integer.parseInt(affectedAnimalsInput.getText().toString()) : 0;
         Calendar endDate = Calendar.getInstance();
@@ -198,13 +234,15 @@ public class ReportIncidentActivity extends AppCompatActivity {
         startDate.setTime(new Date());
         startDate.add(Calendar.MONTH, 1);
 
-        Report report = new Report("1", disasterType, description.getText().toString(), latitude, longitude, place.getText().toString(), isPathDisabled,
-                true, startDate.getTime(), endDate.getTime(), affectedAnimals, affectedPeople);
-        new ReportService().addNewReport(report);
+        Report report = new Report("2", disasterType, description.getText().toString(), latitude, longitude, place.getText().toString(), isPathDisabled,
+                true, startDate.getTime(), endDate.getTime(), affectedAnimals, affectedPeople, "JaSQwI4ncPhCQHEoyey09PX3RL12");
+        reportService.addNewReport(report);
+        Toast.makeText(ReportIncidentActivity.this, "Reporte registrado exitosamente", Toast.LENGTH_LONG).show();
+        validFields = false;
     }
 
     private void addReturnButtonListener() {
-        returnButton = findViewById(R.id.newReportReturnButton);
+        ImageButton returnButton = findViewById(R.id.newReportReturnButton);
 
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,7 +256,7 @@ public class ReportIncidentActivity extends AppCompatActivity {
         ArrayList<String> disasterTypeList = new ArrayList<>();
         disasterTypeList.add("Seleccione el tipo de desastre");
         reportService.getDisasterTypes(disasterTypeList);
-        spinner = findViewById(R.id.disasterTypeSpinner);
+        disasterTypeSpinner = findViewById(R.id.disasterTypeSpinner);
         //ArrayList<String> disasterTypeList = new ArrayList<>();
         /*String[] disasterTypeList = new String[5];
         disasterTypeList[0] = "Seleccione el tipo de desastre";
@@ -239,15 +277,16 @@ public class ReportIncidentActivity extends AppCompatActivity {
         /*ArrayAdapter dataAdapter = ArrayAdapter.createFromResource(this, R.array.disasterTypes_array, R.layout.spinner_layout);
         dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown);*/
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item, disasterTypeList);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, disasterTypeList);
         dataAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
 
-        spinner.setAdapter(dataAdapter);
+        disasterTypeSpinner.setAdapter(dataAdapter);
     }
 
     private void addSpinnerListener() {
-        spinner = findViewById(R.id.disasterTypeSpinner);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        disasterTypeSpinner = findViewById(R.id.disasterTypeSpinner);
+
+        disasterTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) {

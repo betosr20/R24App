@@ -105,14 +105,14 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Spinner
-            android:theme="@style/SpinnerTheme"
             android:id="@+id/disasterTypeSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:spinnerMode="dialog"
+            android:theme="@style/SpinnerTheme"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/affectedAnimalsLayout"
@@ -127,19 +127,18 @@
             android:includeFontPadding="false"
             android:lineSpacingExtra="0dp"
             android:text="@string/pathDisabledLabel"
-            style="@style/ThemeOverlay.MySwitch"
             android:textColor="@color/blackColor"
-            android:textSize="16dp"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/disasterTypeSpinner" />
 
         <Switch
-            android:theme="@style/ThemeOverlay.MySwitch"
             android:id="@+id/isPathDisabled"
             android:layout_width="0dp"
-            android:layout_height="14dp"
+            android:layout_height="28dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="20dp"
+            android:theme="@style/MySwitch"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/disasterTypeSpinner" />
 
@@ -160,13 +159,12 @@
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
         <Switch
-            android:theme="@style/ThemeOverlay.MySwitch"
+            android:theme="@style/MySwitch"
             android:id="@+id/mapActivated"
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            style="@style/ThemeOverlay.MySwitch"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
@@ -220,24 +218,6 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mapLocationLayout" />
-
-
-
-        <!--<EditText
-            android:id="@+id/disasterDetail"
-            android:layout_width="0dp"
-            android:layout_height="140dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/shape"
-            android:gravity="start"
-            android:hint="@string/reportDetailHint"
-            android:inputType="textMultiLine"
-            android:padding="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addImagesButton" />-->
 
         <Button
             android:id="@+id/btnSubmitReport"

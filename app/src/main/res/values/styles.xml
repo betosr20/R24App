@@ -24,7 +24,7 @@
         <item name="colorAccent">@color/bluePrimary</item>
     </style>
 
-    <style name="ThemeOverlay.MySwitch" parent="">
+    <style name="MySwitch">
         <item name="android:colorControlActivated">@color/bluePrimary</item>
     </style>
 

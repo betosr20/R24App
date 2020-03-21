@@ -9,7 +9,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.concurrent.CountDownLatch;
 
 import Models.Constants.FirebaseClasses;
 import Models.POJOS.NaturalDisaster;
