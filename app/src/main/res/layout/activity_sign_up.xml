@@ -139,7 +139,8 @@
                     android:gravity="top|start"
                     android:hint="Dirección"
                     android:inputType="textMultiLine"
-                    android:maxLength="1000" />
+                    android:maxLength="1000"
+                    style="@style/MyTheme.DayNight.TextInputLayout"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
