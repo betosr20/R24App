@@ -31,6 +31,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import Activities.ReportDetail.ReportDetailContainer;
+
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     GoogleMap mMap;
     //To check which to delete if marker or heat
@@ -185,6 +187,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             case R.id.report:
                 Intent reportActivity = new Intent(this, ReportIncidentActivity.class);
                 startActivity(reportActivity);
+                break;
+            case R.id.Detail:
+                Intent detailIntent = new Intent(this, ReportDetailContainer.class);
+                startActivity(detailIntent);
                 break;
         }
         return super.onOptionsItemSelected(item);
