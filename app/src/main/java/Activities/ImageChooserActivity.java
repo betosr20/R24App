@@ -4,7 +4,6 @@ import android.content.ClipData;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
@@ -40,7 +39,7 @@ public class ImageChooserActivity extends AppCompatActivity {
         intent.setType("image/*");
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent,"Selecciona un máximo de 5 imagenes"), DataConstants.SELECT_MULTIPLE_PHOTOS);
+        startActivityForResult(Intent.createChooser(intent, "Selecciona un máximo de 5 imagenes"), DataConstants.SELECT_MULTIPLE_PHOTOS);
 
         /*imageSelected.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,16 +88,20 @@ public class ImageChooserActivity extends AppCompatActivity {
             if (clipData != null) {
                 imageSelected.setImageURI(clipData.getItemAt(0).getUri());
                 imageSelected2.setImageURI(clipData.getItemAt(1).getUri());
-                imageSelected3.setImageURI(clipData.getItemAt(2).getUri());
+                /*imageSelected3.setImageURI(clipData.getItemAt(2).getUri());
                 imageSelected4.setImageURI(clipData.getItemAt(3).getUri());
-                imageSelected5.setImageURI(clipData.getItemAt(4).getUri());
+                imageSelected5.setImageURI(clipData.getItemAt(4).getUri());*/
+            } else {
+                Uri imageUri = data.getData();
+                if (imageUri != null) {
+                    imageSelected.setImageURI(imageUri);
+                }
             }
 
-            for (int i = 0; i < clipData.getItemCount(); i++) {
+            /*for (int i = 0; i < clipData.getItemCount(); i++) {
                 ClipData.Item item = clipData.getItemAt(i);
                 Uri uri = item.getUri();
-            }
+            }*/
         }
     }
-
 }

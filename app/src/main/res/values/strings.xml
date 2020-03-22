@@ -17,7 +17,8 @@
     <string name="saveReportButton">REPORTAR</string>
     <string name="incidentPlace">Lugar del accidente…</string>
     <string name="requiredField">Espacio requerido *</string>
-    <string name="imageSelected">Image Selected</string>
+    <string name="imageSelected">Imagen Seleccionada</string>
+    <string name="loadImages">Cargar Images</string>
 
     <string-array name="disasterTypes_array">
         <item>Seleccione el tipo de desastre</item>

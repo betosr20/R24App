@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import Activities.MapActivity;
+import Activities.MapSearchActivity;
 import Activities.RecoveryPassword;
 import Activities.ReportIncidentActivity;
 import Models.Constants.FirebaseClasses;
@@ -77,7 +78,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
     private void login() {
-        if (validateInputs() != false) {
+        Intent intent = new Intent(this, ReportIncidentActivity.class);
+        startActivity(intent);
+        /*if (validateInputs() != false) {
             mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -90,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             });
-        }
+        }*/
     }
     private void getTransitionIntoMainView() {
         Intent intent =  new Intent(this, MapActivity.class);
