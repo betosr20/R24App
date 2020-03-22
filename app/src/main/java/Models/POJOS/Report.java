@@ -3,7 +3,7 @@ package Models.POJOS;
 import java.util.Date;
 
 public class Report {
-    private String Id, type, detail, latitude, longitude, place, ownerId;
+    private String type, detail, latitude, longitude, place, ownerId, Id;
     private boolean pathDisabled, isActive;
     private Date startDate, endDate;
     private int affectedPeople, affectedAnimals;
