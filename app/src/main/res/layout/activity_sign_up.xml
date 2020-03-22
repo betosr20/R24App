@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignUp" >
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="127dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgBigFoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="127dp"
+                    android:src="@drawable/ic_person"
+                    android:tint="#000000" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imgDeleteFoto"
+                        style="@style/ImageViewButton"
+                        android:src="@drawable/ic_close_box" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imgFromGallery"
+                        style="@style/ImageViewButton"
+                        android:src="@drawable/ic_image" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/LayoutName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxBackgroundMode="outline"
+                app:endIconMode="clear_text"
+                app:helperText="Ingrese su Nombre"
+                app:startIconDrawable="@drawable/ic_person"
+                style="@style/MyTheme.DayNight.TextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nombre"
+                    android:inputType="textPersonName|textCapWords"
+                    android:maxLength="30"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/LayoutLast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:helperText="Ingrese sus apellidos"
+                app:boxBackgroundMode="outline"
+                app:endIconMode="clear_text"
+                app:startIconDrawable="@drawable/ic_person"
+                style="@style/MyTheme.DayNight.TextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etLastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Apellidos"
+                    android:inputType="textPersonName|textCapWords"
+                    android:maxLength="30"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/LayoutUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:helperText="Ingrese su nombre de usuario"
+                app:boxBackgroundMode="outline"
+                app:endIconMode="clear_text"
+                app:startIconDrawable="@drawable/ic_person"
+                style="@style/MyTheme.DayNight.TextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etUserName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nombre de Usuario"
+                    android:inputType="textPersonName|textCapWords"
+                    android:maxLength="30"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/LayoutCellPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:helperText="Ingrese su número de teléfono"
+                app:boxBackgroundMode="outline"
+                app:endIconMode="clear_text"
+                app:startIconDrawable="@drawable/contactphone"
+                style="@style/MyTheme.DayNight.TextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etCellPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Número de teléfono"
+                    android:inputType="phone"
+                    android:digits="0123456789+"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/LayoutAddress"
+                style="@style/MyTheme.DayNight.TextInputLayout"
+                android:layout_width="380dp"
+                android:layout_height="91dp"
+                android:layout_marginBottom="12dp"
+                app:boxBackgroundMode="outline"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etAddres"
+                    android:layout_width="match_parent"
+                    android:layout_height="82dp"
+                    android:gravity="top|start"
+                    android:hint="Dirección"
+                    android:inputType="textMultiLine"
+                    android:maxLength="1000" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btnSignUp"
+                style="@style/MyTheme.DayNight.TextInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Siguiente"
+                app:icon="@drawable/navigatenext"
+                app:iconGravity="textEnd"
+                app:iconPadding="1dp"/>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
