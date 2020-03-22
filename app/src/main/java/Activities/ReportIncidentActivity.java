@@ -28,6 +28,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import Models.Constants.DataConstants;
 import Models.POJOS.Report;
 import Services.NaturalDisasterService;
 import Services.ReportService;
@@ -40,7 +41,6 @@ public class ReportIncidentActivity extends AppCompatActivity {
     private String latitude, longitude, disasterType;
     private TextInputEditText reportLocation, description;
     private TextInputLayout mapLocationLayout, reportDetailLayout;
-    private final int LAUNCH_SECOND_ACTIVITY = 1;
     private NaturalDisasterService naturalDisasterService;
     private UserService userService;
     private ReportService reportService;
@@ -71,7 +71,7 @@ public class ReportIncidentActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         activateMapLocation.setChecked(false);
 
-        if (requestCode == LAUNCH_SECOND_ACTIVITY) {
+        if (requestCode == DataConstants.LAUNCH_SECOND_ACTIVITY) {
             if (resultCode == Activity.RESULT_OK) {
                 String selectedPlace = data.getStringExtra("selectedPlace");
                 latitude = data.getStringExtra("latitude");
@@ -87,7 +87,7 @@ public class ReportIncidentActivity extends AppCompatActivity {
         addImagesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ReportIncidentActivity.this, MapSearchActivity.class);
+                Intent intent = new Intent(ReportIncidentActivity.this, ImageChooserActivity.class);
                 startActivity(intent);
             }
         });
@@ -232,7 +232,7 @@ public class ReportIncidentActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     Intent intent = new Intent(ReportIncidentActivity.this, MapSearchActivity.class);
-                    startActivityForResult(intent, LAUNCH_SECOND_ACTIVITY);
+                    startActivityForResult(intent, DataConstants.LAUNCH_SECOND_ACTIVITY);
                 }
             }
         });

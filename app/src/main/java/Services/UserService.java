@@ -10,10 +10,6 @@ public class UserService {
         mAuth = FirebaseAuth.getInstance();
     }
 
-    public FirebaseUser getCurrentFirebaseUser() {
-        return mAuth.getCurrentUser();
-    }
-
     public String getCurrentFirebaseUserId() {
         FirebaseUser firebaseUser = mAuth.getCurrentUser();
         return firebaseUser != null ? firebaseUser.getUid() : "";
