@@ -69,10 +69,20 @@ public class ReportIncidentActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        activateMapLocation.setChecked(false);
 
         if (requestCode == DataConstants.LAUNCH_SECOND_ACTIVITY) {
             if (resultCode == Activity.RESULT_OK) {
+                activateMapLocation.setChecked(false);
+                String selectedPlace = data.getStringExtra("selectedPlace");
+                latitude = data.getStringExtra("latitude");
+                longitude = data.getStringExtra("longitude");
+                reportLocation.setText(selectedPlace);
+            }
+        }
+
+        if (requestCode == DataConstants.SELECT_MULTIPLE_PHOTOS) {
+            if (resultCode == Activity.RESULT_OK) {
+                activateMapLocation.setChecked(false);
                 String selectedPlace = data.getStringExtra("selectedPlace");
                 latitude = data.getStringExtra("latitude");
                 longitude = data.getStringExtra("longitude");

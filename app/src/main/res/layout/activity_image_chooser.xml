@@ -16,9 +16,10 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="10dp"
+            android:id="@+id/imagesContainer"
             tools:context="Activities.ImageChooserActivity">
 
-            <ImageView
+            <!--<ImageView
                 android:id="@+id/image1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -51,9 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:contentDescription="@string/imageSelected" />
-
-
+                android:contentDescription="@string/imageSelected" />-->
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
@@ -65,7 +64,7 @@
         android:orientation="vertical">
 
         <ImageButton
-            android:id="@+id/loadImages"
+            android:id="@+id/loadImagesButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center"
