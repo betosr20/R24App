@@ -1,7 +1,9 @@
 package Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.r24app.MainActivity;
 import com.example.r24app.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -13,12 +15,17 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
 import com.suke.widget.SwitchButton;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -29,13 +36,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     //To check which to delete if marker or heat
     Boolean activeMarker = true;
     Boolean activeHeatMap = true;
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        mAuth = FirebaseAuth.getInstance();
 // Obtiene el SupportMapFragment y es notificado cuando el mapa esta listo para ser usado llamando al metodo OnMapReady
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map2);
@@ -46,7 +54,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         switchButtonPins = (com.suke.widget.SwitchButton)
                 findViewById(R.id.switchButtonPins);
 
-        SwitchButton heatCheck = findViewById(R.id.sb_heatCheck);
+        SwitchButton heatCheck = findViewById(R.id.switchButtonHeat);
 
         switchButtonPins.setChecked(true);
         heatCheck.setChecked(true);
@@ -96,7 +104,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         LatLng myHouse = new LatLng(9.930363, -84.027100);
         mMap.addMarker(new MarkerOptions()
                 .position(myHouse)
-                .title("My house madafackas")
+                .title("Mi casa")
         );
         mMap.addMarker(new MarkerOptions()
                 .position(mamiHouse)
@@ -156,6 +164,37 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
 //        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(rest1, 13));
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                signOut();
+                return true;
+            case R.id.map2:
+                Intent intent = new Intent(this, MapActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.report:
+                Intent reportActivity = new Intent(this, ReportIncidentActivity.class);
+                startActivity(reportActivity);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    private void signOut() {
+        mAuth.signOut();
+        Intent signOut = new Intent(this, MainActivity.class);
+        signOut.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(signOut);
+        finish();
     }
 
 }
