@@ -31,7 +31,6 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
     private GoogleMap googleMap;
     private SupportMapFragment mapFragment;
     private Place place;
-    private ImageButton checkButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +44,7 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
     private void addCheckButtonListener() {
-        checkButton = findViewById(R.id.checkButton);
+        ImageButton checkButton = findViewById(R.id.checkButton);
 
         checkButton.setOnClickListener(new View.OnClickListener() {
             @Override

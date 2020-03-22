@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -70,38 +71,34 @@ public class ImageChooserActivity extends AppCompatActivity {
 
             ClipData clipData = data != null ? data.getClipData() : null;
             imagesSelected = clipData != null ? clipData.getItemCount() : 0;
-            ImageView currentImage = new ImageView(this);
+            ImageView currentImage;
 
             if (imagesSelected <= DataConstants.MAXNUMBERPHOTOS) {
                 if (clipData != null) {
                     for (int i = 0; i < imagesSelected; i++) {
-                        currentImage.setImageURI(clipData.getItemAt(0).getUri());
+                        currentImage = new ImageView(this);
+                        currentImage.setPadding(0, 0, 0, 50);
+
+                        if (currentImage.getParent() != null) {
+                            ((ViewGroup) currentImage.getParent()).removeView(currentImage);
+                        }
+                        currentImage.setImageURI(clipData.getItemAt(i).getUri());
                         imagesContainer.addView(currentImage);
-                        setContentView(imagesContainer);
+                    }
+                } else {
+                    currentImage = new ImageView(this);
+                    Uri imageUri = data.getData();
+
+                    if (currentImage.getParent() != null) {
+                        ((ViewGroup) currentImage.getParent()).removeView(currentImage);
                     }
 
-                /*imageSelected.setImageURI(clipData.getItemAt(0).getUri());
-                imageSelected2.setImageURI(clipData.getItemAt(1).getUri());
-                imageSelected3.setImageURI(clipData.getItemAt(2).getUri());
-                imageSelected4.setImageURI(clipData.getItemAt(3).getUri());
-                imageSelected5.setImageURI(clipData.getItemAt(4).getUri());*/
-                } else {
-                    Uri imageUri = data.getData();
                     currentImage.setImageURI(imageUri);
                     imagesContainer.addView(currentImage);
-                    setContentView(imagesContainer);
-
-                /*if (imageUri != null) {
-                    imageSelected.setImageURI(imageUri);
-                }*/
-
-                 /*for (int i = 0; i < clipData.getItemCount(); i++) {
-                ClipData.Item item = clipData.getItemAt(i);
-                Uri uri = item.getUri();
-            }*/
                 }
             } else {
-                Toast.makeText(ImageChooserActivity.this, "Se permite un maximo de" + DataConstants.MAXNUMBERPHOTOS + "imágenes", Toast.LENGTH_LONG).show();
+                Toast.makeText(ImageChooserActivity.this, "Se permite un maximo de " + DataConstants.MAXNUMBERPHOTOS + " imágenes", Toast.LENGTH_LONG).show();
+                finish();
             }
         }
     }
