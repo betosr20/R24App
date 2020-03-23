@@ -12,47 +12,13 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/imagesContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="10dp"
-            android:id="@+id/imagesContainer"
             tools:context="Activities.ImageChooserActivity">
 
-            <!--<ImageView
-                android:id="@+id/image1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:contentDescription="@string/imageSelected" />
-
-            <ImageView
-                android:id="@+id/image2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:contentDescription="@string/imageSelected" />
-
-            <ImageView
-                android:id="@+id/image3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:contentDescription="@string/imageSelected" />
-
-            <ImageView
-                android:id="@+id/image4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:contentDescription="@string/imageSelected" />
-
-            <ImageView
-                android:id="@+id/image5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:contentDescription="@string/imageSelected" />-->
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

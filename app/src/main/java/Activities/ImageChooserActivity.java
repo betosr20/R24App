@@ -1,5 +1,6 @@
 package Activities;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
 import android.net.Uri;
@@ -16,31 +17,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.r24app.R;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import Models.Constants.DataConstants;
 
 public class ImageChooserActivity extends AppCompatActivity {
-    private List<Uri> imagesUris;
+    private ArrayList<Uri> imagesUris;
     private int imagesSelected;
-    /*private ImageView imageSelected;
-    private ImageView imageSelected2;
-    private ImageView imageSelected3;
-    private ImageView imageSelected4;
-    private ImageView imageSelected5;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_chooser);
-
-        /*imageSelected = findViewById(R.id.image1);
-        imageSelected2 = findViewById(R.id.image2);
-        imageSelected3 = findViewById(R.id.image3);
-        imageSelected4 = findViewById(R.id.image4);
-        imageSelected5 = findViewById(R.id.image5);*/
         openImagesContainer();
         addLoadImagesButtonListener();
+        imagesUris = new ArrayList<>();
     }
 
     private void addLoadImagesButtonListener() {
@@ -49,7 +40,7 @@ public class ImageChooserActivity extends AppCompatActivity {
         loadImagesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                returnDataToReportsActivity(imagesSelected);
             }
         });
     }
@@ -83,9 +74,12 @@ public class ImageChooserActivity extends AppCompatActivity {
                             ((ViewGroup) currentImage.getParent()).removeView(currentImage);
                         }
                         currentImage.setImageURI(clipData.getItemAt(i).getUri());
+                        imagesUris.add(clipData.getItemAt(i).getUri());
                         imagesContainer.addView(currentImage);
                     }
                 } else {
+
+                    imagesSelected = 1;
                     currentImage = new ImageView(this);
                     Uri imageUri = data.getData();
 
@@ -94,12 +88,23 @@ public class ImageChooserActivity extends AppCompatActivity {
                     }
 
                     currentImage.setImageURI(imageUri);
+                    imagesUris.add(imageUri);
                     imagesContainer.addView(currentImage);
                 }
             } else {
                 Toast.makeText(ImageChooserActivity.this, "Se permite un maximo de " + DataConstants.MAXNUMBERPHOTOS + " imágenes", Toast.LENGTH_LONG).show();
                 finish();
             }
+        } else {
+            Toast.makeText(ImageChooserActivity.this, "Ninguna imagen fue seleccionada", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void returnDataToReportsActivity(int imagesSelected) {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("imagesUris", imagesUris);
+        returnIntent.putExtra("selectedImages", imagesSelected);
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
     }
 }

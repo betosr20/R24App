@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
     tools:context="Activities.ReportIncidentActivity">
 
@@ -159,12 +159,12 @@
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
         <Switch
-            android:theme="@style/MySwitch"
             android:id="@+id/mapActivated"
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
+            android:theme="@style/MySwitch"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
@@ -191,8 +191,8 @@
                 android:id="@+id/mapLocationInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
                 android:background="@null"
+                android:enabled="false"
                 android:imeOptions="actionNext"
                 android:inputType="textMultiLine"
                 android:maxLength="100" />
@@ -203,12 +203,12 @@
             style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/Widget.AppCompat.Button"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="12dp"
             android:layout_marginEnd="20dp"
             android:text="@string/addImagesLabel"
             android:textAlignment="textStart"
             android:textAllCaps="false"
+            android:textAppearance="@style/Widget.AppCompat.Button"
             android:textColor="@color/blackColor"
             android:textSize="16sp"
             app:icon="@drawable/add"
@@ -263,6 +263,15 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/imagesSelectedText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="2dp"
+            android:text=""
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addImagesButton" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
