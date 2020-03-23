@@ -1,14 +1,22 @@
 package Models.POJOS;
 
-import android.net.Uri;
-
 public class ReportPicture {
+    private String Id;
     private String reportId;
-    private Uri imageUri;
+    private String imageName;
 
-    public ReportPicture(String reportId, Uri imageUri) {
-        this.imageUri = imageUri;
+    public ReportPicture(String imageName, String reportId, String Id) {
+        this.imageName = imageName;
         this.reportId = reportId;
+        this.Id = Id;
+    }
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
     }
 
     public String getReportId() {
@@ -19,11 +27,11 @@ public class ReportPicture {
         this.reportId = reportId;
     }
 
-    public Uri getImageUri() {
-        return imageUri;
+    public String getImageName() {
+        return imageName;
     }
 
-    public void setImageUri(Uri imageUri) {
-        this.imageUri = imageUri;
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 }

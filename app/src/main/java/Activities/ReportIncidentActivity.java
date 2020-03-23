@@ -50,6 +50,7 @@ public class ReportIncidentActivity extends AppCompatActivity {
     private TextInputLayout mapLocationLayout, reportDetailLayout;
     private NaturalDisasterService naturalDisasterService;
     private UserService userService;
+    private TextView imagesSelectedText;
     private ReportService reportService;
     private boolean validFields;
     private ArrayList<Uri> imagesUri;
@@ -77,8 +78,6 @@ public class ReportIncidentActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        TextView imagesSelectedText = findViewById(R.id.imagesSelectedText);
-        imagesSelectedText.setText("");
 
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
@@ -98,10 +97,14 @@ public class ReportIncidentActivity extends AppCompatActivity {
                     }
                     break;
             }
+        } else {
+            imagesSelectedText.setText("");
         }
     }
 
     private void addImagesButtonListener() {
+        imagesSelectedText = findViewById(R.id.imagesSelectedText);
+        imagesSelectedText.setText("No hay imágenes seleccionadas");
         Button addImagesButton = findViewById(R.id.addImagesButton);
 
         addImagesButton.setOnClickListener(new View.OnClickListener() {
@@ -195,23 +198,28 @@ public class ReportIncidentActivity extends AppCompatActivity {
         int affectedPeople = !affectedPeopleInput.getText().toString().equals("") ? Integer.parseInt(affectedPeopleInput.getText().toString()) : 0;
         int affectedAnimals = !affectedAnimalsInput.getText().toString().equals("") ? Integer.parseInt(affectedAnimalsInput.getText().toString()) : 0;
         Calendar endDate = new GregorianCalendar();
-        endDate.add(Calendar.MONTH, 1);
+        endDate.add(Calendar.DATE, 1);
         endDate.add(Calendar.MONTH, 1);
         endDate.add(Calendar.YEAR, 1900);
 
         Calendar startDate = new GregorianCalendar();
-        startDate.add(Calendar.DATE, 1);
+        startDate.add(Calendar.MONTH, 1);
         startDate.add(Calendar.YEAR, 1900);
 
         String pattern = "yyyy-MM-dd";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 
-        String id = userService.getCurrentFirebaseUserId() + simpleDateFormat.format(new Date());
+        String reportId = userService.getCurrentFirebaseUserId() + simpleDateFormat.format(new Date());
 
-        Report report = new Report(id, disasterType, description.getText().toString(), latitude, longitude, reportLocation.getText().toString(), isPathDisabled,
+        Report report = new Report(reportId, disasterType, description.getText().toString(), latitude, longitude, reportLocation.getText().toString(), isPathDisabled,
                 true, startDate.getTime(), endDate.getTime(), affectedAnimals, affectedPeople, userService.getCurrentFirebaseUserId());
-        reportService.addNewReport(report);
-        Toast.makeText(ReportIncidentActivity.this, "Reporte registrado exitosamente", Toast.LENGTH_LONG).show();
+
+        if (reportService.addNewReport(report) && reportService.saveReportImages(imagesUri, reportId)) {
+            Toast.makeText(ReportIncidentActivity.this, "Reporte registrado exitosamente", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(ReportIncidentActivity.this, "Hubo un problema al registrar el reporte", Toast.LENGTH_LONG).show();
+        }
+
         validFields = false;
 
         new Handler().postDelayed(new Runnable() {

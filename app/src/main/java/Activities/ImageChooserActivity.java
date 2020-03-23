@@ -49,7 +49,7 @@ public class ImageChooserActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
         startActivityForResult(Intent.createChooser(intent, ""), DataConstants.SELECT_MULTIPLE_PHOTOS);
     }
 
