@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 
 import Activities.MapActivity;
 import Activities.RecoveryPassword;
+import Activities.ReportIncidentActivity;
 import Models.Constants.FirebaseClasses;
 import Models.POJOS.User;
 

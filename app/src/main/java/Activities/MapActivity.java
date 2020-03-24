@@ -1,6 +1,8 @@
 package Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -9,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.r24app.MainActivity;
 import com.example.r24app.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -20,6 +23,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,9 +32,21 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
 import com.suke.widget.SwitchButton;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import Activities.ReportDetail.GeneralInformation;
+import Activities.ReportDetail.ReportDetailContainer;
 import Models.Constants.FirebaseClasses;
 import Models.POJOS.Report;
 
@@ -43,13 +59,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     //To check which to delete if marker or heat
     Boolean activeMarker = true;
     Boolean activeHeatMap = true;
-
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mAuth = FirebaseAuth.getInstance();
+// Obtiene el SupportMapFragment y es notificado cuando el mapa esta listo para ser usado llamando al metodo OnMapReady
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map2);
+        mapFragment.getMapAsync(this);
 
         //Setear las actividades del boton te toggle de pines
 
@@ -79,22 +100,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         switchButtonHeatMap.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-
             public void onCheckedChanged(CompoundButton view, boolean isChecked) {
                 if(isChecked){
                     activeHeatMap = true;
                     addHeatMap(mMap);
-
-                }else{
-                    activeHeatMap = false;
-                    clearHeatMap(mMap);
+                } else {
+                    clearPins(mMap, activeMarker, false);
                 }
             }
         });
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map2);
-        mapFragment.getMapAsync(MapActivity.this);
     }
     @Override
     public void onMapReady( final GoogleMap googleMap) {
@@ -127,6 +142,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+        marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
 
         return false;
     }
@@ -148,24 +164,28 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     .position(latLng)
                     .title(report.getType())
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
-            marker.setTag(0);
+            marker.setTag(report);
             markerList.add(marker);
         }
-
-
-
         for (Marker m: markerList) {
             latLng = new LatLng(m.getPosition().latitude, m.getPosition().longitude);
             mMap.addMarker(new MarkerOptions().position(latLng));
         }
-
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                Toast.makeText(getBaseContext(),"Se ha seleccionado el marcador "+marker.getTitle(), Toast.LENGTH_LONG).show();
+                Report report = (Report) marker.getTag();
+                Toast.makeText(getBaseContext(),"hello world "+ report.getType(), Toast.LENGTH_LONG).show();
+                OnDetailSelected(report);
             }
         });
+    }
+
+    public void OnDetailSelected(Report report) {
+        Intent intent = new Intent(this, ReportDetailContainer.class);
+        intent.putExtra("report", report);
+        startActivity(intent);
     }
 
     public void clearPins(GoogleMap googleMap, Boolean activeMarker, Boolean activeHeatMap) {
@@ -176,15 +196,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 addHeatMap(googleMap);
             }
         }
+        if(!activeHeatMap) {
+            googleMap.clear();
+            this.activeHeatMap = false;
+            if (this.activeMarker) {
+                populatePins(googleMap);
+            }
+        }
     }
 
     private void addHeatMap(GoogleMap googleMap) {
         mMap = googleMap;
         List<LatLng> list = new ArrayList<>();
-
-
-
-
         HeatmapTileProvider mProvider;
         TileOverlay mOverlay;
         LatLng latLng;
@@ -205,14 +228,41 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
-    public void clearHeatMap(GoogleMap googleMap) {
-        if (!activeHeatMap) {
-            googleMap.clear();
-            if(this.activeMarker) {
-                populatePins(googleMap);
-            }
-        }else{
-            addHeatMap(googleMap);
-        }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                signOut();
+                return true;
+            case R.id.map2:
+                Intent intent = new Intent(this, MapActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.report:
+                Intent reportActivity = new Intent(this, ReportIncidentActivity.class);
+                startActivity(reportActivity);
+                break;
+            case R.id.Detail:
+                Intent detailIntent = new Intent(this, ReportDetailContainer.class);
+                startActivity(detailIntent);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    private void signOut() {
+        mAuth.signOut();
+        Intent signOut = new Intent(this, MainActivity.class);
+        signOut.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(signOut);
+        finish();
+    }
+
 }
