@@ -2,6 +2,7 @@ package Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -23,12 +24,18 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
 import com.suke.widget.SwitchButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,7 +45,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import Activities.ReportDetail.GeneralInformation;
 import Activities.ReportDetail.ReportDetailContainer;
+import Models.Constants.FirebaseClasses;
+import Models.POJOS.Report;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private GoogleMap mMap;
@@ -90,7 +100,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         switchButtonHeatMap.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-
             public void onCheckedChanged(CompoundButton view, boolean isChecked) {
                 if(isChecked){
                     activeHeatMap = true;
@@ -101,9 +110,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map2);
-        mapFragment.getMapAsync(MapActivity.this);
     }
     @Override
     public void onMapReady( final GoogleMap googleMap) {
@@ -137,6 +143,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public boolean onMarkerClick(Marker marker) {
         marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+
         return false;
     }
 
@@ -157,24 +164,28 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     .position(latLng)
                     .title(report.getType())
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
-            marker.setTag(0);
+            marker.setTag(report);
             markerList.add(marker);
         }
-
-
-
         for (Marker m: markerList) {
             latLng = new LatLng(m.getPosition().latitude, m.getPosition().longitude);
             mMap.addMarker(new MarkerOptions().position(latLng));
         }
-
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                Toast.makeText(getBaseContext(),"Se ha seleccionado el marcador "+marker.getTitle(), Toast.LENGTH_LONG).show();
+                Report report = (Report) marker.getTag();
+                Toast.makeText(getBaseContext(),"hello world "+ report.getType(), Toast.LENGTH_LONG).show();
+                OnDetailSelected(report);
             }
         });
+    }
+
+    public void OnDetailSelected(Report report) {
+        Intent intent = new Intent(this, ReportDetailContainer.class);
+        intent.putExtra("report", report);
+        startActivity(intent);
     }
 
     public void clearPins(GoogleMap googleMap, Boolean activeMarker, Boolean activeHeatMap) {
@@ -197,10 +208,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void addHeatMap(GoogleMap googleMap) {
         mMap = googleMap;
         List<LatLng> list = new ArrayList<>();
-
-
-
-
         HeatmapTileProvider mProvider;
         TileOverlay mOverlay;
         LatLng latLng;
@@ -220,6 +227,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
 
     }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

@@ -5,10 +5,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-public class OpcionPageAdapter extends FragmentStateAdapter {
+import Models.POJOS.Report;
 
-    public OpcionPageAdapter(@NonNull FragmentActivity fragmentActivity) {
+public class OptionPageAdapter extends FragmentStateAdapter {
+    private Report report;
+
+    public OptionPageAdapter(@NonNull FragmentActivity fragmentActivity , Report report) {
         super(fragmentActivity);
+        this.report = report;
     }
 
     @NonNull
@@ -17,7 +21,7 @@ public class OpcionPageAdapter extends FragmentStateAdapter {
 
         switch (position) {
             case 0:
-                return new GeneralInformation();
+                return new GeneralInformation(this.report);
             case 1:
                 return new Images();
             default:
