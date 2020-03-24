@@ -59,6 +59,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     //To check which to delete if marker or heat
     Boolean activeMarker = true;
     Boolean activeHeatMap = true;
+    Boolean view = true;
     private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,12 +75,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         //Setear las actividades del boton te toggle de pines
 
-        Switch switchButtonPins;
-        Switch switchButtonHeatMap;
+        Switch switchButtonPins, switchButtonHeatMap, swithButtonView;
 
         switchButtonPins = findViewById(R.id.switchButtonPins);
         switchButtonHeatMap = findViewById(R.id.switchButtonHeat);
+        swithButtonView = findViewById(R.id.switchButtonView);
 
+        //ARREGLAR ESTO CUANDO SE AGREGUEN LOS CAMPOS AL POJO PARA QUE ESTO SE CARGUE DE LA CONFIGURACION DEL USUARIO
        switchButtonPins.setChecked(true);
        switchButtonHeatMap.setChecked(true);
 
@@ -106,6 +108,19 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     addHeatMap(mMap);
                 } else {
                     clearPins(mMap, activeMarker, false);
+                }
+            }
+        });
+
+        swithButtonView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton view2, boolean isChecked) {
+                if(isChecked){
+                    view = true;
+                    changeView();
+                } else {
+                    view = false;
+                    changeView();
                 }
             }
         });
@@ -263,6 +278,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         signOut.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(signOut);
         finish();
+    }
+
+    private void changeView(){
+        if(this.view){
+            mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+
+        }else{
+            mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        }
     }
 
 }
