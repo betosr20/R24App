@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import Activities.MapActivity;
 import Activities.RecoveryPassword;
+import Activities.SignUp;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase database;
