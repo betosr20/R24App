@@ -9,23 +9,119 @@
     tools:showIn="@layout/activity_main">
 
     <TextView
-        android:id="@+id/textViewMain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/textView"
+        android:layout_width="269dp"
+        android:layout_height="21dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="Bienvenida a la página de inicio de sesión"
+        app:layout_constraintBottom_toTopOf="@+id/emailInputLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/emailInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Correo Electrónico"
+        app:boxBackgroundMode="outline"
+        app:endIconMode="clear_text"
+        app:errorEnabled="true"
+        app:helperText="Ingrese su electrónico "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.206"
+        app:startIconDrawable="@drawable/email"
+        tools:ignore="MissingConstraints">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/emailInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:inputType="textEmailAddress"
+            android:maxLength="50"
+            android:nextFocusForward="@id/btnNextSignUp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/LayoutLoginPassword"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        app:boxBackgroundMode="outline"
+        app:endIconMode="password_toggle"
+        app:helperText="Ingrese su contraseña"
+        app:layout_constraintBottom_toTopOf="@+id/btnNextSignUp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailInputLayout"
+        app:layout_constraintVertical_bias="0.509"
+        app:startIconDrawable="@drawable/lockopen"
+        tools:ignore="MissingConstraints">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etLoginPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Contraseña"
+            android:imeOptions="actionNext"
+            android:inputType="textPassword"
+            android:maxLength="50" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <Button
-        android:id="@+id/buttonGoToMap"
-        android:layout_width="100dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="166dp"
-        android:layout_marginBottom="16dp"
-        android:text="Go to Map"
-        app:layout_constraintBottom_toTopOf="@+id/textViewMain"
+        android:id="@+id/btnNextSignUp"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="188dp"
+        android:text="Ingresar"
+        app:icon="@drawable/navigatenext"
+        app:iconGravity="textEnd"
+        app:iconPadding="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textRecoveryPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recuperar Contraseña"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textCreateAcount"
+        app:layout_constraintVertical_bias="0.238" />
+
+    <TextView
+        android:id="@+id/textCreateAcount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Si no tiene cuenta registrese aquí"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnNextSignUp"
+        app:layout_constraintVertical_bias="0.195" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
