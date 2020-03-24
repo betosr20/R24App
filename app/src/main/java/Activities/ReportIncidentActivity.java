@@ -52,7 +52,7 @@ public class ReportIncidentActivity extends AppCompatActivity {
     private UserService userService;
     private TextView imagesSelectedText;
     private ReportService reportService;
-    private boolean validFields;
+    //private boolean validFields;
     private ArrayList<Uri> imagesUri;
 
     @Override
@@ -72,7 +72,7 @@ public class ReportIncidentActivity extends AppCompatActivity {
         mapLocationLayout = findViewById(R.id.mapLocationLayout);
         reportDetailLayout = findViewById(R.id.reportDetailLayout);
         description = findViewById(R.id.reportDetailInput);
-        validFields = true;
+        //validFields = true;
     }
 
     @Override
@@ -160,22 +160,14 @@ public class ReportIncidentActivity extends AppCompatActivity {
     }
 
     private boolean validateFields() {
+        boolean validFields = true;
+
         if (TextUtils.isEmpty(reportLocation.getText().toString())) {
             mapLocationLayout.setError(getResources().getText(R.string.requiredField));
             mapLocationLayout.requestFocus();
             validFields = false;
         } else {
             mapLocationLayout.setError(null);
-            validFields = true;
-        }
-
-        if (TextUtils.isEmpty(description.getText().toString())) {
-            reportDetailLayout.setError(getResources().getText(R.string.requiredField));
-            reportDetailLayout.requestFocus();
-            validFields = false;
-        } else {
-            reportDetailLayout.setError(null);
-            validFields = true;
         }
 
         TextView spinnerErrorText = (TextView) disasterTypeSpinner.getSelectedView();
@@ -186,7 +178,15 @@ public class ReportIncidentActivity extends AppCompatActivity {
             spinnerErrorText.setText(R.string.requiredField);
             validFields = false;
         } else {
-            validFields = true;
+            spinnerErrorText.setError(null);
+        }
+
+        if (TextUtils.isEmpty(description.getText().toString())) {
+            reportDetailLayout.setError(getResources().getText(R.string.requiredField));
+            reportDetailLayout.requestFocus();
+            validFields = false;
+        } else {
+            reportDetailLayout.setError(null);
         }
 
         return validFields;
@@ -221,7 +221,7 @@ public class ReportIncidentActivity extends AppCompatActivity {
             Toast.makeText(ReportIncidentActivity.this, "Hubo un problema al registrar el reporte", Toast.LENGTH_LONG).show();
         }
 
-        validFields = false;
+        // validFields = false;
 
         new Handler().postDelayed(new Runnable() {
             @Override

@@ -1,6 +1,10 @@
 package Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -9,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.r24app.MainActivity;
 import com.example.r24app.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -20,6 +25,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,6 +44,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private List<Report> reportList = new ArrayList<>();
+    private FirebaseAuth mAuth;
 
     //To check which to delete if marker or heat
     Boolean activeMarker = true;
@@ -49,6 +56,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_map);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mAuth = FirebaseAuth.getInstance();
 
         //Setear las actividades del boton te toggle de pines
 
@@ -72,7 +80,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     activeMarker = false;
                     clearPins(mMap, false, activeHeatMap);
                 }
-
             }
         });
 
@@ -83,7 +90,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 if (isChecked) {
                     activeHeatMap = true;
                     addHeatMap(mMap);
-
                 } else {
                     activeHeatMap = false;
                     clearHeatMap(mMap);
@@ -122,12 +128,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-
         return false;
     }
 
@@ -151,7 +155,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             marker.setTag(0);
             markerList.add(marker);
         }
-
 
         for (Marker m : markerList) {
             latLng = new LatLng(m.getPosition().latitude, m.getPosition().longitude);
@@ -180,26 +183,24 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void addHeatMap(GoogleMap googleMap) {
         mMap = googleMap;
         List<LatLng> list = new ArrayList<>();
-
-
         HeatmapTileProvider mProvider;
         TileOverlay mOverlay;
         LatLng latLng;
         double latitude, longitude;
+
         for (Report report : reportList) {
             latitude = Double.parseDouble(report.getLatitude());
             longitude = Double.parseDouble(report.getLongitude());
             latLng = new LatLng(latitude, longitude);
             list.add(latLng);
         }
+
         if (!list.isEmpty()) {
             mProvider = new HeatmapTileProvider.Builder()
                     .data(list)
                     .build();
             mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
         }
-
-
     }
 
     public void clearHeatMap(GoogleMap googleMap) {
@@ -211,5 +212,38 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         } else {
             addHeatMap(googleMap);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                signOut();
+                return true;
+            case R.id.map2:
+                Intent intent = new Intent(this, MapActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.report:
+                Intent reportActivity = new Intent(this, ReportIncidentActivity.class);
+                startActivity(reportActivity);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void signOut() {
+        mAuth.signOut();
+        Intent signOut = new Intent(this, MainActivity.class);
+        signOut.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(signOut);
+        finish();
     }
 }

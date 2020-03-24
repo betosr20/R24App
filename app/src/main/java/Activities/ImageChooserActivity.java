@@ -97,6 +97,7 @@ public class ImageChooserActivity extends AppCompatActivity {
             }
         } else {
             Toast.makeText(ImageChooserActivity.this, "Ninguna imagen fue seleccionada", Toast.LENGTH_LONG).show();
+            finish();
         }
     }
 
