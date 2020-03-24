@@ -26,7 +26,10 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <string name="title_activity_map">MapActivity</string>
+    <string name="detalle_dialogDelete_message">¿Esta seguro de querer eliminar esta imagen?</string>
+    <string name="label_dialog_delete">Eliminar</string>
+    <string name="label_dialog_cancel">Cancelar</string>
 </resources>
 
 

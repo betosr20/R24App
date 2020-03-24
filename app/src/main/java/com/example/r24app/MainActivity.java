@@ -47,35 +47,33 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        Intent intent = new Intent(this, MapActivity.class);
-        this.startActivity(intent);
 //        setSupportActionBar(toolbar);
-//        email = findViewById(R.id.emailInput);
-//        password = findViewById(R.id.etLoginPassword);
-//        ingresar = findViewById(R.id.btnNextSignUp);
-//        inputLayoutEmail = findViewById(R.id.emailInputLayout);
-//        inputLayoutPassword = findViewById(R.id.LayoutLoginPassword);
-//        ingresar.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                login();
-//            }
-//        });
-//        mAuth = FirebaseAuth.getInstance();
-//        recoveryPassword =  findViewById(R.id.textRecoveryPassword);
-//        recoveryPassword.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                transitionRecoveryPasswordView();
-//            }
-//        });
-//        singUpLink =  findViewById(R.id.textCreateAcount);
-//        singUpLink.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                transitionSingUpView();
-//            }
-//        });
+        email = findViewById(R.id.emailInput);
+        password = findViewById(R.id.etLoginPassword);
+        ingresar = findViewById(R.id.btnNextSignUp);
+        inputLayoutEmail = findViewById(R.id.emailInputLayout);
+        inputLayoutPassword = findViewById(R.id.LayoutLoginPassword);
+        ingresar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                login();
+            }
+        });
+        mAuth = FirebaseAuth.getInstance();
+        recoveryPassword =  findViewById(R.id.textRecoveryPassword);
+        recoveryPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                transitionRecoveryPasswordView();
+            }
+        });
+        singUpLink =  findViewById(R.id.textCreateAcount);
+        singUpLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                transitionSingUpView();
+            }
+        });
 
     }
     private void login() {
