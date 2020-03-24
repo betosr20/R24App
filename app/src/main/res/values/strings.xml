@@ -3,4 +3,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_map">MapActivity</string>
+    <string name="detalle_dialogDelete_message">¿Esta seguro de querer eliminar esta imagen?</string>
+    <string name="label_dialog_delete">Eliminar</string>
+    <string name="label_dialog_cancel">Cancelar</string>
 </resources>

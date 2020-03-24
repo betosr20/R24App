@@ -126,21 +126,20 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/LayoutAddress"
                 style="@style/MyTheme.DayNight.TextInputLayout"
-                android:layout_width="380dp"
-                android:layout_height="91dp"
-                android:layout_marginBottom="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginBottom="16dp"
                 app:boxBackgroundMode="outline"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etAddres"
                     android:layout_width="match_parent"
-                    android:layout_height="82dp"
+                    android:layout_height="match_parent"
                     android:gravity="top|start"
                     android:hint="Dirección"
                     android:inputType="textMultiLine"
-                    android:maxLength="1000"
-                    style="@style/MyTheme.DayNight.TextInputLayout"/>
+                    android:maxLength="1000" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
@@ -151,7 +150,8 @@
                 android:text="Siguiente"
                 app:icon="@drawable/navigatenext"
                 app:iconGravity="textEnd"
-                app:iconPadding="1dp"/>
+                app:iconPadding="1dp"
+                android:layout_marginBottom="16dp"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

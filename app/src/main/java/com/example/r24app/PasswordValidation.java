@@ -22,7 +22,7 @@ public class PasswordValidation extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Button btnSignUp;
     private boolean alerts, notifications, needHelp, isActive, timeConfiguration, isOk;
-    private String  fakeURLImage, name, lastName, userName, cellPhone, address;
+    private String  profileImage, name, lastName, userName, cellPhone, address;
     TextInputEditText password1, email;
     TextInputLayout layoutEmail, layoutPassword;
     @Override
@@ -30,7 +30,7 @@ public class PasswordValidation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_password_validation);
         mAuth = FirebaseAuth.getInstance();
-        fakeURLImage = "facebook.com";
+
         // boleanos por default
         alerts = true;
         notifications = true;
@@ -45,6 +45,7 @@ public class PasswordValidation extends AppCompatActivity {
         userName = getIntent().getStringExtra("userName");
         cellPhone = getIntent().getStringExtra("cellPhone");
         address = getIntent().getStringExtra("address");
+        profileImage = getIntent().getStringExtra("profileImage");
 
         //
         btnSignUp = findViewById(R.id.idbtnSigup);
@@ -100,7 +101,7 @@ public class PasswordValidation extends AppCompatActivity {
                        FirebaseDatabase.getInstance().getReference()
                                .child("Users").child(task.getResult()
                                .getUser().getUid()).child("profileImage")
-                               .setValue(fakeURLImage);
+                               .setValue(profileImage);
 
                        FirebaseDatabase.getInstance().getReference()
                                .child("Users").child(task.getResult()
