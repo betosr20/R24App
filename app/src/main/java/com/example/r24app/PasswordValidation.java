@@ -21,7 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class PasswordValidation extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Button btnSignUp;
-    private boolean alerts, notifications, needHelp, isActive, timeConfiguration, isOk;
+    private boolean alerts, notifications, needHelp, isActive, timeConfiguration, isOk,picker,hotMap, viewType;
     private String  profileImage, name, lastName, userName, cellPhone, address;
     TextInputEditText password1, email;
     TextInputLayout layoutEmail, layoutPassword;
@@ -38,6 +38,9 @@ public class PasswordValidation extends AppCompatActivity {
         isActive = true;
         timeConfiguration = true;
         isOk = true;
+        picker = true;
+        hotMap = true;
+        viewType = true;
         //Extraer ;os va;ores que vienen de la vista Singup
         email = findViewById(R.id.etEmailSignUp);
         name = getIntent().getStringExtra("name");
@@ -130,8 +133,23 @@ public class PasswordValidation extends AppCompatActivity {
 
                        FirebaseDatabase.getInstance().getReference()
                                .child("Users").child(task.getResult()
-                               .getUser().getUid()).child("isOk")
+                                       .getUser().getUid()).child("isOk")
                                .setValue(isOk);
+
+                       FirebaseDatabase.getInstance().getReference()
+                               .child("Users").child(task.getResult()
+                               .getUser().getUid()).child("picker")
+                               .setValue(picker);
+
+                       FirebaseDatabase.getInstance().getReference()
+                               .child("Users").child(task.getResult()
+                               .getUser().getUid()).child("hotMap")
+                               .setValue(hotMap);
+
+                       FirebaseDatabase.getInstance().getReference()
+                               .child("Users").child(task.getResult()
+                               .getUser().getUid()).child("viewType")
+                               .setValue(viewType);
 
 
 
