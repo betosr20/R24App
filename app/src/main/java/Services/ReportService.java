@@ -55,23 +55,25 @@ public class ReportService {
         final boolean[] successfulUpload = {true};
         int imagesCounter = 1;
 
-        for (Uri uri : uris) {
-            final String imageName = reportId + "_" + imagesCounter;
-            UploadTask uploadTask = firebaseStorageReference.child("ReportsImages/" + imageName + ".jpg").putFile(uri);
+        if (uris != null && !uris.isEmpty()) {
+            for (Uri uri : uris) {
+                final String imageName = reportId + "_" + imagesCounter;
+                UploadTask uploadTask = firebaseStorageReference.child("ReportsImages/" + imageName + ".jpg").putFile(uri);
 
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    successfulUpload[0] = false;
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    saveReportPictureDownloadReference(imageName, reportId);
-                }
-            });
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        successfulUpload[0] = false;
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        saveReportPictureDownloadReference(imageName, reportId);
+                    }
+                });
 
-            imagesCounter++;
+                imagesCounter++;
+            }
         }
 
         return successfulUpload[0];

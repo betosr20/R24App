@@ -98,7 +98,8 @@ public class ReportIncidentActivity extends AppCompatActivity {
                     break;
             }
         } else {
-            imagesSelectedText.setText("");
+            activateMapLocation.setChecked(false);
+            imagesSelectedText.setText("No hay imágenes seleccionadas");
         }
     }
 
@@ -206,7 +207,7 @@ public class ReportIncidentActivity extends AppCompatActivity {
         startDate.add(Calendar.MONTH, 1);
         startDate.add(Calendar.YEAR, 1900);
 
-        String pattern = "yyyy-MM-dd";
+        String pattern = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 
         String reportId = userService.getCurrentFirebaseUserId() + simpleDateFormat.format(new Date());
