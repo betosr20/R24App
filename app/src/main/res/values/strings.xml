@@ -18,6 +18,7 @@
     <string name="requiredField">Espacio requerido *</string>
     <string name="imageSelected">Imagen Seleccionada</string>
     <string name="loadImages">Cargar Images</string>
+    <string name="loginPageHeaderText">Bienvenido a la página de inicio de sesión</string>
 
     <string-array name="disasterTypes_array">
         <item>Seleccione el tipo de desastre</item>
@@ -26,7 +27,9 @@
         <item>Inundación</item>
     </string-array>
 
+
     <string name="title_activity_map">MapActivity</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="detalle_dialogDelete_message">¿Esta seguro de querer eliminar esta imagen?</string>
     <string name="label_dialog_delete">Eliminar</string>
     <string name="label_dialog_cancel">Cancelar</string>

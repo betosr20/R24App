@@ -1,5 +1,4 @@
 <resources>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -17,7 +16,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="MySwitch">
+    <style name="AppTheme.SwitchTheme">
         <item name="android:colorControlActivated">@color/bluePrimary</item>
     </style>
 
@@ -36,9 +35,5 @@
 
     <style name="SpinnerTheme">
         <item name="colorAccent">@color/bluePrimary</item>
-    </style>
-
-    <style name="AppTheme.SwitchTheme">
-        <item name="android:colorControlActivated">@color/bluePrimary</item>
     </style>
 </resources>

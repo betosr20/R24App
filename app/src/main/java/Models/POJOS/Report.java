@@ -1,11 +1,14 @@
 package Models.POJOS;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
-public class Report {
-    private String type, detail, latitude, longitude, place, ownerId, Id;
+public class Report implements Parcelable {
+    private String Id, type, detail, latitude, longitude, place;
     private boolean pathDisabled, isActive;
-    private Date startDate, endDate;
+    private Date startDate, endDate, hour;
     private int affectedPeople, affectedAnimals;
 
     public Report() {
@@ -13,7 +16,7 @@ public class Report {
 
     public Report(String Id, String type, String detail, String latitude, String longitude, String place,
                   boolean pathDisabled, boolean isActive, Date startDate, Date endDate, int affectedAnimals,
-                  int affectedPeople, String ownerId) {
+                  int affectedPeople, Date hour) {
         this.Id = Id;
         this.place = place;
         this.type = type;
@@ -26,7 +29,15 @@ public class Report {
         this.endDate = endDate;
         this.affectedAnimals = affectedAnimals;
         this.affectedPeople = affectedPeople;
-        this.ownerId = ownerId;
+        this.hour = hour;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
     }
 
     public String getId() {
@@ -69,22 +80,6 @@ public class Report {
         this.longitude = longitude;
     }
 
-    public String getPlace() {
-        return place;
-    }
-
-    public void setPlace(String place) {
-        this.place = place;
-    }
-
-    public String getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(String ownerId) {
-        this.ownerId = ownerId;
-    }
-
     public boolean isPathDisabled() {
         return pathDisabled;
     }
@@ -117,6 +112,14 @@ public class Report {
         this.endDate = endDate;
     }
 
+    public Date getHour() {
+        return hour;
+    }
+
+    public void setHour(Date hour) {
+        this.hour = hour;
+    }
+
     public int getAffectedPeople() {
         return affectedPeople;
     }
@@ -132,4 +135,60 @@ public class Report {
     public void setAffectedAnimals(int affectedAnimals) {
         this.affectedAnimals = affectedAnimals;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+//         type.setText("Tipo de Evento: " + "hi there");
+//         place.setText("Lugar del  Evento: " + fakeReport.getPlace());
+//         affectedPeople.setText("Cantidad de personas afectadas: " + fakeReport.getAffectedPeople());
+//         affectedAnimals.setText("Cantidad de Animales afectadas: " + fakeReport.getAffectedAnimals());
+//         details.setText("Detalle de Evento: " + fakeReport.getDetail());
+//         startDateTextView.setText("Fecha de Inicio: " + dateFormat.format(fakeReport.getStartDate()));
+//         endDateTextView.setText("Fecha de Fin: " + dateFormat.format(fakeReport.getEndDate()));
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+//        dest.writeString(this.Id);
+        dest.writeString(this.type);
+        dest.writeString(this.detail);
+//        dest.writeString(this.latitude);
+//        dest.writeString(this.longitude);
+        dest.writeString(this.place);
+//        dest.writeByte((byte) (this.pathDisabled ? 1 : 0));
+//        dest.writeByte((byte) (this.isActive ? 1 : 0));
+        dest.writeLong(this.startDate.getTime());
+        dest.writeLong(this.endDate.getTime());
+        dest.writeInt(this.affectedAnimals);
+        dest.writeInt(this.affectedPeople);
+    }
+
+    protected Report(Parcel in) {
+//        Id = in.readString();
+        type = in.readString();
+        detail = in.readString();
+//        latitude = in.readString();
+//        longitude = in.readString();
+        place = in.readString();
+//        pathDisabled = in.readByte() != 0;
+//        isActive = in.readByte() != 0;
+        affectedPeople = in.readInt();
+        affectedAnimals = in.readInt();
+        startDate = new Date(in.readLong());
+        endDate = new Date(in.readLong());
+    }
+
+    public static final Creator<Report> CREATOR = new Creator<Report>() {
+        @Override
+        public Report createFromParcel(Parcel in) {
+            return new Report(in);
+        }
+
+        @Override
+        public Report[] newArray(int size) {
+            return new Report[size];
+        }
+    };
 }

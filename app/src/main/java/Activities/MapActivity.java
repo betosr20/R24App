@@ -2,9 +2,7 @@ package Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -32,10 +30,23 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
+import com.suke.widget.SwitchButton;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import Activities.ReportDetail.GeneralInformation;
+import Activities.ReportDetail.ReportDetailContainer;
 import Models.Constants.FirebaseClasses;
 import Models.POJOS.Report;
 
@@ -43,13 +54,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
-    private List<Report> reportList = new ArrayList<>();
-    private FirebaseAuth mAuth;
+    private List <Report> reportList = new ArrayList<>();
 
     //To check which to delete if marker or heat
     Boolean activeMarker = true;
     Boolean activeHeatMap = true;
-
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +67,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mAuth = FirebaseAuth.getInstance();
+// Obtiene el SupportMapFragment y es notificado cuando el mapa esta listo para ser usado llamando al metodo OnMapReady
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map2);
+        mapFragment.getMapAsync(this);
 
         //Setear las actividades del boton te toggle de pines
 
@@ -66,44 +80,39 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         switchButtonPins = findViewById(R.id.switchButtonPins);
         switchButtonHeatMap = findViewById(R.id.switchButtonHeat);
 
-        switchButtonPins.setChecked(true);
-        switchButtonHeatMap.setChecked(true);
+       switchButtonPins.setChecked(true);
+       switchButtonHeatMap.setChecked(true);
 
         // Set a checked change listener for switch button
         switchButtonPins.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
+                if(isChecked){
                     activeMarker = true;
                     populatePins(mMap);
-                } else {
+                }else{
                     activeMarker = false;
                     clearPins(mMap, false, activeHeatMap);
                 }
+
             }
         });
 
         switchButtonHeatMap.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-
             public void onCheckedChanged(CompoundButton view, boolean isChecked) {
-                if (isChecked) {
+                if(isChecked){
                     activeHeatMap = true;
                     addHeatMap(mMap);
                 } else {
-                    activeHeatMap = false;
-                    clearHeatMap(mMap);
+                    clearPins(mMap, activeMarker, false);
                 }
             }
         });
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map2);
-        mapFragment.getMapAsync(MapActivity.this);
     }
-
     @Override
-    public void onMapReady(final GoogleMap googleMap) {
+    public void onMapReady( final GoogleMap googleMap) {
         mMap = googleMap;
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference(FirebaseClasses.Report);
@@ -114,9 +123,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 //Valida si existe el arreglo, osea si hay datos
-                if (dataSnapshot.exists()) {
+                if(dataSnapshot.exists()){
                     //Itera el contenido del arreglo
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
                         reportList.add(snapshot.getValue(Report.class));
                     }
                     populatePins(googleMap);
@@ -128,23 +137,26 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
+
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+        marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+
         return false;
     }
 
-    public void populatePins(GoogleMap googleMap) {
+    public void populatePins(GoogleMap googleMap){
         mMap = googleMap;
         List<Marker> markerList = new ArrayList<>();
         double latitude, longitude;
         Marker marker;
         LatLng latLng;
-        latLng = new LatLng(9.932231, -84.091373);
+        latLng = new LatLng(9.932231,-84.091373);
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 7));
 
-        for (Report report : reportList) {
+        for (Report report: reportList) {
             latitude = Double.parseDouble(report.getLatitude());
             longitude = Double.parseDouble(report.getLongitude());
             latLng = new LatLng(latitude, longitude);
@@ -152,30 +164,43 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     .position(latLng)
                     .title(report.getType())
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
-            marker.setTag(0);
+            marker.setTag(report);
             markerList.add(marker);
         }
-
-        for (Marker m : markerList) {
+        for (Marker m: markerList) {
             latLng = new LatLng(m.getPosition().latitude, m.getPosition().longitude);
             mMap.addMarker(new MarkerOptions().position(latLng));
         }
-
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                Toast.makeText(getBaseContext(), "Se ha seleccionado el marcador " + marker.getTitle(), Toast.LENGTH_LONG).show();
+                Report report = (Report) marker.getTag();
+                Toast.makeText(getBaseContext(),"hello world "+ report.getType(), Toast.LENGTH_LONG).show();
+                OnDetailSelected(report);
             }
         });
+    }
+
+    public void OnDetailSelected(Report report) {
+        Intent intent = new Intent(this, ReportDetailContainer.class);
+        intent.putExtra("report", report);
+        startActivity(intent);
     }
 
     public void clearPins(GoogleMap googleMap, Boolean activeMarker, Boolean activeHeatMap) {
         if (!activeMarker) {
             googleMap.clear();
             this.activeMarker = false;
-            if (this.activeHeatMap) {
+            if(this.activeHeatMap) {
                 addHeatMap(googleMap);
+            }
+        }
+        if(!activeHeatMap) {
+            googleMap.clear();
+            this.activeHeatMap = false;
+            if (this.activeMarker) {
+                populatePins(googleMap);
             }
         }
     }
@@ -187,32 +212,22 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         TileOverlay mOverlay;
         LatLng latLng;
         double latitude, longitude;
-
-        for (Report report : reportList) {
+        for (Report report: reportList) {
             latitude = Double.parseDouble(report.getLatitude());
             longitude = Double.parseDouble(report.getLongitude());
             latLng = new LatLng(latitude, longitude);
             list.add(latLng);
         }
-
-        if (!list.isEmpty()) {
+        if(!list.isEmpty()){
             mProvider = new HeatmapTileProvider.Builder()
                     .data(list)
                     .build();
             mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
         }
+
+
     }
 
-    public void clearHeatMap(GoogleMap googleMap) {
-        if (!activeHeatMap) {
-            googleMap.clear();
-            if (this.activeMarker) {
-                populatePins(googleMap);
-            }
-        } else {
-            addHeatMap(googleMap);
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -235,10 +250,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 Intent reportActivity = new Intent(this, ReportIncidentActivity.class);
                 startActivity(reportActivity);
                 break;
+            case R.id.Detail:
+                Intent detailIntent = new Intent(this, ReportDetailContainer.class);
+                startActivity(detailIntent);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
-
     private void signOut() {
         mAuth.signOut();
         Intent signOut = new Intent(this, MainActivity.class);
@@ -246,4 +264,5 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         startActivity(signOut);
         finish();
     }
+
 }

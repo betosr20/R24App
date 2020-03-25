@@ -17,5 +17,10 @@
     android:orderInCategory="100"
     android:title="@string/title_register_report"
     app:showAsAction="never" />
+    <item
+        android:id="@+id/Detail"
+        android:orderInCategory="100"
+        android:title="Detalle"
+        app:showAsAction="never" />
 
 </menu>
