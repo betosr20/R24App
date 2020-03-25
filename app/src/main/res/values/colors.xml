@@ -10,6 +10,7 @@
     <color name="brownColor">#B38946</color>
     <color name="skinColor">#FFD796</color>
     <color name="redButtonColor">#D21F3C</color>
-    <color name="greenButtonColor">#3F704D</color>
+    <color name="greenButtonColor">#3F704D</color>#C70039
     <color name="whiteColor">#ffffff</color>
+    <color name="errorColor">#C70039</color>
 </resources>

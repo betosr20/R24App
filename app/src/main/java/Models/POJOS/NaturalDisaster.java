@@ -5,6 +5,8 @@ public class NaturalDisaster {
     private String name;
     private String menaceId;
 
+    public NaturalDisaster() {}
+
     public NaturalDisaster(String Id, String name, String menaceId) {
         this.Id = Id;
         this.name = name;

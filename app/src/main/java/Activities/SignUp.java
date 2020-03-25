@@ -1,9 +1,4 @@
-package com.example.r24app;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+package Activities;
 
 import android.Manifest;
 import android.content.Intent;
@@ -15,24 +10,25 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
+import com.example.r24app.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.util.Locale;
 import java.util.UUID;
 
 public class SignUp extends AppCompatActivity {
@@ -41,18 +37,19 @@ public class SignUp extends AppCompatActivity {
     private ImageView imgSelectImage;
     private ImageView iconimgSelectImage;
     private ImageView iconDeleteImage;
-    private String  imageIdentifier, uploadedImageLink;
-    TextInputLayout  inputLayoutName, inputLayoutLastName, inputLayoutUserName, inputLayoutCellPhone, inputLayoutAddress;
-    TextInputEditText  name, lastName, userName, cellPhone, address;
+    private String imageIdentifier, uploadedImageLink;
+    TextInputLayout inputLayoutName, inputLayoutLastName, inputLayoutUserName, inputLayoutCellPhone, inputLayoutAddress;
+    TextInputEditText name, lastName, userName, cellPhone, address;
     private boolean alerts, notifications, needHelp, isActive, timeConfiguration, isOk;
     private Bitmap bitmap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 //        mAuth = FirebaseAuth.getInstance();
         // Input y editText de Nombre
-        inputLayoutName =  findViewById(R.id.LayoutName);
+        inputLayoutName = findViewById(R.id.LayoutName);
         name = findViewById(R.id.etName);
         // Input y editText de Apellidos
         inputLayoutLastName = findViewById(R.id.LayoutLast);
@@ -77,7 +74,7 @@ public class SignUp extends AppCompatActivity {
         // boleanos por default
         alerts = true;
         notifications = true;
-        needHelp =  false;
+        needHelp = false;
         isActive = true;
         timeConfiguration = true;
         isOk = true;
@@ -88,7 +85,7 @@ public class SignUp extends AppCompatActivity {
         iconDeleteImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    deleteImage();
+                deleteImage();
             }
         });
         iconimgSelectImage.setOnClickListener(new View.OnClickListener() {
@@ -98,72 +95,75 @@ public class SignUp extends AppCompatActivity {
             }
         });
     }
+
     /*
         Metodo que se encarga de extraer los datos de la vista sign_up y enviarlos a Firebase.
      */
-   public void nextStepToRegisterUser() {
+    public void nextStepToRegisterUser() {
         uploadTheSelectedImageTotheServer();
         if (validateInputs() != false) {
-            Intent intent =  new Intent(this, PasswordValidation.class);
+            Intent intent = new Intent(this, PasswordValidation.class);
             intent.putExtra("name", name.getText().toString());
             intent.putExtra("lastName", lastName.getText().toString());
             intent.putExtra("userName", userName.getText().toString());
             intent.putExtra("cellPhone", cellPhone.getText().toString());
             intent.putExtra("address", address.getText().toString());
-            intent.putExtra("profileImage", uploadedImageLink );
+            intent.putExtra("profileImage", uploadedImageLink);
             startActivity(intent);
             finish();
         }
-   }
-   public boolean validateInputs() {
-       boolean isValid = true;
-       if (name.getText() != null && name.getText().toString().trim().isEmpty()) {
-           inputLayoutName.setError("Espacio requerido *");
-           inputLayoutName.requestFocus();
-           isValid = false;
-       } else {
-           inputLayoutName.setError(null);
-       }
-       if (lastName.getText() != null && lastName.getText().toString().trim().isEmpty()) {
-           inputLayoutLastName.setError("Espacio requerido *");
-           inputLayoutLastName.requestFocus();
-           isValid = false;
-       } else {
-           inputLayoutLastName.setError(null);
-       }
-       if (userName.getText() != null && userName.getText().toString().trim().isEmpty()) {
-           inputLayoutUserName.setError("Espacio requerido *");
-           inputLayoutUserName.requestFocus();
-           isValid = false;
-       } else {
-           inputLayoutUserName.setError(null);
-       }
-       if (cellPhone.getText() != null && cellPhone.getText().toString().trim().isEmpty()) {
-           inputLayoutCellPhone.setError("Espacio requerido *");
-           inputLayoutCellPhone.requestFocus();
-           isValid = false;
-       } else {
-           inputLayoutCellPhone.setError(null);
-       }
-       if (address.getText() != null && address.getText().toString().trim().isEmpty()) {
-           inputLayoutAddress.setError("Espacio requerido *");
-           inputLayoutAddress.requestFocus();
-           isValid = false;
-       } else {
-           inputLayoutAddress.setError(null);
-       }
+    }
 
-       return isValid;
-   }
+    public boolean validateInputs() {
+        boolean isValid = true;
+        if (name.getText() != null && name.getText().toString().trim().isEmpty()) {
+            inputLayoutName.setError("Espacio requerido *");
+            inputLayoutName.requestFocus();
+            isValid = false;
+        } else {
+            inputLayoutName.setError(null);
+        }
+        if (lastName.getText() != null && lastName.getText().toString().trim().isEmpty()) {
+            inputLayoutLastName.setError("Espacio requerido *");
+            inputLayoutLastName.requestFocus();
+            isValid = false;
+        } else {
+            inputLayoutLastName.setError(null);
+        }
+        if (userName.getText() != null && userName.getText().toString().trim().isEmpty()) {
+            inputLayoutUserName.setError("Espacio requerido *");
+            inputLayoutUserName.requestFocus();
+            isValid = false;
+        } else {
+            inputLayoutUserName.setError(null);
+        }
+        if (cellPhone.getText() != null && cellPhone.getText().toString().trim().isEmpty()) {
+            inputLayoutCellPhone.setError("Espacio requerido *");
+            inputLayoutCellPhone.requestFocus();
+            isValid = false;
+        } else {
+            inputLayoutCellPhone.setError(null);
+        }
+        if (address.getText() != null && address.getText().toString().trim().isEmpty()) {
+            inputLayoutAddress.setError("Espacio requerido *");
+            inputLayoutAddress.requestFocus();
+            isValid = false;
+        } else {
+            inputLayoutAddress.setError(null);
+        }
+
+        return isValid;
+    }
 
     private void selectImage() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) !=  PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1000);
         } else {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(intent, 1000);
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -176,6 +176,7 @@ public class SignUp extends AppCompatActivity {
 
 
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -196,6 +197,7 @@ public class SignUp extends AppCompatActivity {
         }
 
     }
+
     private void uploadTheSelectedImageTotheServer() {
         // Get the data from an ImageView as bytes
         if (bitmap != null) {
@@ -213,7 +215,7 @@ public class SignUp extends AppCompatActivity {
             final UploadTask uploadTask = FirebaseStorage.getInstance().getReference().
                     child("myImages").
                     child(imageIdentifier).putBytes(data);
-                     uploadedImageLink = "myImages"+"/"+imageIdentifier;
+            uploadedImageLink = "myImages" + "/" + imageIdentifier;
 
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -235,26 +237,24 @@ public class SignUp extends AppCompatActivity {
                     });
 
 
-
                 }
             });
         }
     }
+
     private void deleteImage() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle("Eliminar Imagen")
-                .setMessage(String.format(Locale.ROOT,
-                        getString(R.string.detalle_dialogDelete_message),null
-                        ))
+                .setMessage(R.string.detalle_dialogDelete_message)
                 .setPositiveButton(R.string.label_dialog_delete, (dialogInterface, i) -> configImageView(null))
                 .setNegativeButton(R.string.label_dialog_cancel, null);
         builder.show();
     }
+
     private void configImageView(String fotoUrl) {
-            if (fotoUrl != null){
-            }
-            else {
-                imgSelectImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_person));
-            }
+        if (fotoUrl != null) {
+        } else {
+            imgSelectImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_person));
+        }
     }
 }
