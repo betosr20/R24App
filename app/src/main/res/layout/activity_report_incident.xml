@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
     tools:context="Activities.ReportIncidentActivity">
 
@@ -108,10 +108,11 @@
             android:id="@+id/disasterTypeSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:spinnerMode="dialog"
+            android:theme="@style/SpinnerTheme"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/affectedAnimalsLayout"
@@ -126,18 +127,18 @@
             android:includeFontPadding="false"
             android:lineSpacingExtra="0dp"
             android:text="@string/pathDisabledLabel"
-            android:textColor="@color/brownColor"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:textColor="@color/blackColor"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/disasterTypeSpinner" />
 
         <Switch
             android:id="@+id/isPathDisabled"
             android:layout_width="0dp"
-            android:layout_height="14dp"
+            android:layout_height="28dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="20dp"
+            android:theme="@style/AppTheme.SwitchTheme"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/disasterTypeSpinner" />
 
@@ -151,9 +152,8 @@
             android:includeFontPadding="false"
             android:lineSpacingExtra="0dp"
             android:text="@string/enableMapLocation"
-            android:textColor="@color/brownColor"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:textColor="@color/blackColor"
+            android:textSize="16sp"
             app:layout_constraintEnd_toStartOf="@+id/mapActivated"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
@@ -164,6 +164,7 @@
             android:layout_height="30dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
+            android:theme="@style/AppTheme.SwitchTheme"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
@@ -177,7 +178,7 @@
             android:layout_marginEnd="20dp"
             android:hint="@string/disasterLocation"
             app:boxBackgroundMode="outline"
-            app:endIconMode="clear_text"
+            app:endIconMode="none"
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -190,9 +191,10 @@
                 android:id="@+id/mapLocationInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@null"
                 android:enabled="false"
                 android:imeOptions="actionNext"
-                android:inputType="text"
+                android:inputType="textMultiLine"
                 android:maxLength="100" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -200,15 +202,15 @@
             android:id="@+id/addImagesButton"
             style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
             android:layout_width="0dp"
-            android:layout_height="62dp"
-            android:layout_marginStart="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
             android:layout_marginEnd="20dp"
             android:text="@string/addImagesLabel"
             android:textAlignment="textStart"
             android:textAllCaps="false"
-            android:textColor="@color/brownColor"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:textAppearance="@style/Widget.AppCompat.Button"
+            android:textColor="@color/blackColor"
+            android:textSize="16sp"
             app:icon="@drawable/add"
             app:iconGravity="end"
             app:iconTint="@color/blackColor"
@@ -217,32 +219,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mapLocationLayout" />
 
-
-
-        <!--<EditText
-            android:id="@+id/disasterDetail"
-            android:layout_width="0dp"
-            android:layout_height="140dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/shape"
-            android:gravity="start"
-            android:hint="@string/reportDetailHint"
-            android:inputType="textMultiLine"
-            android:padding="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addImagesButton" />-->
-
         <Button
             android:id="@+id/btnSubmitReport"
             style="@style/Widget.MaterialComponents.Button"
             android:layout_width="0dp"
-            android:layout_height="70dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
             android:text="@string/saveReportButton"
@@ -258,20 +242,21 @@
             android:id="@+id/reportDetailLayout"
             style="@style/MyTheme.DayNight.TextInputLayout"
             android:layout_width="0dp"
-            android:layout_height="142dp"
+            android:layout_height="175dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addImagesButton">
+            app:layout_constraintTop_toBottomOf="@+id/imagesSelectedText">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/reportDetailInput"
                 android:layout_width="match_parent"
-                android:layout_height="111dp"
+                android:layout_height="150dp"
                 android:gravity="top"
                 android:hint="@string/reportDetailHint"
                 android:inputType="textMultiLine"
@@ -279,6 +264,15 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/imagesSelectedText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="2dp"
+            android:text=""
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addImagesButton" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

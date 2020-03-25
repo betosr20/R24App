@@ -22,8 +22,6 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
-
-
 }
 
 dependencies {
@@ -45,5 +43,4 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:19.3.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.firebase:firebase-storage:19.1.1'
-
 }

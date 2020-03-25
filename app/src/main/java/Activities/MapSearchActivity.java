@@ -1,8 +1,11 @@
 package Activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,9 +30,7 @@ import java.util.Objects;
 public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCallback {
     private GoogleMap googleMap;
     private SupportMapFragment mapFragment;
-    private AutocompleteSupportFragment autocompleteFragment;
     private Place place;
-    //int AUTOCOMPLETE_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +39,31 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapSearchViewFragment);
         setSearchViewInputListener();
+        addCheckButtonListener();
         place = null;
     }
 
+    private void addCheckButtonListener() {
+        ImageButton checkButton = findViewById(R.id.checkButton);
+
+        checkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (place != null) {
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("selectedPlace", String.valueOf(place.getName()));
+                    returnIntent.putExtra("longitude", String.valueOf(place.getLatLng().longitude));
+                    returnIntent.putExtra("latitude", String.valueOf(place.getLatLng().latitude));
+                    setResult(Activity.RESULT_OK, returnIntent);
+                }
+
+                finish();
+            }
+        });
+    }
+
     private void setSearchViewInputListener() {
-        autocompleteFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
         assert autocompleteFragment != null;
         Objects.requireNonNull(autocompleteFragment.getView()).setBackgroundColor(Color.WHITE);
@@ -83,25 +104,10 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
         this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedPlace, 16));
     }
 
-    /*@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                Place place = Autocomplete.getPlaceFromIntent(data);
-
-            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-                Status status = Autocomplete.getStatusFromIntent(data);
-
-            } else if (resultCode == RESULT_CANCELED) {
-            }
-        }
-    }*/
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        this.googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        // this.googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         LatLngBounds CR = new LatLngBounds(new LatLng(9.9368345, -84.1077296), new LatLng(9.9368345, -84.1077296));
         this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(9.9368345, -84.1077296), 16));
     }
