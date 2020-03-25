@@ -107,7 +107,7 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        this.googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        // this.googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         LatLngBounds CR = new LatLngBounds(new LatLng(9.9368345, -84.1077296), new LatLng(9.9368345, -84.1077296));
         this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(9.9368345, -84.1077296), 16));
     }
