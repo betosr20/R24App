@@ -46,4 +46,15 @@
         app:layout_constraintTop_toTopOf="parent"
         android:theme="@style/AppTheme.SwitchTheme" />
 
+    <Switch
+        android:id="@+id/switchButtonView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Vista"
+        android:theme="@style/AppTheme.SwitchTheme"
+        app:layout_constraintStart_toEndOf="@+id/switchButtonPins"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
