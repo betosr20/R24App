@@ -41,6 +41,10 @@
     <string name="loginPageHeaderText">Bienvenido a la página de inicio de sesión</string>
     <string name="title_user_profile">Mi perfil</string>
     <string name="title_activity_searchUser">Buscar Usuario</string>
+    <string name="editButtonText">EDITAR</string>
+    <string name="needHelpAction">Señal de auxilio</string>
+    <string name="amOkAction">Estoy bien</string>
+    <string name="changeViewSwitch">Vista</string>
     title_activity_searchUser
 
     <string-array name="disasterTypes_array">

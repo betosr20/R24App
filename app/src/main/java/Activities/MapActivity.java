@@ -278,6 +278,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 Intent reportActivity = new Intent(this, ReportIncidentActivity.class);
                 startActivity(reportActivity);
                 break;
+            case R.id.userProfile:
+                Intent profileActivity = new Intent(this, MyProfileActivity.class);
+                startActivity(profileActivity);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

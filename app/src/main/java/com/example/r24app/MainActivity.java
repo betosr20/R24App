@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void login() {
-        Intent intent = new Intent(this, MyProfileActivity.class);
+        Intent intent = new Intent(this, MapActivity.class);
         startActivity(intent);
         /*if (validateInputs() != false) {
             mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
