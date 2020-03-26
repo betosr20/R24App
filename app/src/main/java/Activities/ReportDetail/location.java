@@ -61,6 +61,7 @@ public class location extends Fragment implements OnMapReadyCallback{
         gMap = googleMap;
         this.populatePins(googleMap);
     }
+    //metodo que se encarga de pintar el ping del lugar del evento
     public void populatePins(GoogleMap googleMap) {
         gMap = googleMap;
         LatLng selectedPlace = new LatLng(9.953779385201116, -84.08405337512151);
