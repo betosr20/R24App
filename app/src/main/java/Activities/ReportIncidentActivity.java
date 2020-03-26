@@ -1,7 +1,13 @@
 package Activities;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -10,183 +16,262 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.r24app.R;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.android.material.textfield.TextInputLayout;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+import Models.Constants.DataConstants;
 import Models.POJOS.Report;
+import Services.NaturalDisasterService;
 import Services.ReportService;
+import Services.UserService;
+
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class ReportIncidentActivity extends AppCompatActivity {
 
-    private Spinner spinner;
-    private ImageButton returnButton;
-    private Button submitReportButton, addImagesButton;
-    private Switch activateMapLocation, isPathDisabled;
-    private FirebaseDatabase database;
-    private DatabaseReference databaseReference;
+    private Spinner disasterTypeSpinner;
+    private Switch activateMapLocation;
+    private String latitude, longitude, disasterType;
+    private TextInputEditText reportLocation, description;
+    private TextInputLayout mapLocationLayout, reportDetailLayout;
+    private NaturalDisasterService naturalDisasterService;
+    private UserService userService;
+    private TextView imagesSelectedText;
+    private ReportService reportService;
+    //private boolean validFields;
+    private ArrayList<Uri> imagesUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_incident);
+        naturalDisasterService = new NaturalDisasterService();
+        userService = new UserService();
+        reportService = new ReportService();
         addItemsToSpinner();
         addActivateLocationListener();
         addReturnButtonListener();
         addSubmitReportListener();
         addImagesButtonListener();
         addSpinnerListener();
-        // saveReportTypeInfo();
+        reportLocation = findViewById(R.id.mapLocationInput);
+        mapLocationLayout = findViewById(R.id.mapLocationLayout);
+        reportDetailLayout = findViewById(R.id.reportDetailLayout);
+        description = findViewById(R.id.reportDetailInput);
+        //validFields = true;
     }
 
-    /*private void saveReportTypeInfo() {
-        database = FirebaseDatabase.getInstance();
-        NaturalDisaster naturalDisaster = new NaturalDisaster("1", "Asteroide", "1");
-        databaseReference =  database.getReference(FirebaseClasses.NaturalDisaster).child(naturalDisaster.getName());
-        databaseReference.setValue(naturalDisaster);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-        NaturalDisaster naturalDisaster2 = new NaturalDisaster("2", "Avalancha", "1");
-        databaseReference =  database.getReference(FirebaseClasses.NaturalDisaster).child(naturalDisaster2.getName());
-        databaseReference.setValue(naturalDisaster2);
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case DataConstants.LAUNCH_MAPSEARCH_ACTIVITY:
+                    activateMapLocation.setChecked(false);
+                    String selectedPlace = data.getStringExtra("selectedPlace");
+                    latitude = data.getStringExtra("latitude");
+                    longitude = data.getStringExtra("longitude");
+                    reportLocation.setText(selectedPlace);
+                    break;
 
-        NaturalDisaster naturalDisaster3 = new NaturalDisaster("3", "Corrimiento de tierra", "1");
-        databaseReference =  database.getReference(FirebaseClasses.NaturalDisaster).child(naturalDisaster3.getName());
-        databaseReference.setValue(naturalDisaster3);
-
-        NaturalDisaster naturalDisaster4 = new NaturalDisaster("4", "Derramamiento del petróleo", "1");
-        databaseReference =  database.getReference(FirebaseClasses.NaturalDisaster).child(naturalDisaster4.getName());
-        databaseReference.setValue(naturalDisaster4);
-
-        NaturalDisaster naturalDisaster5 = new NaturalDisaster("5", "Erupción límnica", "1");
-        databaseReference =  database.getReference(FirebaseClasses.NaturalDisaster).child(naturalDisaster5.getName());
-        databaseReference.setValue(naturalDisaster5);
-
-        NaturalDisaster naturalDisaster6 = new NaturalDisaster("6", "Erupción volcánica", "1");
-        databaseReference =  database.getReference(FirebaseClasses.NaturalDisaster).child(naturalDisaster6.getName());
-        databaseReference.setValue(naturalDisaster6);
-
-        NaturalDisaster naturalDisaster7 = new NaturalDisaster("7", "Fuga de materiales radiactivos", "1");
-        databaseReference =  database.getReference(FirebaseClasses.NaturalDisaster).child(naturalDisaster7.getName());
-        databaseReference.setValue(naturalDisaster7);
-
-        NaturalDisaster naturalDisaster8 = new NaturalDisaster("8", "Granizo", "1");
-        databaseReference =  database.getReference(FirebaseClasses.NaturalDisaster).child(naturalDisaster8.getName());
-        databaseReference.setValue(naturalDisaster8);
-
-        NaturalDisaster naturalDisaster9 = new NaturalDisaster("9", "Hundimiento", "1");
-        databaseReference =  database.getReference(FirebaseClasses.NaturalDisaster).child(naturalDisaster9.getName());
-        databaseReference.setValue(naturalDisaster9);
-
-        NaturalDisaster naturalDisaster10 = new NaturalDisaster("10", "Huracán", "1");
-        databaseReference =  database.getReference(FirebaseClasses.NaturalDisaster).child(naturalDisaster10.getName());
-        databaseReference.setValue(naturalDisaster10);
-
-        NaturalDisaster naturalDisaster11 = new NaturalDisaster("11", "Incendio forestal", "1");
-        databaseReference =  database.getReference(FirebaseClasses.NaturalDisaster).child(naturalDisaster11.getName());
-        databaseReference.setValue(naturalDisaster11);
-
-        NaturalDisaster naturalDisaster12 = new NaturalDisaster("12", "Inundación", "1");
-        databaseReference =  database.getReference(FirebaseClasses.NaturalDisaster).child(naturalDisaster12.getName());
-        databaseReference.setValue(naturalDisaster12);
-
-        NaturalDisaster naturalDisaster13 = new NaturalDisaster("13", "Sequía", "1");
-        databaseReference =  database.getReference(FirebaseClasses.NaturalDisaster).child(naturalDisaster13.getName());
-        databaseReference.setValue(naturalDisaster13);
-
-        NaturalDisaster naturalDisaster14 = new NaturalDisaster("14", "Terremoto", "1");
-        databaseReference =  database.getReference(FirebaseClasses.NaturalDisaster).child(naturalDisaster14.getName());
-        databaseReference.setValue(naturalDisaster14);
-
-        NaturalDisaster naturalDisaster15 = new NaturalDisaster("15", "Tormenta", "1");
-        databaseReference =  database.getReference(FirebaseClasses.NaturalDisaster).child(naturalDisaster15.getName());
-        databaseReference.setValue(naturalDisaster15);
-
-        NaturalDisaster naturalDisaster16 = new NaturalDisaster("16", "Tormenta de arena", "1");
-        databaseReference =  database.getReference(FirebaseClasses.NaturalDisaster).child(naturalDisaster16.getName());
-        databaseReference.setValue(naturalDisaster16);
-
-        NaturalDisaster naturalDisaster17 = new NaturalDisaster("17", "Tormenta eléctrica", "1");
-        databaseReference =  database.getReference(FirebaseClasses.NaturalDisaster).child(naturalDisaster17.getName());
-        databaseReference.setValue(naturalDisaster17);
-
-        NaturalDisaster naturalDisaster18 = new NaturalDisaster("18", "Tornado", "1");
-        databaseReference =  database.getReference(FirebaseClasses.NaturalDisaster).child(naturalDisaster18.getName());
-        databaseReference.setValue(naturalDisaster18);
-
-        NaturalDisaster naturalDisaster19 = new NaturalDisaster("19", "Tsunami", "1");
-        databaseReference =  database.getReference(FirebaseClasses.NaturalDisaster).child(naturalDisaster19.getName());
-        databaseReference.setValue(naturalDisaster19);
-    }*/
+                case DataConstants.SELECT_MULTIPLE_PHOTOS:
+                    imagesUri = (ArrayList<Uri>) data.getSerializableExtra("imagesUris");
+                    int imagesSelected = data.getIntExtra("selectedImages", 0);
+                    if (imagesSelected > 0) {
+                        imagesSelectedText.setText(imagesSelected + " imagen(es) para mostrar");
+                    }
+                    break;
+            }
+        } else {
+            activateMapLocation.setChecked(false);
+            imagesSelectedText.setText("No hay imágenes seleccionadas");
+        }
+    }
 
     private void addImagesButtonListener() {
-        addImagesButton = findViewById(R.id.addImagesButton);
+        imagesSelectedText = findViewById(R.id.imagesSelectedText);
+        imagesSelectedText.setText("No hay imágenes seleccionadas");
+        Button addImagesButton = findViewById(R.id.addImagesButton);
 
         addImagesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ReportIncidentActivity.this, MapSearchActivity.class);
-                startActivity(intent);
+                checkPermission(DataConstants.PERMISSION_REQUEST_CODE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
             }
         });
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case DataConstants.PERMISSION_REQUEST_CODE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Intent imagesIntent = new Intent(ReportIncidentActivity.this, ImageChooserActivity.class);
+                    startActivityForResult(imagesIntent, DataConstants.SELECT_MULTIPLE_PHOTOS);
+
+                } else {
+                    Toast.makeText(ReportIncidentActivity.this, "Para acceder a las imágenes es necesario brindar permisos", Toast.LENGTH_LONG).show();
+                }
+                break;
+        }
+    }
+
+    private void checkPermission(int callbackId, String... permissionsId) {
+        boolean permissions = true;
+
+        for (String p : permissionsId) {
+            permissions = permissions && ContextCompat.checkSelfPermission(this, p) == PERMISSION_GRANTED;
+        }
+
+        if (!permissions) {
+            ActivityCompat.requestPermissions(this, permissionsId, callbackId);
+        } else {
+            Intent imagesIntent = new Intent(ReportIncidentActivity.this, ImageChooserActivity.class);
+            startActivityForResult(imagesIntent, DataConstants.SELECT_MULTIPLE_PHOTOS);
+        }
+    }
+
     private void addSubmitReportListener() {
-        submitReportButton = findViewById(R.id.btnSubmitReport);
+        Button submitReportButton = findViewById(R.id.btnSubmitReport);
+
         submitReportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveReportInfo();
+                if (validateFields()) {
+                    saveReportInfo();
+                }
             }
         });
+    }
+
+    private boolean validateFields() {
+        boolean validFields = true;
+
+        if (TextUtils.isEmpty(reportLocation.getText().toString())) {
+            mapLocationLayout.setError(getResources().getText(R.string.requiredField));
+            mapLocationLayout.requestFocus();
+            validFields = false;
+        } else {
+            mapLocationLayout.setError(null);
+        }
+
+        TextView spinnerErrorText = (TextView) disasterTypeSpinner.getSelectedView();
+
+        if (TextUtils.isEmpty(disasterType)) {
+            spinnerErrorText.setError(null);
+            spinnerErrorText.setTextColor(getResources().getColor(R.color.errorColor, null));
+            spinnerErrorText.setText(R.string.requiredField);
+            validFields = false;
+        } else {
+            spinnerErrorText.setError(null);
+        }
+
+        if (TextUtils.isEmpty(description.getText().toString())) {
+            reportDetailLayout.setError(getResources().getText(R.string.requiredField));
+            reportDetailLayout.requestFocus();
+            validFields = false;
+        } else {
+            reportDetailLayout.setError(null);
+        }
+
+        return validFields;
     }
 
     private void saveReportInfo() {
         boolean isPathDisabled = ((Switch) findViewById(R.id.isPathDisabled)).isChecked();
-        TextInputEditText affectedPeople = findViewById(R.id.affectedPeopleInput);
-        TextInputEditText affectedAnimals = findViewById(R.id.affectedAnimalsInput);
-        TextInputEditText place = findViewById(R.id.mapLocationInput);
-        TextInputEditText description = findViewById(R.id.reportDetailInput);
+        TextInputEditText affectedPeopleInput = findViewById(R.id.affectedPeopleInput);
+        TextInputEditText affectedAnimalsInput = findViewById(R.id.affectedAnimalsInput);
+        int affectedPeople = !affectedPeopleInput.getText().toString().equals("") ? Integer.parseInt(affectedPeopleInput.getText().toString()) : 0;
+        int affectedAnimals = !affectedAnimalsInput.getText().toString().equals("") ? Integer.parseInt(affectedAnimalsInput.getText().toString()) : 0;
+        Calendar endDate = new GregorianCalendar();
+        endDate.add(Calendar.DATE, 1);
+        endDate.add(Calendar.MONTH, 1);
+        endDate.add(Calendar.YEAR, 1900);
 
-        Report report = new Report();
-        new ReportService().addNewReport(report);
+        Calendar startDate = new GregorianCalendar();
+        startDate.add(Calendar.MONTH, 1);
+        startDate.add(Calendar.YEAR, 1900);
+
+        String pattern = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
+        String reportId = userService.getCurrentFirebaseUserId() + simpleDateFormat.format(new Date());
+
+        Report report = new Report(reportId, disasterType, description.getText().toString(), latitude, longitude, reportLocation.getText().toString(), isPathDisabled,
+                true, startDate.getTime(), endDate.getTime(), affectedAnimals, affectedPeople, userService.getCurrentFirebaseUserId());
+
+        if (reportService.addNewReport(report) && reportService.saveReportImages(imagesUri, reportId)) {
+            Toast.makeText(ReportIncidentActivity.this, "Reporte registrado exitosamente", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(ReportIncidentActivity.this, "Hubo un problema al registrar el reporte", Toast.LENGTH_LONG).show();
+        }
+
+        // validFields = false;
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startMapActivity();
+            }
+        }, 3500);
     }
 
     private void addReturnButtonListener() {
-        returnButton = findViewById(R.id.newReportReturnButton);
-
+        ImageButton returnButton = findViewById(R.id.newReportReturnButton);
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("dkfhgkdfjghdfkjghdjghdkjgfhdkf");
+                startMapActivity();
             }
         });
     }
 
-    private void addItemsToSpinner() {
-        spinner = findViewById(R.id.disasterTypeSpinner);
-        /*String[] disasterTypeList = new String[5];
-        disasterTypeList[0] = "Seleccione el tipo de desastre";
-        disasterTypeList[1] = "Costa Rica";
-        disasterTypeList[2] = "Nueva Zelanda";
-        disasterTypeList[3] = "Holanda";
-        disasterTypeList[4] = "Dubai";*/
+    private void startMapActivity() {
+        Intent mapIntent = new Intent(ReportIncidentActivity.this, MapActivity.class);
+        startActivityForResult(mapIntent, DataConstants.LAUNCH_MAPSEARCH_ACTIVITY);
+    }
 
-        ArrayAdapter dataAdapter = ArrayAdapter.createFromResource(this, R.array.planets_array, R.layout.spinner_layout);
-        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
-        spinner.setAdapter(dataAdapter);
+    private void addItemsToSpinner() {
+        ArrayList<String> disasterTypeList = new ArrayList<>();
+        disasterTypeList.add("Seleccione el tipo de desastre");
+        naturalDisasterService.getDisasterTypes(disasterTypeList);
+        disasterTypeSpinner = findViewById(R.id.disasterTypeSpinner);
+
+        // Estas lineas permiten hacer un spinner donde los elementos sean de color
+        // Assets en strings.xml y en layout spinner_dropdown y spinner_layout
+        /*ArrayAdapter dataAdapter = ArrayAdapter.createFromResource(this, R.array.disasterTypes_array, R.layout.spinner_layout);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown);*/
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, disasterTypeList);
+        dataAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+        disasterTypeSpinner.setAdapter(dataAdapter);
     }
 
     private void addSpinnerListener() {
-        spinner = findViewById(R.id.disasterTypeSpinner);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        disasterTypeSpinner = findViewById(R.id.disasterTypeSpinner);
+
+        disasterTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) {
-                    System.out.println(parent.getItemAtPosition(position).toString());
+                    disasterType = parent.getItemAtPosition(position).toString();
+                } else {
+                    disasterType = "";
                 }
             }
 
@@ -203,7 +288,7 @@ public class ReportIncidentActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     Intent intent = new Intent(ReportIncidentActivity.this, MapSearchActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, DataConstants.LAUNCH_MAPSEARCH_ACTIVITY);
                 }
             }
         });

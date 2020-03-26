@@ -5,16 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
 
 import com.example.r24app.R;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import Models.POJOS.Report;
 
@@ -26,7 +23,11 @@ public class ReportDetailContainer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_detail_container);
         ViewPager2 viewPager2 = findViewById(R.id.viewPaper);
-        viewPager2.setAdapter(new OpcionPageAdapter(this));
+        //fetch data from MapActivity
+        Intent intent = getIntent();
+        Report report = intent.getExtras().getParcelable("report");
+        System.out.println(report.getType());
+        viewPager2.setAdapter(new OptionPageAdapter(this, report));
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(
                 tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {

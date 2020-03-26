@@ -2,6 +2,14 @@ package Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.CompoundButton;
+import android.widget.Switch;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.r24app.MainActivity;
 import com.example.r24app.R;
@@ -16,12 +24,18 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
 import com.suke.widget.SwitchButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,10 +45,17 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import Activities.ReportDetail.GeneralInformation;
 import Activities.ReportDetail.ReportDetailContainer;
+import Models.Constants.FirebaseClasses;
+import Models.POJOS.Report;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
-    GoogleMap mMap;
+    private GoogleMap mMap;
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
+    private List <Report> reportList = new ArrayList<>();
+
     //To check which to delete if marker or heat
     Boolean activeMarker = true;
     Boolean activeHeatMap = true;
@@ -52,31 +73,34 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         //Setear las actividades del boton te toggle de pines
-        com.suke.widget.SwitchButton switchButtonPins;
-        switchButtonPins = (com.suke.widget.SwitchButton)
-                findViewById(R.id.switchButtonPins);
 
-        SwitchButton heatCheck = findViewById(R.id.switchButtonHeat);
+        Switch switchButtonPins;
+        Switch switchButtonHeatMap;
 
-        switchButtonPins.setChecked(true);
-        heatCheck.setChecked(true);
+        switchButtonPins = findViewById(R.id.switchButtonPins);
+        switchButtonHeatMap = findViewById(R.id.switchButtonHeat);
 
-        switchButtonPins.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
+       switchButtonPins.setChecked(true);
+       switchButtonHeatMap.setChecked(true);
+
+        // Set a checked change listener for switch button
+        switchButtonPins.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(SwitchButton view, boolean isChecked) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     activeMarker = true;
                     populatePins(mMap);
-
                 }else{
+                    activeMarker = false;
                     clearPins(mMap, false, activeHeatMap);
                 }
+
             }
         });
 
-        heatCheck.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
+        switchButtonHeatMap.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(SwitchButton view, boolean isChecked) {
+            public void onCheckedChanged(CompoundButton view, boolean isChecked) {
                 if(isChecked){
                     activeHeatMap = true;
                     addHeatMap(mMap);
@@ -85,41 +109,83 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 }
             }
         });
+
     }
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        populatePins(googleMap);
-        addHeatMap(googleMap);
+    public void onMapReady( final GoogleMap googleMap) {
+        mMap = googleMap;
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference(FirebaseClasses.Report);
+
+        //Agrega el Event Listener
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                //Valida si existe el arreglo, osea si hay datos
+                if(dataSnapshot.exists()){
+                    //Itera el contenido del arreglo
+                    for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                        reportList.add(snapshot.getValue(Report.class));
+                    }
+                    populatePins(googleMap);
+                    addHeatMap(googleMap);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
         marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+
         return false;
     }
 
     public void populatePins(GoogleMap googleMap){
         mMap = googleMap;
+        List<Marker> markerList = new ArrayList<>();
+        double latitude, longitude;
+        Marker marker;
+        LatLng latLng;
+        latLng = new LatLng(9.932231,-84.091373);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 7));
 
-        // Add a marker in Sydney and move the camera
-        LatLng mamiHouse = new LatLng(9.917467, -84.022291);
-        LatLng myHouse = new LatLng(9.930363, -84.027100);
-        mMap.addMarker(new MarkerOptions()
-                .position(myHouse)
-                .title("Mi casa")
-        );
-        mMap.addMarker(new MarkerOptions()
-                .position(mamiHouse)
-                .title("Casa de mami")
-        );
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myHouse, 13));
+        for (Report report: reportList) {
+            latitude = Double.parseDouble(report.getLatitude());
+            longitude = Double.parseDouble(report.getLongitude());
+            latLng = new LatLng(latitude, longitude);
+            marker = mMap.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .title(report.getType())
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+            marker.setTag(report);
+            markerList.add(marker);
+        }
+        for (Marker m: markerList) {
+            latLng = new LatLng(m.getPosition().latitude, m.getPosition().longitude);
+            mMap.addMarker(new MarkerOptions().position(latLng));
+        }
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                Toast.makeText(getBaseContext(),"Se ha seleccionado el marcador "+marker.getTitle(), Toast.LENGTH_LONG).show();
+                Report report = (Report) marker.getTag();
+                Toast.makeText(getBaseContext(),"hello world "+ report.getType(), Toast.LENGTH_LONG).show();
+                OnDetailSelected(report);
             }
         });
+    }
+
+    public void OnDetailSelected(Report report) {
+        Intent intent = new Intent(this, ReportDetailContainer.class);
+        intent.putExtra("report", report);
+        startActivity(intent);
     }
 
     public void clearPins(GoogleMap googleMap, Boolean activeMarker, Boolean activeHeatMap) {
@@ -142,31 +208,27 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void addHeatMap(GoogleMap googleMap) {
         mMap = googleMap;
         List<LatLng> list = new ArrayList<>();
-
-        LatLng rest1 = new LatLng(9.925602, -84.041371);
-        list.add(rest1);
-        LatLng rest2 = new LatLng(9.925898, -84.041281);
-        list.add(rest2);
-        LatLng rest3 = new LatLng(9.925834, -84.041007);
-        list.add(rest3);
-        LatLng rest4 = new LatLng(9.926180, -84.041536);
-        list.add(rest4);
-        LatLng rest5 = new LatLng(9.926051, -84.040785);
-        list.add(rest5);
-        LatLng rest6 = new LatLng(9.926364, -84.040937);
-        list.add(rest6);
-
-
         HeatmapTileProvider mProvider;
         TileOverlay mOverlay;
+        LatLng latLng;
+        double latitude, longitude;
+        for (Report report: reportList) {
+            latitude = Double.parseDouble(report.getLatitude());
+            longitude = Double.parseDouble(report.getLongitude());
+            latLng = new LatLng(latitude, longitude);
+            list.add(latLng);
+        }
+        if(!list.isEmpty()){
+            mProvider = new HeatmapTileProvider.Builder()
+                    .data(list)
+                    .build();
+            mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
+        }
 
-        mProvider = new HeatmapTileProvider.Builder()
-                .data(list)
-                .build();
 
-        mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
-//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(rest1, 13));
     }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

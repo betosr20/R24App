@@ -1,5 +1,4 @@
 <resources>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -13,16 +12,13 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="ImageViewButton">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <!--        <item name="android:background">@drawable/background_image_button</item>-->
-        <item name="android:layout_margin">3dp</item>
-    </style>
-
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.SwitchTheme">
+        <item name="android:colorControlActivated">@color/bluePrimary</item>
+    </style>
 
     <style name="MyTheme.DayNight.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="android:layout_marginStart">16dp</item>
@@ -30,4 +26,14 @@
         <item name="android:layout_marginTop">16dp</item>
     </style>
 
+    <style name="ImageViewButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <!--        <item name="android:background">@drawable/background_image_button</item>-->
+        <item name="android:layout_margin">3dp</item>
+    </style>
+
+    <style name="SpinnerTheme">
+        <item name="colorAccent">@color/bluePrimary</item>
+    </style>
 </resources>

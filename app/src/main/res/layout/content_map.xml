@@ -10,54 +10,40 @@
     tools:context="Activities.MapActivity"
     tools:showIn="@layout/activity_map">
 
-    <TextView
-        android:id="@+id/textViewCalor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="55dp"
-        android:layout_marginTop="8dp"
-        android:text="Calor"
-        app:layout_constraintStart_toEndOf="@+id/textViewPines"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.suke.widget.SwitchButton
-        android:id="@+id/switchButtonHeat"
-        android:layout_width="41dp"
-        android:layout_height="26dp"
-        android:layout_marginStart="49dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toEndOf="@+id/switchButtonPins"
-        app:layout_constraintTop_toBottomOf="@+id/textViewCalor" />
-
     <fragment
         android:id="@+id/map2"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switchButtonPins"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         tools:context=".Map
         sActivity" />
 
-    <com.suke.widget.SwitchButton
-        android:id="@+id/switchButtonPins"
-        android:layout_width="41dp"
-        android:layout_height="26dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPines" />
-
-    <TextView
-        android:id="@+id/textViewPines"
+    <Switch
+        android:id="@+id/switchButtonHeat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="8dp"
-        android:text="Pines"
+        android:text="Calor"
+        android:theme="@style/AppTheme.SwitchTheme"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Switch
+        android:id="@+id/switchButtonPins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Pines"
+        app:layout_constraintStart_toEndOf="@id/switchButtonHeat"
+        app:layout_constraintTop_toTopOf="parent"
+        android:theme="@style/AppTheme.SwitchTheme" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
