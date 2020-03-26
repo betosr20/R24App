@@ -1,5 +1,6 @@
 package Activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.r24app.MainActivity;
@@ -65,8 +67,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+        //Obtiene el toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("R24App");
         setSupportActionBar(toolbar);
+
         mAuth = FirebaseAuth.getInstance();
 // Obtiene el SupportMapFragment y es notificado cuando el mapa esta listo para ser usado llamando al metodo OnMapReady
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -75,11 +81,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         //Setear las actividades del boton te toggle de pines
 
-        Switch switchButtonPins, switchButtonHeatMap, swithButtonView;
+        Switch switchButtonPins, switchButtonHeatMap, switchButtonView;
 
         switchButtonPins = findViewById(R.id.switchButtonPins);
         switchButtonHeatMap = findViewById(R.id.switchButtonHeat);
-        swithButtonView = findViewById(R.id.switchButtonView);
+        switchButtonView = findViewById(R.id.switchButtonView);
 
         //ARREGLAR ESTO CUANDO SE AGREGUEN LOS CAMPOS AL POJO PARA QUE ESTO SE CARGUE DE LA CONFIGURACION DEL USUARIO
        switchButtonPins.setChecked(true);
@@ -112,7 +118,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
 
-        swithButtonView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        switchButtonView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton view2, boolean isChecked) {
                 if(isChecked){
@@ -244,10 +250,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
 
+    @SuppressLint("RestrictedApi")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
+        if(menu instanceof MenuBuilder){
+            MenuBuilder m = (MenuBuilder) menu;
+            //noinspection RestrictedApi
+            m.setOptionalIconsVisible(true);
+            m.setGroupDividerEnabled(true);
+        }
         return true;
     }
 
@@ -264,10 +277,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             case R.id.report:
                 Intent reportActivity = new Intent(this, ReportIncidentActivity.class);
                 startActivity(reportActivity);
-                break;
-            case R.id.Detail:
-                Intent detailIntent = new Intent(this, ReportDetailContainer.class);
-                startActivity(detailIntent);
                 break;
         }
         return super.onOptionsItemSelected(item);
