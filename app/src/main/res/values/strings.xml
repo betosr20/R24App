@@ -9,7 +9,7 @@
     <string name="affectedPeopleLabel">Cantidad personas afectadas</string>
     <string name="affectedAnimalsLabel">Cantidad animales afectados</string>
     <string name="pathDisabledLabel">Camino bloqueado</string>
-    <string name="addImagesLabel">Añadir imagenes</string>
+    <string name="addImagesLabel">Añadir imágenes</string>
     <string name="disasTerTypeLabel">Seleccione el tipo de desastre</string>
     <string name="enableMapLocation">Mostrar ubicación en el mapa</string>
     <string name="disasterLocation">Lugar del desastre</string>
@@ -19,6 +19,9 @@
     <string name="imageSelected">Imagen Seleccionada</string>
     <string name="loadImages">Cargar Images</string>
     <string name="loginPageHeaderText">Bienvenido a la página de inicio de sesión</string>
+    <string name="title_user_profile">Mi perfil</string>
+    <string name="title_activity_searchUser">Buscar Usuario</string>
+    title_activity_searchUser
 
     <string-array name="disasterTypes_array">
         <item>Seleccione el tipo de desastre</item>
@@ -28,11 +31,14 @@
     </string-array>
 
 
-    <string name="title_activity_map">MapActivity</string>
+    <string name="title_activity_map">Mapa de incidentes</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="detalle_dialogDelete_message">¿Esta seguro de querer eliminar esta imagen?</string>
+    <string name="detalle_dialogDelete_message">¿Está seguro de querer eliminar esta imagen?</string>
     <string name="label_dialog_delete">Eliminar</string>
     <string name="label_dialog_cancel">Cancelar</string>
+    <string name="title_activity_alerts">Alertas</string>
+
+
 </resources>
 
 
