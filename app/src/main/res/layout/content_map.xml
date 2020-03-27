@@ -17,7 +17,7 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
@@ -56,5 +56,19 @@
         android:theme="@style/AppTheme.SwitchTheme"
         app:layout_constraintStart_toEndOf="@+id/switchButtonPins"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/buttonPopUpMenu"
+        android:layout_width="135px"
+        android:layout_height="135px"
+        android:layout_marginEnd="9dp"
+        android:layout_marginBottom="50dp"
+        android:adjustViewBounds="false"
+        android:backgroundTint="#B3FFFFFF"
+        android:onClick="showPopup"
+        android:scaleType="fitXY"
+        android:src="@drawable/menubars"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

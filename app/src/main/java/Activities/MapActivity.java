@@ -1,16 +1,21 @@
 package Activities;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.PopupMenu;
 import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.r24app.MainActivity;
@@ -68,10 +73,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        //Obtiene el toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("R24App");
-        setSupportActionBar(toolbar);
+        //Setear el onclick del boton del PopUp
+        Button buttonPopUpMenu;
 
         mAuth = FirebaseAuth.getInstance();
 // Obtiene el SupportMapFragment y es notificado cuando el mapa esta listo para ser usado llamando al metodo OnMapReady
@@ -151,6 +154,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     }
                     populatePins(googleMap);
                     addHeatMap(googleMap);
+                    LatLng latLng;
+                    latLng = new LatLng(9.932231,-84.091373);
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 7));
                 }
             }
 
@@ -174,8 +180,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         double latitude, longitude;
         Marker marker;
         LatLng latLng;
-        latLng = new LatLng(9.932231,-84.091373);
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 7));
+
 
         for (Report report: reportList) {
             latitude = Double.parseDouble(report.getLatitude());
@@ -267,17 +272,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                signOut();
-                return true;
-            case R.id.map2:
-                Intent intent = new Intent(this, MapActivity.class);
-                startActivity(intent);
-                return true;
-            case R.id.report:
-                Intent reportActivity = new Intent(this, ReportIncidentActivity.class);
-                startActivity(reportActivity);
-                break;
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -296,6 +291,41 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }else{
             mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         }
+    }
+
+    @SuppressLint("RestrictedApi")
+    public void showPopup(View v) {
+         MenuBuilder menuBuilder =new MenuBuilder(this);
+        MenuInflater inflater = new MenuInflater(this);
+        inflater.inflate(R.menu.menu_main, menuBuilder);
+        MenuPopupHelper optionsMenu = new MenuPopupHelper(this, menuBuilder, v);
+        optionsMenu.setForceShowIcon(true);
+        Context context2 = this;
+        // Set Item Click Listener
+        menuBuilder.setCallback(new MenuBuilder.Callback() {
+            @Override
+            public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_settings:
+                        signOut();
+                        return true;
+                    case R.id.map2:
+                        Intent intent = new Intent(context2, MapActivity.class);
+                        startActivity(intent);
+                        return true;
+                    case R.id.report:
+                        Intent reportActivity = new Intent(context2, ReportIncidentActivity.class);
+                        startActivity(reportActivity);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+
+            @Override
+            public void onMenuModeChange(MenuBuilder menu) {}
+        });
+        optionsMenu.show();
     }
 
 }
