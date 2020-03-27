@@ -52,7 +52,6 @@ public class ReportIncidentActivity extends AppCompatActivity {
     private UserService userService;
     private TextView imagesSelectedText;
     private ReportService reportService;
-    //private boolean validFields;
     private ArrayList<Uri> imagesUri;
 
     @Override
@@ -72,7 +71,6 @@ public class ReportIncidentActivity extends AppCompatActivity {
         mapLocationLayout = findViewById(R.id.mapLocationLayout);
         reportDetailLayout = findViewById(R.id.reportDetailLayout);
         description = findViewById(R.id.reportDetailInput);
-        //validFields = true;
     }
 
     @Override

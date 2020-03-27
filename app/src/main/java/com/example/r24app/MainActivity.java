@@ -22,7 +22,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import Activities.MapActivity;
-import Activities.MyProfileActivity;
 import Activities.RecoveryPassword;
 import Activities.SignUp;
 
@@ -70,9 +69,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void login() {
-        Intent intent = new Intent(this, MapActivity.class);
-        startActivity(intent);
-        /*if (validateInputs() != false) {
+        if (validateInputs() != false) {
             mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -85,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             });
-        }*/
+        }
     }
 
     private void getTransitionIntoMainView() {

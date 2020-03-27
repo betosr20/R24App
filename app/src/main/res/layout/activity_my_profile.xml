@@ -44,11 +44,13 @@
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/deletePhotoButton"
+                        android:saveEnabled="false"
                         style="@style/ImageViewButton"
                         android:src="@drawable/ic_close_box" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/selectImageButton"
+                        android:saveEnabled="false"
                         style="@style/ImageViewButton"
                         android:src="@drawable/ic_image" />
                 </LinearLayout>
@@ -64,8 +66,8 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
             app:boxBackgroundMode="outline"
+            android:enabled="false"
             app:endIconMode="clear_text"
-            app:helperText="@string/fieldName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"
@@ -82,7 +84,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/LayoutLast"
+            android:id="@+id/LayoutLastName"
             style="@style/MyTheme.DayNight.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -90,8 +92,8 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
             app:boxBackgroundMode="outline"
+            android:enabled="false"
             app:endIconMode="clear_text"
-            app:helperText="@string/fieldLastName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/LayoutName"
@@ -117,10 +119,10 @@
             android:layout_marginEnd="16dp"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
-            app:helperText="@string/fieldUsername"
+            android:enabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/LayoutLast"
+            app:layout_constraintTop_toBottomOf="@+id/LayoutLastName"
             app:startIconDrawable="@drawable/ic_person">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -143,7 +145,7 @@
             android:layout_marginEnd="16dp"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
-            app:helperText="@string/fieldPhoneNumber"
+            android:enabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/LayoutUserName"
@@ -167,15 +169,15 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
-            app:helperText="@string/fieldAddress"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
+            android:enabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/LayoutCellPhone">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etAddres"
+                android:id="@+id/etAddress"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:gravity="top|start"
@@ -185,7 +187,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/btnEdit"
+            android:id="@+id/btnEditSave"
             style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
