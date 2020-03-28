@@ -5,12 +5,14 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import com.example.r24app.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,7 +32,6 @@ public class MyProfileActivity extends AppCompatActivity {
     private AppCompatImageView deleteImageIcon, chooseImageIcon;
     private Button editSaveButton;
     private FirebaseDatabase database;
-    private boolean isValidUsername, isValidCellphone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +43,6 @@ public class MyProfileActivity extends AppCompatActivity {
         getElementsReference();
         addListeners();
         getCurrentUserInfo();
-        isValidCellphone = true;
-        isValidUsername = true;
     }
 
     public void getElementsReference() {
@@ -88,18 +87,44 @@ public class MyProfileActivity extends AppCompatActivity {
     }
 
     public void validatePhoneNumber() {
-        Query usersQuey = database.getReference(FirebaseClasses.User).orderByChild(FirebaseClasses.CellphoneAttribute).equalTo(currentUser.getCellPhone());
-        usersQuey.addListenerForSingleValueEvent(new ValueEventListener() {
+        Query usersQuery = database.getReference(FirebaseClasses.User).orderByChild(FirebaseClasses.CellphoneAttribute).equalTo(currentUser.getCellPhone());
+
+        usersQuery.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    User user = dataSnapshot.getValue(User.class);
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                User user = dataSnapshot.getValue(User.class);
+
+                boolean isValidCellPhone = true;
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    user = snapshot.getValue(User.class);
+
                     if (user.getCellPhone().equals(currentUser.getCellPhone()) && !user.getId().equals(currentUser.getId())) {
-                        Toast.makeText(MyProfileActivity.this, "El número de teléfono ya existe", Toast.LENGTH_LONG).show();
-                    } else {
-                        saveData();
+                        phoneNumberLayout.setError("El nombre de usuario ya existe");
+                        phoneNumberLayout.requestFocus();
+                        isValidCellPhone = false;
+                        break;
                     }
                 }
+
+                if (isValidCellPhone) {
+                    saveData();
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
             }
 
             @Override
@@ -110,15 +135,27 @@ public class MyProfileActivity extends AppCompatActivity {
     }
 
     public void validateUserName() {
-        Query usersQuey = database.getReference(FirebaseClasses.User).orderByChild(FirebaseClasses.UsernameAttribute).equalTo(currentUser.getUserName());
-        usersQuey.addListenerForSingleValueEvent(new ValueEventListener() {
+        Query usersQuery = database.getReference(FirebaseClasses.User).orderByChild(FirebaseClasses.UsernameAttribute).equalTo(currentUser.getUserName());
+
+        usersQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    User user = dataSnapshot.getValue(User.class);
-                    if (user.getUserName().equals(currentUser.getUserName()) && !user.getId().equals(currentUser.getId())) {
-                        Toast.makeText(MyProfileActivity.this, "El nombre de usuario ya existe", Toast.LENGTH_LONG).show();
-                    } else {
+                    boolean isValidUserName = true;
+                    User user;
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        user = snapshot.getValue(User.class);
+
+                        if (user.getUserName().equals(currentUser.getUserName()) && !user.getId().equals(currentUser.getId())) {
+                            usernameLayout.setError("El nombre de usuario ya existe");
+                            usernameLayout.requestFocus();
+                            isValidUserName = false;
+                            break;
+                        }
+                    }
+
+                    if (isValidUserName) {
                         validatePhoneNumber();
                     }
                 }

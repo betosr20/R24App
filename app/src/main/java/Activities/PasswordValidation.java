@@ -18,22 +18,25 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
+
+import Models.POJOS.User;
+import Services.UserService;
 
 public class PasswordValidation extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Button btnSignUp;
     private boolean alerts, notifications, needHelp, isActive, timeConfiguration, isOk, picker, hotMap, viewType;
     private String profileImage, name, lastName, userName, cellPhone, address;
-    TextInputEditText password1, email;
-    TextInputLayout layoutEmail, layoutPassword;
+    private TextInputEditText password1, email;
+    private TextInputLayout layoutEmail, layoutPassword;
+    private UserService userService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_password_validation);
         mAuth = FirebaseAuth.getInstance();
-
+        userService = new UserService();
         // boleanos por default
         alerts = true;
         notifications = true;
@@ -74,92 +77,20 @@ public class PasswordValidation extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        FirebaseDatabase.getInstance().getReference()
-                                .child("Users").child(task.getResult()
-                                .getUser().getUid()).child("name")
-                                .setValue(name);
+                        String userId = task.getResult().getUser().getUid();
 
-                        FirebaseDatabase.getInstance().getReference()
-                                .child("Users").child(task.getResult()
-                                .getUser().getUid()).child("lastname")
-                                .setValue(lastName);
+                        User newUser = new User(userId, name, lastName, userName, email.getText().toString(), cellPhone, address, profileImage,
+                                isOk, alerts, notifications, needHelp, isActive, timeConfiguration);
 
-                        FirebaseDatabase.getInstance().getReference()
-                                .child("Users").child(task.getResult()
-                                .getUser().getUid()).child("email")
-                                .setValue(email.getText().toString());
-
-
-                        FirebaseDatabase.getInstance().getReference()
-                                .child("Users").child(task.getResult()
-                                .getUser().getUid()).child("username")
-                                .setValue(userName);
-
-                        FirebaseDatabase.getInstance().getReference()
-                                .child("Users").child(task.getResult()
-                                .getUser().getUid()).child("cellPhone")
-                                .setValue(cellPhone);
-
-                        FirebaseDatabase.getInstance().getReference()
-                                .child("Users").child(task.getResult()
-                                .getUser().getUid()).child("address")
-                                .setValue(address);
-
-                        FirebaseDatabase.getInstance().getReference()
-                                .child("Users").child(task.getResult()
-                                .getUser().getUid()).child("profileImage")
-                                .setValue(profileImage);
-
-                        FirebaseDatabase.getInstance().getReference()
-                                .child("Users").child(task.getResult()
-                                .getUser().getUid()).child("alerts")
-                                .setValue(alerts);
-
-                        FirebaseDatabase.getInstance().getReference()
-                                .child("Users").child(task.getResult()
-                                .getUser().getUid()).child("notifications")
-                                .setValue(notifications);
-
-                        FirebaseDatabase.getInstance().getReference()
-                                .child("Users").child(task.getResult()
-                                .getUser().getUid()).child("needHelp")
-                                .setValue(needHelp);
-
-                        FirebaseDatabase.getInstance().getReference()
-                                .child("Users").child(task.getResult()
-                                .getUser().getUid()).child("isActive")
-                                .setValue(isActive);
-
-                        FirebaseDatabase.getInstance().getReference()
-                                .child("Users").child(task.getResult()
-                                .getUser().getUid()).child("timeConfiguration")
-                                .setValue(timeConfiguration);
-
-                        FirebaseDatabase.getInstance().getReference()
-                                .child("Users").child(task.getResult()
-                                .getUser().getUid()).child("isOk")
-                                .setValue(isOk);
-
-                        FirebaseDatabase.getInstance().getReference()
-                                .child("Users").child(task.getResult()
-                                .getUser().getUid()).child("picker")
-                                .setValue(picker);
-
-                        FirebaseDatabase.getInstance().getReference()
-                                .child("Users").child(task.getResult()
-                                .getUser().getUid()).child("hotMap")
-                                .setValue(hotMap);
-
-                        FirebaseDatabase.getInstance().getReference()
-                                .child("Users").child(task.getResult()
-                                .getUser().getUid()).child("viewType")
-                                .setValue(viewType);
-
-                        Toast.makeText(PasswordValidation.this, "Se ha registrado exitosamente", Toast.LENGTH_LONG).show();
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        user.sendEmailVerification();
-                        logInViewTransition();
-
+                        if (userService.addNewUser(newUser)) {
+                            Toast.makeText(PasswordValidation.this, "Se ha registrado exitosamente", Toast.LENGTH_LONG).show();
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            assert user != null;
+                            user.sendEmailVerification();
+                            logInViewTransition();
+                        } else {
+                            Toast.makeText(PasswordValidation.this, "Error durante el proceso de registro", Toast.LENGTH_LONG).show();
+                        }
                     } else {
                         Toast.makeText(PasswordValidation.this, "Este usuario ya existe en la base de datos", Toast.LENGTH_LONG).show();
                     }
