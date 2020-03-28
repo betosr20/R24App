@@ -1,19 +1,19 @@
 package Models.POJOS;
 
 public class User {
-    private String Id, name, lastName, userName, email, cellPhone, address, profileImage;
+    private String Id, name, lastname, username, email, cellPhone, address, profileImage;
     private boolean alerts, notifications, needHelp, isActive, timeConfiguration, isOk;
 
     public User() {
     }
 
-    public User(String Id, String name, String lastName, String userName, String email, String cellPhone,
+    public User(String Id, String name, String lastname, String username, String email, String cellPhone,
                 String address, String profileImage, boolean isOk, boolean alerts, boolean notifications,
                 boolean needHelp, boolean isActive, boolean timeConFiguration) {
         this.Id = Id;
         this.name = name;
-        this.lastName = lastName;
-        this.userName = userName;
+        this.lastname = lastname;
+        this.username = username;
         this.email = email;
         this.cellPhone = cellPhone;
         this.address = address;
@@ -43,19 +43,19 @@ public class User {
     }
 
     public String getLastName() {
-        return lastName;
+        return lastname;
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.lastname = lastName;
     }
 
     public String getUserName() {
-        return userName;
+        return username;
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.username = userName;
     }
 
     public String getEmail() {
