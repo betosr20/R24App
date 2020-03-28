@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,7 @@ public class location extends Fragment implements OnMapReadyCallback{
     View viewLocation;//Fragmento
     GoogleMap gMap;
     MapView mapView;
+
     public location() {
         // Required empty public constructor
     }
