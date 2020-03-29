@@ -56,17 +56,21 @@ import Activities.ReportDetail.GeneralInformation;
 import Activities.ReportDetail.ReportDetailContainer;
 import Models.Constants.FirebaseClasses;
 import Models.POJOS.Report;
+import Models.POJOS.User;
+import Services.UserService;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private GoogleMap mMap;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private List <Report> reportList = new ArrayList<>();
-
+    private UserService userService = new UserService();
+    private User user;
+    private Switch switchButtonPins, switchButtonHeatMap, switchButtonView;
     //To check which to delete if marker or heat
-    Boolean activeMarker = true;
-    Boolean activeHeatMap = true;
-    Boolean view = true;
+    Boolean activeMarker;
+    Boolean activeHeatMap;
+    Boolean view;
     private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,22 +81,36 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Button buttonPopUpMenu;
 
         mAuth = FirebaseAuth.getInstance();
-// Obtiene el SupportMapFragment y es notificado cuando el mapa esta listo para ser usado llamando al metodo OnMapReady
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map2);
-        mapFragment.getMapAsync(this);
-
-        //Setear las actividades del boton te toggle de pines
-
-        Switch switchButtonPins, switchButtonHeatMap, switchButtonView;
-
         switchButtonPins = findViewById(R.id.switchButtonPins);
         switchButtonHeatMap = findViewById(R.id.switchButtonHeat);
         switchButtonView = findViewById(R.id.switchButtonView);
+        String id = userService.getCurrentFirebaseUserId();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference(FirebaseClasses.User).child(id);
 
-        //ARREGLAR ESTO CUANDO SE AGREGUEN LOS CAMPOS AL POJO PARA QUE ESTO SE CARGUE DE LA CONFIGURACION DEL USUARIO
-       switchButtonPins.setChecked(true);
-       switchButtonHeatMap.setChecked(true);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                user = dataSnapshot.getValue(User.class);
+                activeMarker = user.isPicker();
+                activeHeatMap = user.isHotMap();
+                view = user.isViewType();
+
+                // Obtiene el SupportMapFragment y es notificado cuando el mapa esta listo para ser usado llamando al metodo OnMapReady
+                SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.map2);
+                mapFragment.getMapAsync(MapActivity.this::onMapReady);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+
+        //Setear las actividades del boton te toggle de pines
 
         // Set a checked change listener for switch button
         switchButtonPins.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -100,9 +118,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     activeMarker = true;
+                    userService.updatePinSetting(true);
                     populatePins(mMap);
                 }else{
                     activeMarker = false;
+                    userService.updatePinSetting(false);
                     clearPins(mMap, false, activeHeatMap);
                 }
 
@@ -114,6 +134,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             public void onCheckedChanged(CompoundButton view, boolean isChecked) {
                 if(isChecked){
                     activeHeatMap = true;
+                    userService.updateheatMapSetting(true);
                     addHeatMap(mMap);
                 } else {
                     clearPins(mMap, activeMarker, false);
@@ -126,9 +147,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             public void onCheckedChanged(CompoundButton view2, boolean isChecked) {
                 if(isChecked){
                     view = true;
+                    userService.updateViewTypeSetting(true);
                     changeView();
                 } else {
                     view = false;
+                    userService.updateViewTypeSetting(false);
                     changeView();
                 }
             }
@@ -138,9 +161,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady( final GoogleMap googleMap) {
         mMap = googleMap;
+        switchButtonPins.setChecked(activeMarker);
+        switchButtonHeatMap.setChecked(activeHeatMap);
+        switchButtonView.setChecked(view);
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference(FirebaseClasses.Report);
-
         //Agrega el Event Listener
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -152,8 +177,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
                         reportList.add(snapshot.getValue(Report.class));
                     }
-                    populatePins(googleMap);
-                    addHeatMap(googleMap);
+                    if(activeMarker){
+                        populatePins(googleMap);
+                    }
+
+                    if(activeHeatMap){
+                        addHeatMap(googleMap);
+                    }
+
+                    if(!view){
+                        changeView();
+                    }
+
                     LatLng latLng;
                     latLng = new LatLng(9.932231,-84.091373);
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 7));
@@ -218,6 +253,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         if (!activeMarker) {
             googleMap.clear();
             this.activeMarker = false;
+            userService.updatePinSetting(false);
             if(this.activeHeatMap) {
                 addHeatMap(googleMap);
             }
@@ -225,6 +261,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         if(!activeHeatMap) {
             googleMap.clear();
             this.activeHeatMap = false;
+            userService.updateheatMapSetting(false);
             if (this.activeMarker) {
                 populatePins(googleMap);
             }
