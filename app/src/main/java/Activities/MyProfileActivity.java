@@ -1,7 +1,9 @@
 package Activities;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -9,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import com.example.r24app.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -17,6 +21,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import Models.Constants.FirebaseClasses;
 import Models.POJOS.User;
@@ -28,6 +35,7 @@ public class MyProfileActivity extends AppCompatActivity {
     private TextInputEditText nameInput, lastNameInput, usernameInput, phoneNumberInput, addressInput;
     private TextInputLayout nameLayout, lastNameLayout, usernameLayout, phoneNumberLayout, addressLayout;
     private AppCompatImageView deleteImageIcon, chooseImageIcon;
+    private ImageView profileImage;
     private Button editSaveButton;
     private FirebaseDatabase database;
 
@@ -41,6 +49,7 @@ public class MyProfileActivity extends AppCompatActivity {
         getElementsReference();
         addListeners();
         getCurrentUserInfo();
+        setImageProfile();
     }
 
     public void getElementsReference() {
@@ -51,12 +60,31 @@ public class MyProfileActivity extends AppCompatActivity {
         addressLayout = findViewById(R.id.LayoutAddress);
         deleteImageIcon = findViewById(R.id.deletePhotoButton);
         chooseImageIcon = findViewById(R.id.selectImageButton);
+        profileImage = findViewById(R.id.myProfileImage);
         editSaveButton = findViewById(R.id.btnEditSave);
         nameInput = findViewById(R.id.etName);
         lastNameInput = findViewById(R.id.etLastName);
         usernameInput = findViewById(R.id.etUserName);
         phoneNumberInput = findViewById(R.id.etCellPhone);
         addressInput = findViewById(R.id.etAddress);
+    }
+
+    public void setImageProfile() {
+        StorageReference userProfileImageRef = FirebaseStorage.getInstance().getReference();
+        StorageReference userProfileImage = userProfileImageRef.child("ReportsImages/Carro.jpg");
+
+        userProfileImage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().setLoggingEnabled(true);
+                Picasso.get().load(uri).fit().into(profileImage);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+
+            }
+        });
     }
 
     public void addListeners() {

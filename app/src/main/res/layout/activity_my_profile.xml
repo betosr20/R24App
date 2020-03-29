@@ -29,12 +29,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="127dp">
 
-                <androidx.appcompat.widget.AppCompatImageView
+                <ImageView
                     android:id="@+id/myProfileImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="127dp"
+                    android:layout_gravity="center"
+                    android:layout_width="300dp"
+                    android:layout_height="115dp"
                     android:src="@drawable/ic_person"
                     android:tint="#000000" />
+
+                <!--<androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/myProfileImage"
+                    android:layout_gravity="center"
+                    android:layout_width="300dp"
+                    android:layout_height="115dp"
+                    android:src="@drawable/ic_person"
+                    android:tint="#000000" />-->
 
                 <LinearLayout
                     android:layout_width="wrap_content"

@@ -257,12 +257,8 @@ public class SignUp extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == 1000 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
             selectImage();
-
         }
-
-
     }
 
     @Override
@@ -275,15 +271,11 @@ public class SignUp extends AppCompatActivity {
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageData);
                 imgSelectImage.setImageBitmap(bitmap);
-
-
             } catch (Exception e) {
 
                 e.printStackTrace();
             }
-
         }
-
     }
 
     private void uploadTheSelectedImageTotheServer() {
@@ -298,7 +290,6 @@ public class SignUp extends AppCompatActivity {
 //            imgSelectImage.setImageBitmap(bitmap); esto deberia pintar la imagen seleccionada pero no funciona,hay que solucionarlo
             byte[] data = baos.toByteArray();
             imageIdentifier = UUID.randomUUID().toString() + ".png";
-
 
             final UploadTask uploadTask = FirebaseStorage.getInstance().getReference().
                     child("myImages").
