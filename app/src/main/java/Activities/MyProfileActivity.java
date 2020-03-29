@@ -5,14 +5,12 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import com.example.r24app.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -89,42 +87,28 @@ public class MyProfileActivity extends AppCompatActivity {
     public void validatePhoneNumber() {
         Query usersQuery = database.getReference(FirebaseClasses.User).orderByChild(FirebaseClasses.CellphoneAttribute).equalTo(currentUser.getCellPhone());
 
-        usersQuery.addChildEventListener(new ChildEventListener() {
+        usersQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                User user = dataSnapshot.getValue(User.class);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    boolean isValidCellPhone = true;
+                    User user;
 
-                boolean isValidCellPhone = true;
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        user = snapshot.getValue(User.class);
 
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    user = snapshot.getValue(User.class);
+                        if (user.getCellPhone().equals(currentUser.getCellPhone()) && !user.getId().equals(currentUser.getId())) {
+                            phoneNumberLayout.setError("El némero de teléfono ya existe");
+                            phoneNumberLayout.requestFocus();
+                            isValidCellPhone = false;
+                            break;
+                        }
+                    }
 
-                    if (user.getCellPhone().equals(currentUser.getCellPhone()) && !user.getId().equals(currentUser.getId())) {
-                        phoneNumberLayout.setError("El nombre de usuario ya existe");
-                        phoneNumberLayout.requestFocus();
-                        isValidCellPhone = false;
-                        break;
+                    if (isValidCellPhone) {
+                        saveData();
                     }
                 }
-
-                if (isValidCellPhone) {
-                    saveData();
-                }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
             }
 
             @Override
@@ -135,7 +119,7 @@ public class MyProfileActivity extends AppCompatActivity {
     }
 
     public void validateUserName() {
-        Query usersQuery = database.getReference(FirebaseClasses.User).orderByChild(FirebaseClasses.UsernameAttribute).equalTo(currentUser.getUserName());
+        Query usersQuery = database.getReference(FirebaseClasses.User).orderByChild(FirebaseClasses.UsernameAttribute).equalTo(currentUser.getUsername());
 
         usersQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -147,7 +131,7 @@ public class MyProfileActivity extends AppCompatActivity {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         user = snapshot.getValue(User.class);
 
-                        if (user.getUserName().equals(currentUser.getUserName()) && !user.getId().equals(currentUser.getId())) {
+                        if (user.getUsername().equals(currentUser.getUsername()) && !user.getId().equals(currentUser.getId())) {
                             usernameLayout.setError("El nombre de usuario ya existe");
                             usernameLayout.requestFocus();
                             isValidUserName = false;
@@ -237,8 +221,8 @@ public class MyProfileActivity extends AppCompatActivity {
     public void displayUserInfo() {
         if (currentUser != null) {
             nameInput.setText(currentUser.getName());
-            lastNameInput.setText(currentUser.getLastName());
-            usernameInput.setText(currentUser.getUserName());
+            lastNameInput.setText(currentUser.getUsername());
+            usernameInput.setText(currentUser.getUsername());
             phoneNumberInput.setText(currentUser.getCellPhone());
             addressInput.setText(currentUser.getAddress());
             nameLayout.setEndIconVisible(false);
