@@ -83,7 +83,7 @@ public class MyProfileActivity extends AppCompatActivity {
     public void saveData() {
         currentUser.setName(nameInput.getText().toString());
         currentUser.setLastName(lastNameInput.getText().toString());
-        currentUser.setUsername(usernameInput.getText().toString());
+        currentUser.setUsername(usernameInput.getText().toString().toLowerCase());
         currentUser.setCellPhone(phoneNumberInput.getText().toString());
         currentUser.setAddress(addressInput.getText().toString());
 
@@ -97,29 +97,30 @@ public class MyProfileActivity extends AppCompatActivity {
     }
 
     public void validatePhoneNumber() {
-        Query usersQuery = database.getReference(FirebaseClasses.User).orderByChild(FirebaseClasses.CellphoneAttribute).equalTo(currentUser.getCellPhone());
+        Query usersQuery = database.getReference(FirebaseClasses.User).orderByChild(FirebaseClasses.CellphoneAttribute).equalTo(phoneNumberInput.getText().toString());
 
         usersQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                boolean isValidCellPhone = true;
+
                 if (dataSnapshot.exists()) {
-                    boolean isValidCellPhone = true;
                     User user;
 
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         user = snapshot.getValue(User.class);
 
-                        if (user.getCellPhone().equals(currentUser.getCellPhone()) && !user.getId().equals(currentUser.getId())) {
+                        if (user.getCellPhone().equals(phoneNumberInput.getText().toString()) && !user.getId().equals(currentUser.getId())) {
                             phoneNumberLayout.setError("El némero de teléfono ya existe");
                             phoneNumberLayout.requestFocus();
                             isValidCellPhone = false;
                             break;
                         }
                     }
+                }
 
-                    if (isValidCellPhone) {
-                        saveData();
-                    }
+                if (isValidCellPhone) {
+                    saveData();
                 }
             }
 
@@ -131,29 +132,32 @@ public class MyProfileActivity extends AppCompatActivity {
     }
 
     public void validateUserName() {
-        Query usersQuery = database.getReference(FirebaseClasses.User).orderByChild(FirebaseClasses.UsernameAttribute).equalTo(currentUser.getUsername());
+        Query usersQuery = database.getReference(FirebaseClasses.User).orderByChild(FirebaseClasses.UsernameAttribute).equalTo(usernameInput.getText().toString().toLowerCase());
 
         usersQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                boolean isValidUserName = true;
+
                 if (dataSnapshot.exists()) {
-                    boolean isValidUserName = true;
                     User user;
 
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         user = snapshot.getValue(User.class);
+                        String userName = user.getUsername().toLowerCase();
+                        String newUsername = usernameInput.getText().toString().toLowerCase();
 
-                        if (user.getUsername().equals(currentUser.getUsername()) && !user.getId().equals(currentUser.getId())) {
+                        if (userName.equals(newUsername) && !user.getId().equals(currentUser.getId())) {
                             usernameLayout.setError("El nombre de usuario ya existe");
                             usernameLayout.requestFocus();
                             isValidUserName = false;
                             break;
                         }
                     }
+                }
 
-                    if (isValidUserName) {
-                        validatePhoneNumber();
-                    }
+                if (isValidUserName) {
+                    validatePhoneNumber();
                 }
             }
 

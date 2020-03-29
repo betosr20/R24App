@@ -24,8 +24,7 @@ import Services.UserService;
 
 public class PasswordValidation extends AppCompatActivity {
     private FirebaseAuth mAuth;
-    private Button btnSignUp;
-    private boolean alerts, notifications, needHelp, isActive, timeConfiguration, isOk, picker, hotMap, viewType;
+    private boolean alerts, notifications, needHelp, isActive, timeConfiguration, isOk;
     private String profileImage, name, lastName, userName, cellPhone, address;
     private TextInputEditText password1, email;
     private TextInputLayout layoutEmail, layoutPassword;
@@ -44,10 +43,10 @@ public class PasswordValidation extends AppCompatActivity {
         isActive = true;
         timeConfiguration = true;
         isOk = true;
-        picker = true;
-        hotMap = true;
-        viewType = true;
-        //Extraer ;os va;ores que vienen de la vista Singup
+        boolean picker = true;
+        boolean hotMap = true;
+        boolean viewType = true;
+        //Extraer los valores que vienen de la vista Singup
         email = findViewById(R.id.etEmailSignUp);
         name = getIntent().getStringExtra("name");
         lastName = getIntent().getStringExtra("lastName");
@@ -57,7 +56,7 @@ public class PasswordValidation extends AppCompatActivity {
         profileImage = getIntent().getStringExtra("profileImage");
 
         //
-        btnSignUp = findViewById(R.id.idbtnSigup);
+        Button btnSignUp = findViewById(R.id.idbtnSigup);
         password1 = findViewById(R.id.etPassword1Step2);
         //layouts
         layoutEmail = findViewById(R.id.LayoutEmailSignUp);
@@ -71,15 +70,16 @@ public class PasswordValidation extends AppCompatActivity {
         });
     }
 
+
     private void registerUser() {
-        if (validateInputs() != false) {
+        if (validateInputs()) {
             mAuth.createUserWithEmailAndPassword(email.getText().toString(), password1.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         String userId = task.getResult().getUser().getUid();
 
-                        User newUser = new User(userId, name, lastName, userName, email.getText().toString(), cellPhone, address, profileImage,
+                        User newUser = new User(userId, name, lastName, userName.toLowerCase(), email.getText().toString(), cellPhone, address, profileImage,
                                 isOk, alerts, notifications, needHelp, isActive, timeConfiguration, true, true, true);
 
                         if (userService.addNewUser(newUser)) {
@@ -92,7 +92,7 @@ public class PasswordValidation extends AppCompatActivity {
                             Toast.makeText(PasswordValidation.this, "Error durante el proceso de registro", Toast.LENGTH_LONG).show();
                         }
                     } else {
-                        Toast.makeText(PasswordValidation.this, "Este usuario ya existe en la base de datos", Toast.LENGTH_LONG).show();
+                            Toast.makeText(PasswordValidation.this, "Esta dirección de correo ya existe en la base de datos", Toast.LENGTH_LONG).show();
                     }
                 }
             });
