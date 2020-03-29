@@ -80,7 +80,7 @@ public class PasswordValidation extends AppCompatActivity {
                         String userId = task.getResult().getUser().getUid();
 
                         User newUser = new User(userId, name, lastName, userName, email.getText().toString(), cellPhone, address, profileImage,
-                                isOk, alerts, notifications, needHelp, isActive, timeConfiguration);
+                                isOk, alerts, notifications, needHelp, isActive, timeConfiguration, true, true, true);
 
                         if (userService.addNewUser(newUser)) {
                             Toast.makeText(PasswordValidation.this, "Se ha registrado exitosamente", Toast.LENGTH_LONG).show();

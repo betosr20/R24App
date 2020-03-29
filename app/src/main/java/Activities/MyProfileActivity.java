@@ -81,7 +81,19 @@ public class MyProfileActivity extends AppCompatActivity {
     }
 
     public void saveData() {
-        Toast.makeText(MyProfileActivity.this, "Datos actualizados correctamente", Toast.LENGTH_LONG).show();
+        currentUser.setName(nameInput.getText().toString());
+        currentUser.setLastName(lastNameInput.getText().toString());
+        currentUser.setUsername(usernameInput.getText().toString());
+        currentUser.setCellPhone(phoneNumberInput.getText().toString());
+        currentUser.setAddress(addressInput.getText().toString());
+
+        if (userService.updateUser(currentUser)) {
+            Toast.makeText(MyProfileActivity.this, "Datos actualizados exitosamente", Toast.LENGTH_LONG).show();
+            getCurrentUserInfo();
+            disableFields();
+        } else {
+            Toast.makeText(MyProfileActivity.this, "Error durante el proceso de actualización", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void validatePhoneNumber() {
@@ -206,6 +218,7 @@ public class MyProfileActivity extends AppCompatActivity {
         addressLayout.setEnabled(false);
         deleteImageIcon.setEnabled(false);
         chooseImageIcon.setEnabled(false);
+        editSaveButton.setText(R.string.editButtonText);
     }
 
     public void enableFields() {
@@ -221,7 +234,7 @@ public class MyProfileActivity extends AppCompatActivity {
     public void displayUserInfo() {
         if (currentUser != null) {
             nameInput.setText(currentUser.getName());
-            lastNameInput.setText(currentUser.getUsername());
+            lastNameInput.setText(currentUser.getLastName());
             usernameInput.setText(currentUser.getUsername());
             phoneNumberInput.setText(currentUser.getCellPhone());
             addressInput.setText(currentUser.getAddress());

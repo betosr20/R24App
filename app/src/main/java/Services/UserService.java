@@ -10,16 +10,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import Models.Constants.FirebaseClasses;
-import Models.POJOS.Report;
 import Models.POJOS.User;
 
 public class UserService {
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
 
     public UserService() {
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference();
     }
 
     public String getCurrentFirebaseUserId() {
@@ -27,10 +28,30 @@ public class UserService {
         return firebaseUser != null ? firebaseUser.getUid() : "";
     }
 
+    public boolean updateUser(User user) {
+        final boolean[] successFulRegister = {true};
+
+        databaseReference.child(FirebaseClasses.User).child(user.getId()).setValue(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                successFulRegister[0] = false;
+            }
+        });
+
+        return successFulRegister[0];
+    }
+
     public boolean addNewUser(User user) {
         final boolean[] successFulRegister = {true};
 
-        DatabaseReference databaseReference = database.getReference(FirebaseClasses.User).child(String.valueOf(user.getId()));
+        databaseReference = database.getReference(FirebaseClasses.User).child(String.valueOf(user.getId()));
         databaseReference.setValue(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

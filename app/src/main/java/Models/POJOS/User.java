@@ -2,7 +2,7 @@ package Models.POJOS;
 
 public class User {
     private String Id, name, lastName, username, email, cellPhone, address, profileImage;
-    private boolean alerts;
+    private boolean alerts, notifications, needHelp, isActive, timeConfiguration, isOk, heatMap, picker, viewType;
 
     public User() {
     }
@@ -164,15 +164,4 @@ public class User {
     public void setViewType(boolean viewType) {
         this.viewType = viewType;
     }
-
-    private boolean notifications;
-    private boolean needHelp;
-    private boolean isActive;
-    private boolean timeConfiguration;
-    private boolean isOk;
-    private boolean heatMap;
-    private boolean picker;
-    private boolean viewType;
-
-
 }
