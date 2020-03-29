@@ -207,7 +207,6 @@ public class SignUp extends AppCompatActivity {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-//            imgSelectImage.setImageBitmap(bitmap); esto deberia pintar la imagen seleccionada pero no funciona,hay que solucionarlo
             byte[] data = baos.toByteArray();
             imageIdentifier = UUID.randomUUID().toString() + ".png";
 
@@ -215,7 +214,7 @@ public class SignUp extends AppCompatActivity {
             final UploadTask uploadTask = FirebaseStorage.getInstance().getReference().
                     child("myImages").
                     child(imageIdentifier).putBytes(data);
-            uploadedImageLink = "myImages" + "/" + imageIdentifier;
+            uploadedImageLink = imageIdentifier;
 
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -230,7 +229,6 @@ public class SignUp extends AppCompatActivity {
                     taskSnapshot.getMetadata().getReference().getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                         @Override
                         public void onComplete(@NonNull Task<Uri> task) {
-                            System.out.println(task.getResult());
                             uploadedImageLink = task.getResult().toString();
 
                         }
@@ -241,6 +239,7 @@ public class SignUp extends AppCompatActivity {
             });
         }
     }
+
 
     private void deleteImage() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
