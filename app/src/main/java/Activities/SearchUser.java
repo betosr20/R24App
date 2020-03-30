@@ -21,6 +21,7 @@ public class SearchUser extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     ArrayList<User> userList = new ArrayList<>();
+    User user =  new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +35,13 @@ public class SearchUser extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
 
                     for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
-                        userList.add(snapshot.getValue(User.class));
+                        user = snapshot.getValue(User.class);
+                        userList.add(user);
+                        getImageFile(user.getProfileImage(), "png");
                     }
+
                 }
+
             }
 
             @Override
@@ -44,5 +49,21 @@ public class SearchUser extends AppCompatActivity {
 
             }
         });
+
+    }
+    private void setImagesOnView() {
+        for (User user: userList) {
+            getImageFile(user.getProfileImage(), "png");
+        }
+    }
+    private void getImageFile(String idImage, String typeImage) {
+        System.out.println(idImage);
+       if (idImage != null) {
+           String[] splitResult = idImage.split(".png",2);
+           idImage = splitResult[0];
+           System.out.println(idImage);
+       }
+
+
     }
 }
