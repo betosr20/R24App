@@ -159,6 +159,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     }
     @Override
+
     public void onMapReady( final GoogleMap googleMap) {
         mMap = googleMap;
         switchButtonPins.setChecked(activeMarker);
