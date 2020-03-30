@@ -94,7 +94,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                 user = dataSnapshot.getValue(User.class);
                 activeMarker = user.isPicker();
-                activeHeatMap = user.isHotMap();
+                activeHeatMap = user.isHeatMap();
                 view = user.isViewType();
 
                 // Obtiene el SupportMapFragment y es notificado cuando el mapa esta listo para ser usado llamando al metodo OnMapReady
