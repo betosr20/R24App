@@ -1,19 +1,19 @@
 package Models.POJOS;
 
 public class User {
-    private String Id, name, lastName, userName, email, cellPhone, address, profileImage;
-    private boolean alerts, notifications, needHelp, isActive, timeConfiguration, isOk;
+    private String Id, name, lastName, username, email, cellPhone, address, profileImage;
+    private boolean alerts, notifications, needHelp, isActive, timeConfiguration, isOk, heatMap, picker, viewType;
 
     public User() {
     }
 
-    public User(String Id, String name, String lastName, String userName, String email, String cellPhone,
+    public User(String Id, String name, String lastName, String username, String email, String cellPhone,
                 String address, String profileImage, boolean isOk, boolean alerts, boolean notifications,
-                boolean needHelp, boolean isActive, boolean timeConFiguration) {
+                boolean needHelp, boolean isActive, boolean timeConFiguration, boolean heatMap, boolean picker, boolean viewType) {
         this.Id = Id;
         this.name = name;
         this.lastName = lastName;
-        this.userName = userName;
+        this.username = username;
         this.email = email;
         this.cellPhone = cellPhone;
         this.address = address;
@@ -24,6 +24,9 @@ public class User {
         this.isActive = isActive;
         this.timeConfiguration = timeConFiguration;
         this.isOk = isOk;
+        this.heatMap = heatMap;
+        this.picker = picker;
+        this.viewType = viewType;
     }
 
     public String getId() {
@@ -50,12 +53,12 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -136,5 +139,29 @@ public class User {
 
     public void setOk(boolean ok) {
         isOk = ok;
+    }
+
+    public boolean isHeatMap() {
+        return heatMap;
+    }
+
+    public void setHeatMap(boolean heatMap) {
+        this.heatMap = heatMap;
+    }
+
+    public boolean isPicker() {
+        return picker;
+    }
+
+    public void setPicker(boolean picker) {
+        this.picker = picker;
+    }
+
+    public boolean isViewType() {
+        return viewType;
+    }
+
+    public void setViewType(boolean viewType) {
+        this.viewType = viewType;
     }
 }

@@ -13,4 +13,5 @@
     <color name="greenButtonColor">#3F704D</color>#C70039
     <color name="whiteColor">#ffffff</color>
     <color name="errorColor">#C70039</color>
+    <color name="clickMarkerColor">#9F751B04</color>
 </resources>

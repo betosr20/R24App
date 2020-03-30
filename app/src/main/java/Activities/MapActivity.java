@@ -1,16 +1,21 @@
 package Activities;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.PopupMenu;
 import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.r24app.MainActivity;
@@ -51,45 +56,61 @@ import Activities.ReportDetail.GeneralInformation;
 import Activities.ReportDetail.ReportDetailContainer;
 import Models.Constants.FirebaseClasses;
 import Models.POJOS.Report;
+import Models.POJOS.User;
+import Services.UserService;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private GoogleMap mMap;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private List <Report> reportList = new ArrayList<>();
-
+    private UserService userService = new UserService();
+    private User user;
+    private Switch switchButtonPins, switchButtonHeatMap, switchButtonView;
     //To check which to delete if marker or heat
-    Boolean activeMarker = true;
-    Boolean activeHeatMap = true;
-    Boolean view = true;
+    Boolean activeMarker;
+    Boolean activeHeatMap;
+    Boolean view;
     private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        //Obtiene el toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("R24App");
-        setSupportActionBar(toolbar);
+        //Setear el onclick del boton del PopUp
+        Button buttonPopUpMenu;
 
         mAuth = FirebaseAuth.getInstance();
-// Obtiene el SupportMapFragment y es notificado cuando el mapa esta listo para ser usado llamando al metodo OnMapReady
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map2);
-        mapFragment.getMapAsync(this);
-
-        //Setear las actividades del boton te toggle de pines
-
-        Switch switchButtonPins, switchButtonHeatMap, switchButtonView;
-
         switchButtonPins = findViewById(R.id.switchButtonPins);
         switchButtonHeatMap = findViewById(R.id.switchButtonHeat);
         switchButtonView = findViewById(R.id.switchButtonView);
+        String id = userService.getCurrentFirebaseUserId();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference(FirebaseClasses.User).child(id);
 
-        //ARREGLAR ESTO CUANDO SE AGREGUEN LOS CAMPOS AL POJO PARA QUE ESTO SE CARGUE DE LA CONFIGURACION DEL USUARIO
-       switchButtonPins.setChecked(true);
-       switchButtonHeatMap.setChecked(true);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                user = dataSnapshot.getValue(User.class);
+                activeMarker = user.isPicker();
+                activeHeatMap = user.isHeatMap();
+                view = user.isViewType();
+
+                // Obtiene el SupportMapFragment y es notificado cuando el mapa esta listo para ser usado llamando al metodo OnMapReady
+                SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.map2);
+                mapFragment.getMapAsync(MapActivity.this::onMapReady);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+
+        //Setear las actividades del boton te toggle de pines
 
         // Set a checked change listener for switch button
         switchButtonPins.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -97,9 +118,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     activeMarker = true;
+                    userService.updatePinSetting(true);
                     populatePins(mMap);
                 }else{
                     activeMarker = false;
+                    userService.updatePinSetting(false);
                     clearPins(mMap, false, activeHeatMap);
                 }
 
@@ -111,6 +134,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             public void onCheckedChanged(CompoundButton view, boolean isChecked) {
                 if(isChecked){
                     activeHeatMap = true;
+                    userService.updateheatMapSetting(true);
                     addHeatMap(mMap);
                 } else {
                     clearPins(mMap, activeMarker, false);
@@ -123,9 +147,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             public void onCheckedChanged(CompoundButton view2, boolean isChecked) {
                 if(isChecked){
                     view = true;
+                    userService.updateViewTypeSetting(true);
                     changeView();
                 } else {
                     view = false;
+                    userService.updateViewTypeSetting(false);
                     changeView();
                 }
             }
@@ -133,11 +159,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     }
     @Override
+
     public void onMapReady( final GoogleMap googleMap) {
         mMap = googleMap;
+        switchButtonPins.setChecked(activeMarker);
+        switchButtonHeatMap.setChecked(activeHeatMap);
+        switchButtonView.setChecked(view);
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference(FirebaseClasses.Report);
-
         //Agrega el Event Listener
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -149,8 +178,21 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
                         reportList.add(snapshot.getValue(Report.class));
                     }
-                    populatePins(googleMap);
-                    addHeatMap(googleMap);
+                    if(activeMarker){
+                        populatePins(googleMap);
+                    }
+
+                    if(activeHeatMap){
+                        addHeatMap(googleMap);
+                    }
+
+                    if(!view){
+                        changeView();
+                    }
+
+                    LatLng latLng;
+                    latLng = new LatLng(9.932231,-84.091373);
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 7));
                 }
             }
 
@@ -174,8 +216,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         double latitude, longitude;
         Marker marker;
         LatLng latLng;
-        latLng = new LatLng(9.932231,-84.091373);
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 7));
+
 
         for (Report report: reportList) {
             latitude = Double.parseDouble(report.getLatitude());
@@ -213,6 +254,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         if (!activeMarker) {
             googleMap.clear();
             this.activeMarker = false;
+            userService.updatePinSetting(false);
             if(this.activeHeatMap) {
                 addHeatMap(googleMap);
             }
@@ -220,6 +262,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         if(!activeHeatMap) {
             googleMap.clear();
             this.activeHeatMap = false;
+            userService.updateheatMapSetting(false);
             if (this.activeMarker) {
                 populatePins(googleMap);
             }
@@ -267,17 +310,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                signOut();
-                return true;
-            case R.id.map2:
-                Intent intent = new Intent(this, MapActivity.class);
-                startActivity(intent);
-                return true;
-            case R.id.report:
-                Intent reportActivity = new Intent(this, ReportIncidentActivity.class);
-                startActivity(reportActivity);
-                break;
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -296,6 +329,41 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }else{
             mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         }
+    }
+
+    @SuppressLint("RestrictedApi")
+    public void showPopup(View v) {
+         MenuBuilder menuBuilder =new MenuBuilder(this);
+        MenuInflater inflater = new MenuInflater(this);
+        inflater.inflate(R.menu.menu_main, menuBuilder);
+        MenuPopupHelper optionsMenu = new MenuPopupHelper(this, menuBuilder, v);
+        optionsMenu.setForceShowIcon(true);
+        Context context2 = this;
+        // Set Item Click Listener
+        menuBuilder.setCallback(new MenuBuilder.Callback() {
+            @Override
+            public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_settings:
+                        signOut();
+                        return true;
+                    case R.id.map2:
+                        Intent intent = new Intent(context2, MapActivity.class);
+                        startActivity(intent);
+                        return true;
+                    case R.id.report:
+                        Intent reportActivity = new Intent(context2, ReportIncidentActivity.class);
+                        startActivity(reportActivity);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+
+            @Override
+            public void onMenuModeChange(MenuBuilder menu) {}
+        });
+        optionsMenu.show();
     }
 
 }
