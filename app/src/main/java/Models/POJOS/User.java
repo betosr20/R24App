@@ -2,14 +2,16 @@ package Models.POJOS;
 
 public class User {
     private String Id, name, lastName, userName, email, cellPhone, address, profileImage;
-    private boolean alerts, notifications, needHelp, isActive, timeConfiguration, isOk;
+    private boolean alerts, notifications, needHelp, isActive, timeConfiguration, isOk, hotMap, picker, viewType;
+
+
 
     public User() {
     }
 
     public User(String Id, String name, String lastName, String userName, String email, String cellPhone,
                 String address, String profileImage, boolean isOk, boolean alerts, boolean notifications,
-                boolean needHelp, boolean isActive, boolean timeConFiguration) {
+                boolean needHelp, boolean isActive, boolean timeConFiguration, boolean hotMap, boolean picker, boolean viewType) {
         this.Id = Id;
         this.name = name;
         this.lastName = lastName;
@@ -24,6 +26,9 @@ public class User {
         this.isActive = isActive;
         this.timeConfiguration = timeConFiguration;
         this.isOk = isOk;
+        this.hotMap = hotMap;
+        this.picker = picker;
+        this.viewType = viewType;
     }
 
     public String getId() {
@@ -136,5 +141,28 @@ public class User {
 
     public void setOk(boolean ok) {
         isOk = ok;
+    }
+    public boolean isHotMap() {
+        return hotMap;
+    }
+
+    public void setHotMap(boolean hotMap) {
+        this.hotMap = hotMap;
+    }
+
+    public boolean isPicker() {
+        return picker;
+    }
+
+    public void setPicker(boolean picker) {
+        this.picker = picker;
+    }
+
+    public boolean isViewType() {
+        return viewType;
+    }
+
+    public void setViewType(boolean viewType) {
+        this.viewType = viewType;
     }
 }
