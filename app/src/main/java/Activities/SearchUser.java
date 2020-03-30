@@ -20,7 +20,7 @@ import Models.POJOS.User;
 public class SearchUser extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
-    ArrayList<User> userList;
+    ArrayList<User> userList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +32,10 @@ public class SearchUser extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
+
                     for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
                         userList.add(snapshot.getValue(User.class));
                     }
-                    System.out.println(userList);
                 }
             }
 
