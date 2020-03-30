@@ -19,7 +19,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="Activities.MyProfileActivity"></activity>
+        <activity android:name="Activities.MyProfileActivity" />
         <activity android:name="Activities.ImageChooserActivity" />
         <activity android:name="Activities.ReportDetail.ReportDetailContainer" />
         <activity android:name=".MainActivity">

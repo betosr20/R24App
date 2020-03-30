@@ -1,14 +1,20 @@
 package Activities;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.content.ContextCompat;
 
 import com.example.r24app.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -21,9 +27,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
 
 import Models.Constants.FirebaseClasses;
 import Models.POJOS.User;
@@ -34,10 +43,10 @@ public class MyProfileActivity extends AppCompatActivity {
     private UserService userService;
     private TextInputEditText nameInput, lastNameInput, usernameInput, phoneNumberInput, addressInput;
     private TextInputLayout nameLayout, lastNameLayout, usernameLayout, phoneNumberLayout, addressLayout;
-    private AppCompatImageView deleteImageIcon, chooseImageIcon;
-    private ImageView profileImage;
+    private AppCompatImageView deleteImageIcon, chooseImageIcon, profileImage;
     private Button editSaveButton;
     private FirebaseDatabase database;
+    private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +58,6 @@ public class MyProfileActivity extends AppCompatActivity {
         getElementsReference();
         addListeners();
         getCurrentUserInfo();
-        setImageProfile();
     }
 
     public void getElementsReference() {
@@ -71,12 +79,11 @@ public class MyProfileActivity extends AppCompatActivity {
 
     public void setImageProfile() {
         StorageReference userProfileImageRef = FirebaseStorage.getInstance().getReference();
-        StorageReference userProfileImage = userProfileImageRef.child("ReportsImages/Carro.jpg");
+        StorageReference userProfileImage = userProfileImageRef.child(FirebaseClasses.ProfileImagesFolder + currentUser.getId() + ".png");
 
         userProfileImage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Picasso.get().setLoggingEnabled(true);
                 Picasso.get().load(uri).fit().into(profileImage);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -100,15 +107,68 @@ public class MyProfileActivity extends AppCompatActivity {
         });
 
         deleteImageIcon.setOnClickListener(v -> {
+            deleteImage();
 
         });
 
         chooseImageIcon.setOnClickListener(v -> {
-
+            selectImage();
         });
     }
 
-    public void saveData() {
+    private void selectImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, 1000);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 1000 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            selectImage();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1000 && resultCode == RESULT_OK && data != null) {
+            Uri chosenImageData = data.getData();
+            configImageView(data.getDataString());
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageData);
+                profileImage.setImageBitmap(bitmap);
+                deleteImageIcon.setEnabled(true);
+                deleteImageIcon.setClickable(true);
+                currentUser.setProfileImage(currentUser.getId() + ".png");
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void deleteImage() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle("Eliminar Imagen")
+                .setMessage(R.string.detalle_dialogDelete_message)
+                .setPositiveButton(R.string.label_dialog_delete, (dialogInterface, i) -> configImageView(null))
+                .setNegativeButton(R.string.label_dialog_cancel, null);
+        builder.show();
+    }
+
+    private void configImageView(String fotoUrl) {
+        if (fotoUrl == null) {
+            currentUser.setProfileImage("");
+            profileImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_person));
+            deleteImageIcon.setEnabled(false);
+            deleteImageIcon.setClickable(false);
+        }
+    }
+
+    public void saveData() throws IOException {
         currentUser.setName(nameInput.getText().toString());
         currentUser.setLastName(lastNameInput.getText().toString());
         currentUser.setUsername(usernameInput.getText().toString().toLowerCase());
@@ -116,12 +176,17 @@ public class MyProfileActivity extends AppCompatActivity {
         currentUser.setAddress(addressInput.getText().toString());
 
         if (userService.updateUser(currentUser)) {
+            uploadTheSelectedImageToServer();
             Toast.makeText(MyProfileActivity.this, "Datos actualizados exitosamente", Toast.LENGTH_LONG).show();
             getCurrentUserInfo();
             disableFields();
         } else {
             Toast.makeText(MyProfileActivity.this, "Error durante el proceso de actualización", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void uploadTheSelectedImageToServer() throws IOException {
+        userService.uploadTheSelectedImageToServer(bitmap);
     }
 
     public void validatePhoneNumber() {
@@ -148,7 +213,11 @@ public class MyProfileActivity extends AppCompatActivity {
                 }
 
                 if (isValidCellPhone) {
-                    saveData();
+                    try {
+                        saveData();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -250,6 +319,8 @@ public class MyProfileActivity extends AppCompatActivity {
         addressLayout.setEnabled(false);
         deleteImageIcon.setEnabled(false);
         chooseImageIcon.setEnabled(false);
+        deleteImageIcon.setClickable(false);
+        chooseImageIcon.setClickable(false);
         editSaveButton.setText(R.string.editButtonText);
     }
 
@@ -261,6 +332,14 @@ public class MyProfileActivity extends AppCompatActivity {
         addressLayout.setEnabled(true);
         deleteImageIcon.setEnabled(true);
         chooseImageIcon.setEnabled(true);
+        deleteImageIcon.setClickable(true);
+        chooseImageIcon.setClickable(true);
+
+        if (TextUtils.isEmpty(currentUser.getProfileImage())) {
+            deleteImageIcon.setEnabled(false);
+            deleteImageIcon.setClickable(false);
+            profileImage.setImageDrawable(ContextCompat.getDrawable(MyProfileActivity.this, R.drawable.ic_person));
+        }
     }
 
     public void displayUserInfo() {
@@ -286,6 +365,12 @@ public class MyProfileActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     currentUser = dataSnapshot.getValue(User.class);
                     displayUserInfo();
+
+                    if (!TextUtils.isEmpty(currentUser.getProfileImage())) {
+                        setImageProfile();
+                    }
+
+                    disableFields();
                 }
             }
 

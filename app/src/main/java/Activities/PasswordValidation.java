@@ -1,7 +1,10 @@
 package Activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -19,16 +22,18 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.IOException;
+
 import Models.POJOS.User;
 import Services.UserService;
 
 public class PasswordValidation extends AppCompatActivity {
     private FirebaseAuth mAuth;
-    private boolean alerts, notifications, needHelp, isActive, timeConfiguration, isOk;
-    private String profileImage, name, lastName, userName, cellPhone, address;
+    private String name, lastName, userName, cellPhone, address, userId;
     private TextInputEditText password1, email;
     private TextInputLayout layoutEmail, layoutPassword;
     private UserService userService;
+    private Uri chosenImageData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,16 +41,7 @@ public class PasswordValidation extends AppCompatActivity {
         setContentView(R.layout.activity_password_validation);
         mAuth = FirebaseAuth.getInstance();
         userService = new UserService();
-        // boleanos por default
-        alerts = true;
-        notifications = true;
-        needHelp = false;
-        isActive = true;
-        timeConfiguration = true;
-        isOk = true;
-        boolean picker = true;
-        boolean hotMap = true;
-        boolean viewType = true;
+
         //Extraer los valores que vienen de la vista Singup
         email = findViewById(R.id.etEmailSignUp);
         name = getIntent().getStringExtra("name");
@@ -53,9 +49,9 @@ public class PasswordValidation extends AppCompatActivity {
         userName = getIntent().getStringExtra("userName");
         cellPhone = getIntent().getStringExtra("cellPhone");
         address = getIntent().getStringExtra("address");
-        profileImage = getIntent().getStringExtra("profileImage");
+        //profileImage = getIntent().getStringExtra("profileImage");
+        chosenImageData = Uri.parse(getIntent().getStringExtra("imageUri"));
 
-        //
         Button btnSignUp = findViewById(R.id.idbtnSigup);
         password1 = findViewById(R.id.etPassword1Step2);
         //layouts
@@ -70,29 +66,34 @@ public class PasswordValidation extends AppCompatActivity {
         });
     }
 
-
     private void registerUser() {
         if (validateInputs()) {
             mAuth.createUserWithEmailAndPassword(email.getText().toString(), password1.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        String userId = task.getResult().getUser().getUid();
+                        userId = task.getResult().getUser().getUid();
+                        String profileImage = userId + ".png";
 
                         User newUser = new User(userId, name, lastName, userName.toLowerCase(), email.getText().toString(), cellPhone, address, profileImage,
-                                isOk, alerts, notifications, needHelp, isActive, timeConfiguration, true, true, true);
+                                true, true, true, false, true, true, true, true, true);
 
                         if (userService.addNewUser(newUser)) {
-                            Toast.makeText(PasswordValidation.this, "Se ha registrado exitosamente", Toast.LENGTH_LONG).show();
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            assert user != null;
-                            user.sendEmailVerification();
-                            logInViewTransition();
+                            try {
+                                uploadTheSelectedImageToServer();
+                                Toast.makeText(PasswordValidation.this, "Se ha registrado exitosamente", Toast.LENGTH_LONG).show();
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                assert user != null;
+                                user.sendEmailVerification();
+                                logInViewTransition();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         } else {
                             Toast.makeText(PasswordValidation.this, "Error durante el proceso de registro", Toast.LENGTH_LONG).show();
                         }
                     } else {
-                            Toast.makeText(PasswordValidation.this, "Esta dirección de correo ya existe en la base de datos", Toast.LENGTH_LONG).show();
+                        Toast.makeText(PasswordValidation.this, "Esta dirección de correo ya existe en la base de datos", Toast.LENGTH_LONG).show();
                     }
                 }
             });
@@ -122,5 +123,10 @@ public class PasswordValidation extends AppCompatActivity {
             layoutPassword.setError(null);
         }
         return isValid;
+    }
+
+    private void uploadTheSelectedImageToServer() throws IOException {
+        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageData);
+        userService.uploadTheSelectedImageToServer(bitmap);
     }
 }
