@@ -14,39 +14,20 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp">
 
-        <LinearLayout
-            android:id="@+id/linearLayout2"
+        <TextView
+            android:id="@+id/header"
             android:layout_width="0dp"
-            android:layout_height="92dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
-            android:orientation="horizontal"
+            android:textSize="16sp"
+            android:text="@string/reportsScreenHeader"
+            android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.333"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageButton
-                android:id="@+id/newReportReturnButton"
-                android:layout_width="wrap_content"
-                android:layout_height="43dp"
-                android:layout_gravity="center"
-                android:background="#00000000"
-                app:srcCompat="@drawable/back" />
-
-            <TextView
-                android:id="@+id/newReportScreenHeader"
-                android:layout_width="0dp"
-                android:layout_height="43dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/title_register_report"
-                android:textAlignment="center"
-                android:textColor="@color/brownColor"
-                android:textSize="25sp"
-                android:textStyle="bold" />
-        </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/affectedAnimalsLayout"
@@ -82,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
             android:hint="@string/affectedPeopleLabel"
             app:boxBackgroundMode="outline"
@@ -91,7 +72,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            app:layout_constraintTop_toBottomOf="@+id/header"
             app:startIconDrawable="@drawable/people"
             tools:ignore="MissingConstraints">
 

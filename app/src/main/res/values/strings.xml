@@ -39,6 +39,7 @@
     <string name="nextButtonText">SIGUIENTE</string>
     <string name="recoverPasswordText">Recuperar Contraseña</string>
     <string name="loginPageHeaderText">Bienvenido a la página de inicio de sesión</string>
+    <string name="reportsScreenHeader">Registre aquí su reporte</string>
     <string name="title_user_profile">Mi perfil</string>
     <string name="title_activity_searchUser">Buscar Usuario</string>
     <string name="editButtonText">EDITAR</string>

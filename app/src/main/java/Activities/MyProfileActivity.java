@@ -1,5 +1,7 @@
 package Activities;
 
+import android.animation.ObjectAnimator;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -8,7 +10,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -48,17 +53,27 @@ public class MyProfileActivity extends AppCompatActivity {
     private Button editSaveButton;
     private FirebaseDatabase database;
     private Bitmap bitmap;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_profile);
+        setProgressBar();
         database = FirebaseDatabase.getInstance();
         currentUser = null;
         userService = new UserService();
         getElementsReference();
         addListeners();
         getCurrentUserInfo();
+    }
+
+    public void setProgressBar() {
+        progressBar = findViewById(R.id.progressBar);
+        ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", 0, 500);
+        animation.setDuration(5000);
+        animation.setInterpolator(new DecelerateInterpolator());
+        animation.start();
     }
 
     public void getElementsReference() {
@@ -86,6 +101,7 @@ public class MyProfileActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Uri uri) {
                 Picasso.get().load(uri).fit().into(profileImage);
+                progressBar.setVisibility(View.INVISIBLE);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -185,7 +201,7 @@ public class MyProfileActivity extends AppCompatActivity {
                 public void run() {
                     Toast.makeText(MyProfileActivity.this, "Los cambios pueden tomar varios minutos en reflejarse", Toast.LENGTH_LONG).show();
                 }
-            }, 5000);
+            }, 3600);
 
 
             getCurrentUserInfo();
@@ -378,6 +394,8 @@ public class MyProfileActivity extends AppCompatActivity {
 
                     if (!TextUtils.isEmpty(currentUser.getProfileImage())) {
                         setImageProfile();
+                    } else {
+                        profileImage.setImageDrawable(ContextCompat.getDrawable(MyProfileActivity.this, R.drawable.ic_person));
                     }
 
                     disableFields();

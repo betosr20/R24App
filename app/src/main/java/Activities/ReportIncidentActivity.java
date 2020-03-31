@@ -63,7 +63,6 @@ public class ReportIncidentActivity extends AppCompatActivity {
         reportService = new ReportService();
         addItemsToSpinner();
         addActivateLocationListener();
-        addReturnButtonListener();
         addSubmitReportListener();
         addImagesButtonListener();
         addSpinnerListener();
@@ -227,16 +226,6 @@ public class ReportIncidentActivity extends AppCompatActivity {
                 startMapActivity();
             }
         }, 3500);
-    }
-
-    private void addReturnButtonListener() {
-        ImageButton returnButton = findViewById(R.id.newReportReturnButton);
-        returnButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startMapActivity();
-            }
-        });
     }
 
     private void startMapActivity() {
