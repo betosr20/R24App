@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -126,7 +127,9 @@ public class PasswordValidation extends AppCompatActivity {
     }
 
     private void uploadTheSelectedImageToServer() throws IOException {
-        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageData);
-        userService.uploadTheSelectedImageToServer(bitmap);
+        if (chosenImageData != null && !TextUtils.isEmpty(chosenImageData.toString())) {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageData);
+            userService.uploadTheSelectedImageToServer(bitmap);
+        }
     }
 }

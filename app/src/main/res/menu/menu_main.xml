@@ -41,7 +41,7 @@
 
     <group android:id="@+id/settings3">
         <item
-            android:id="@+id/userProfile"
+            android:id="@+id/myProfile"
             android:orderInCategory="100"
             android:title="@string/title_user_profile"
             app:showAsAction="never"

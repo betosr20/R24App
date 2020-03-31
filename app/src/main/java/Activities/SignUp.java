@@ -17,10 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.r24app.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,11 +27,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.Nullable;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.UploadTask;
-
-import java.io.ByteArrayOutputStream;
-import java.util.UUID;
 
 import Models.Constants.FirebaseClasses;
 import Models.POJOS.User;
@@ -141,8 +132,13 @@ public class SignUp extends AppCompatActivity {
         intent.putExtra("userName", userName.getText().toString());
         intent.putExtra("cellPhone", cellPhone.getText().toString());
         intent.putExtra("address", address.getText().toString());
-        intent.putExtra("imageUri", chosenImageData.toString());
-        //intent.putExtra("profileImage", uploadedImageLink);
+
+        if (chosenImageData != null) {
+            intent.putExtra("imageUri", chosenImageData.toString());
+        } else {
+            intent.putExtra("imageUri", "");
+        }
+
         startActivity(intent);
         finish();
     }

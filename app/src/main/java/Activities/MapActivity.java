@@ -344,6 +344,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         Intent reportActivity = new Intent(context2, ReportIncidentActivity.class);
                         startActivity(reportActivity);
                         return true;
+                    case R.id.myProfile:
+                        Intent profileActivity = new Intent(context2, MyProfileActivity.class);
+                        startActivity(profileActivity);
+                        return true;
                     default:
                         return false;
                 }

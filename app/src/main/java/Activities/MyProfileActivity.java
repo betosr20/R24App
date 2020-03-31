@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -178,6 +179,15 @@ public class MyProfileActivity extends AppCompatActivity {
         if (userService.updateUser(currentUser)) {
             uploadTheSelectedImageToServer();
             Toast.makeText(MyProfileActivity.this, "Datos actualizados exitosamente", Toast.LENGTH_LONG).show();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(MyProfileActivity.this, "Los cambios pueden tomar varios minutos en reflejarse", Toast.LENGTH_LONG).show();
+                }
+            }, 5000);
+
+
             getCurrentUserInfo();
             disableFields();
         } else {

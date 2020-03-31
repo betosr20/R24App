@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                         FirebaseUser user = mAuth.getCurrentUser();
                         getTransitionIntoMainView();
                     } else {
-                        Toast.makeText(MainActivity.this, "Este usuario no existe en la base de datos.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "Las credenciales ingresadas no son válidas", Toast.LENGTH_LONG).show();
                     }
                 }
             });
