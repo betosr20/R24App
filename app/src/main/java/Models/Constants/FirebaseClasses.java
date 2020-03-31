@@ -8,4 +8,6 @@ public final class FirebaseClasses {
     public static final String NaturalDisaster = "NaturalDisaster";
     public static final String SideEffect = "SideEffect";
     public static final String ReportPicture = "ReportPicture";
+    public static final String UsernameAttribute = "username";
+    public static final String CellphoneAttribute = "cellPhone";
 }

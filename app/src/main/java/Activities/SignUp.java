@@ -24,6 +24,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.UploadTask;
@@ -31,22 +37,27 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.util.UUID;
 
+import Models.Constants.FirebaseClasses;
+import Models.POJOS.User;
+
 public class SignUp extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Button btnNextStep;
-    private ImageView imgSelectImage;
-    private ImageView iconimgSelectImage;
-    private ImageView iconDeleteImage;
+    private ImageView imgSelectImage, iconimgSelectImage, iconDeleteImage;
     private String imageIdentifier, uploadedImageLink;
-    TextInputLayout inputLayoutName, inputLayoutLastName, inputLayoutUserName, inputLayoutCellPhone, inputLayoutAddress;
-    TextInputEditText name, lastName, userName, cellPhone, address;
+    private TextInputLayout inputLayoutName, inputLayoutLastName, inputLayoutUserName, inputLayoutCellPhone, inputLayoutAddress;
+    private TextInputEditText name, lastName, userName, cellPhone, address;
     private boolean alerts, notifications, needHelp, isActive, timeConfiguration, isOk;
     private Bitmap bitmap;
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference();
 //        mAuth = FirebaseAuth.getInstance();
         // Input y editText de Nombre
         inputLayoutName = findViewById(R.id.LayoutName);
@@ -101,17 +112,21 @@ public class SignUp extends AppCompatActivity {
      */
     public void nextStepToRegisterUser() {
         uploadTheSelectedImageTotheServer();
-        if (validateInputs() != false) {
-            Intent intent = new Intent(this, PasswordValidation.class);
-            intent.putExtra("name", name.getText().toString());
-            intent.putExtra("lastName", lastName.getText().toString());
-            intent.putExtra("userName", userName.getText().toString());
-            intent.putExtra("cellPhone", cellPhone.getText().toString());
-            intent.putExtra("address", address.getText().toString());
-            intent.putExtra("profileImage", uploadedImageLink);
-            startActivity(intent);
-            finish();
+        if (validateInputs()) {
+            validateUserName();
         }
+    }
+
+    public void moveToNextScreen() {
+        Intent intent = new Intent(this, PasswordValidation.class);
+        intent.putExtra("name", name.getText().toString());
+        intent.putExtra("lastName", lastName.getText().toString());
+        intent.putExtra("userName", userName.getText().toString());
+        intent.putExtra("cellPhone", cellPhone.getText().toString());
+        intent.putExtra("address", address.getText().toString());
+        intent.putExtra("profileImage", uploadedImageLink);
+        startActivity(intent);
+        finish();
     }
 
     public boolean validateInputs() {
@@ -155,6 +170,79 @@ public class SignUp extends AppCompatActivity {
         return isValid;
     }
 
+    public void validatePhoneNumber() {
+        Query usersQuery = database.getReference(FirebaseClasses.User).orderByChild(FirebaseClasses.CellphoneAttribute).equalTo(cellPhone.getText().toString());
+
+        usersQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                boolean isValidCellPhone = true;
+
+                if (dataSnapshot.exists()) {
+                    User user;
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        user = snapshot.getValue(User.class);
+
+                        if (user.getCellPhone().equals(cellPhone.getText().toString())) {
+                            inputLayoutCellPhone.setError("El némero de teléfono ya existe");
+                            inputLayoutCellPhone.requestFocus();
+                            isValidCellPhone = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (isValidCellPhone) {
+                    moveToNextScreen();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void validateUserName() {
+        Query usersQuery = database.getReference(FirebaseClasses.User).orderByChild(FirebaseClasses.UsernameAttribute).equalTo(userName.getText().toString().toLowerCase());
+
+        usersQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                boolean isValidUserName = true;
+
+                if (dataSnapshot.exists()) {
+                    User user;
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        user = snapshot.getValue(User.class);
+
+                        String userNameFound = user.getUsername().toLowerCase();
+                        String newUsername = userName.getText().toString().toLowerCase();
+
+                        if (userNameFound.equals(newUsername)) {
+                            inputLayoutUserName.setError("El nombre de usuario ya existe");
+                            inputLayoutUserName.requestFocus();
+                            isValidUserName = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (isValidUserName) {
+                    validatePhoneNumber();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void selectImage() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1000);
@@ -169,12 +257,8 @@ public class SignUp extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == 1000 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
             selectImage();
-
         }
-
-
     }
 
     @Override
@@ -187,15 +271,11 @@ public class SignUp extends AppCompatActivity {
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageData);
                 imgSelectImage.setImageBitmap(bitmap);
-
-
             } catch (Exception e) {
 
                 e.printStackTrace();
             }
-
         }
-
     }
 
     private void uploadTheSelectedImageTotheServer() {
@@ -210,7 +290,6 @@ public class SignUp extends AppCompatActivity {
 //            imgSelectImage.setImageBitmap(bitmap); esto deberia pintar la imagen seleccionada pero no funciona,hay que solucionarlo
             byte[] data = baos.toByteArray();
             imageIdentifier = UUID.randomUUID().toString() + ".png";
-
 
             final UploadTask uploadTask = FirebaseStorage.getInstance().getReference().
                     child("myImages").
