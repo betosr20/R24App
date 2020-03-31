@@ -3,7 +3,6 @@ package Activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -32,22 +31,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
-import com.suke.widget.SwitchButton;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import Activities.ReportDetail.GeneralInformation;
 import Activities.ReportDetail.ReportDetailContainer;
 import Models.Constants.FirebaseClasses;
 import Models.POJOS.Report;
@@ -137,7 +128,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap = googleMap;
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference(FirebaseClasses.Report);
-
         //Agrega el Event Listener
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -158,17 +148,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
         marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
-
         return false;
     }
 
-    public void populatePins(GoogleMap googleMap){
+    public void populatePins(GoogleMap googleMap) {
         mMap = googleMap;
         List<Marker> markerList = new ArrayList<>();
         double latitude, longitude;
@@ -205,7 +193,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     public void OnDetailSelected(Report report) {
         Intent intent = new Intent(this, ReportDetailContainer.class);
-        intent.putExtra("report", report);
+        String id = report.getId();
+        intent.putExtra("idReport", id);
         startActivity(intent);
     }
 
@@ -245,10 +234,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     .build();
             mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
         }
-
-
     }
-
 
     @SuppressLint("RestrictedApi")
     @Override

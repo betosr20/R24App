@@ -1,7 +1,6 @@
 package Activities.ReportDetail;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,20 +10,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.r24app.R;
+import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import Models.POJOS.Image;
+import Activities.modules.GlideApp;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder> {
-
-
-    Context context;
-    List<Image> images;
-    public  ImageAdapter (List<Image> pimages, Context pcontext) {
-
-        this.images =  pimages;
-        this.context = pcontext;
+    private Context context;
+    private List<StorageReference> referencesList = new ArrayList<>();
+    public  ImageAdapter (List<StorageReference> referencesList, Context context) {
+        this.context = context;
+        this.referencesList = referencesList;
     }
     @NonNull
     @Override
@@ -36,20 +34,21 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-    holder.imageView.setImageResource(images.get(position).getFotoUrl());
-
+        GlideApp.with(context)
+                .load(referencesList.get(position))
+                .into(holder.imageView);
     }
 
     @Override
     public int getItemCount() {
-        return images.size();
+        return referencesList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = (ImageView) itemView.findViewById(R.id.imageReport);
+            imageView = itemView.findViewById(R.id.imageReport);
         }
     }
 }

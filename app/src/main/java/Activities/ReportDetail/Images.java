@@ -3,7 +3,6 @@ package Activities.ReportDetail;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,22 +12,50 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.r24app.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import Models.Constants.FirebaseClasses;
 import Models.POJOS.Image;
+import Models.POJOS.Report;
+import Models.POJOS.ReportPicture;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class Images extends Fragment {
-   private View imageView;//Fragmento
-    private RecyclerView recyclerview;
-    List<Image> images;
-    ImageAdapter imageAdapter;
+   private View imageView;
+   private RecyclerView recyclerview;
+   private List<Image> imagesList;
+   private ImageAdapter imageAdapter;
+   private String idReport;
+   private Report report;
+   private FirebaseDatabase database;
+   private DatabaseReference databaseReference;
+   private List<ReportPicture> imagesReference = new ArrayList<>();
+   private List<StorageReference> referencesList = new ArrayList<>();
+   private StorageReference storageReference;
+   private FirebaseStorage storage;
+
     public Images() {
         // Required empty public constructor
+    }
+
+    public Images(String idReport) {
+        this.idReport = idReport;
+        this.database = FirebaseDatabase.getInstance();
+        this.databaseReference = database.getReference(FirebaseClasses.ReportPicture);
+        this.storage = FirebaseStorage.getInstance();
+        this.storageReference = storage.getReference();
+        this.imagesList = new ArrayList<>();
     }
 
     @Override
@@ -36,22 +63,29 @@ public class Images extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         imageView = inflater.inflate(R.layout.fragment_images, container, false);
-        recyclerview =  imageView.findViewById(R.id.imageList);
-        onViewCreated(null,null);
-        imageAdapter =  new ImageAdapter(images, getContext());
+        recyclerview = imageView.findViewById(R.id.imageList);
         recyclerview.setLayoutManager( new LinearLayoutManager(getActivity()));
-        recyclerview.setAdapter(imageAdapter);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                        imagesReference.add(snapshot.getValue(ReportPicture.class));
+                    }
+                    for (ReportPicture reportPicture: imagesReference) {
+                        if (reportPicture.getReportId().equals(idReport)) {
+                            StorageReference reference = storageReference.child("ReportsImages/"+reportPicture.getImageName());
+                            referencesList.add(reference);
+                        }
+                    }
+                    imageAdapter =  new ImageAdapter(referencesList, getContext());
+                    recyclerview.setAdapter(imageAdapter);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
         return imageView;
-    }
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        images = new ArrayList<>();
-        images.add(new Image(R.drawable.image1));
-        images.add(new Image(R.drawable.imagen2));
-        images.add(new Image(R.drawable.image3));
-        images.add(new Image(R.drawable.imagen4));
-        images.add(new Image(R.drawable.imagen5));
-
     }
 }
