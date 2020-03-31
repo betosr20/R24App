@@ -1,9 +1,14 @@
 package Activities;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -11,7 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.view.menu.MenuPopupHelper;
 
 import com.example.r24app.MainActivity;
 import com.example.r24app.R;
@@ -32,74 +37,79 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
-import com.suke.widget.SwitchButton;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import Activities.ReportDetail.GeneralInformation;
 import Activities.ReportDetail.ReportDetailContainer;
 import Models.Constants.FirebaseClasses;
 import Models.POJOS.Report;
+import Models.POJOS.User;
+import Services.UserService;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private GoogleMap mMap;
-    private FirebaseDatabase database;
-    private DatabaseReference databaseReference;
-    private List <Report> reportList = new ArrayList<>();
-
+    private List<Report> reportList = new ArrayList<>();
+    private UserService userService = new UserService();
+    private User user;
+    private Switch switchButtonPins, switchButtonHeatMap, switchButtonView;
     //To check which to delete if marker or heat
-    Boolean activeMarker = true;
-    Boolean activeHeatMap = true;
-    Boolean view = true;
+    Boolean activeMarker;
+    Boolean activeHeatMap;
+    Boolean view;
     private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        //Obtiene el toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("R24App");
-        setSupportActionBar(toolbar);
+        //Setear el onclick del boton del PopUp
+        Button buttonPopUpMenu;
 
         mAuth = FirebaseAuth.getInstance();
-// Obtiene el SupportMapFragment y es notificado cuando el mapa esta listo para ser usado llamando al metodo OnMapReady
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map2);
-        mapFragment.getMapAsync(this);
-
-        //Setear las actividades del boton te toggle de pines
-
-        Switch switchButtonPins, switchButtonHeatMap, switchButtonView;
-
         switchButtonPins = findViewById(R.id.switchButtonPins);
         switchButtonHeatMap = findViewById(R.id.switchButtonHeat);
         switchButtonView = findViewById(R.id.switchButtonView);
+        String id = userService.getCurrentFirebaseUserId();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference(FirebaseClasses.User).child(id);
 
-        //ARREGLAR ESTO CUANDO SE AGREGUEN LOS CAMPOS AL POJO PARA QUE ESTO SE CARGUE DE LA CONFIGURACION DEL USUARIO
-       switchButtonPins.setChecked(true);
-       switchButtonHeatMap.setChecked(true);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                user = dataSnapshot.getValue(User.class);
+                activeMarker = user.isPicker();
+                activeHeatMap = user.isHeatMap();
+                view = user.isViewType();
+
+                // Obtiene el SupportMapFragment y es notificado cuando el mapa esta listo para ser usado llamando al metodo OnMapReady
+                SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.map2);
+                mapFragment.getMapAsync(MapActivity.this::onMapReady);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+
+        //Setear las actividades del boton te toggle de pines
 
         // Set a checked change listener for switch button
         switchButtonPins.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     activeMarker = true;
+                    userService.updatePinSetting(true);
                     populatePins(mMap);
-                }else{
+                } else {
                     activeMarker = false;
+                    userService.updatePinSetting(false);
                     clearPins(mMap, false, activeHeatMap);
                 }
 
@@ -109,8 +119,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         switchButtonHeatMap.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton view, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     activeHeatMap = true;
+                    userService.updateheatMapSetting(true);
                     addHeatMap(mMap);
                 } else {
                     clearPins(mMap, activeMarker, false);
@@ -121,36 +132,55 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         switchButtonView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton view2, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     view = true;
+                    userService.updateViewTypeSetting(true);
                     changeView();
                 } else {
                     view = false;
+                    userService.updateViewTypeSetting(false);
                     changeView();
                 }
             }
         });
 
     }
-    @Override
-    public void onMapReady( final GoogleMap googleMap) {
-        mMap = googleMap;
-        database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference(FirebaseClasses.Report);
 
+    @Override
+
+    public void onMapReady(final GoogleMap googleMap) {
+        mMap = googleMap;
+        switchButtonPins.setChecked(activeMarker);
+        switchButtonHeatMap.setChecked(activeHeatMap);
+        switchButtonView.setChecked(view);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference(FirebaseClasses.Report);
         //Agrega el Event Listener
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 //Valida si existe el arreglo, osea si hay datos
-                if(dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
                     //Itera el contenido del arreglo
-                    for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         reportList.add(snapshot.getValue(Report.class));
                     }
-                    populatePins(googleMap);
-                    addHeatMap(googleMap);
+                    if (activeMarker) {
+                        populatePins(googleMap);
+                    }
+
+                    if (activeHeatMap) {
+                        addHeatMap(googleMap);
+                    }
+
+                    if (!view) {
+                        changeView();
+                    }
+
+                    LatLng latLng;
+                    latLng = new LatLng(9.932231, -84.091373);
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 7));
                 }
             }
 
@@ -168,16 +198,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return false;
     }
 
-    public void populatePins(GoogleMap googleMap){
+    public void populatePins(GoogleMap googleMap) {
         mMap = googleMap;
         List<Marker> markerList = new ArrayList<>();
         double latitude, longitude;
         Marker marker;
         LatLng latLng;
-        latLng = new LatLng(9.932231,-84.091373);
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 7));
 
-        for (Report report: reportList) {
+
+        for (Report report : reportList) {
             latitude = Double.parseDouble(report.getLatitude());
             longitude = Double.parseDouble(report.getLongitude());
             latLng = new LatLng(latitude, longitude);
@@ -188,7 +217,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             marker.setTag(report);
             markerList.add(marker);
         }
-        for (Marker m: markerList) {
+        for (Marker m : markerList) {
             latLng = new LatLng(m.getPosition().latitude, m.getPosition().longitude);
             mMap.addMarker(new MarkerOptions().position(latLng));
         }
@@ -197,7 +226,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onInfoWindowClick(Marker marker) {
                 Report report = (Report) marker.getTag();
-                Toast.makeText(getBaseContext(),"hello world "+ report.getType(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "hello world " + report.getType(), Toast.LENGTH_LONG).show();
                 OnDetailSelected(report);
             }
         });
@@ -213,13 +242,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         if (!activeMarker) {
             googleMap.clear();
             this.activeMarker = false;
-            if(this.activeHeatMap) {
+            userService.updatePinSetting(false);
+            if (this.activeHeatMap) {
                 addHeatMap(googleMap);
             }
         }
-        if(!activeHeatMap) {
+        if (!activeHeatMap) {
             googleMap.clear();
             this.activeHeatMap = false;
+            userService.updateheatMapSetting(false);
             if (this.activeMarker) {
                 populatePins(googleMap);
             }
@@ -233,13 +264,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         TileOverlay mOverlay;
         LatLng latLng;
         double latitude, longitude;
-        for (Report report: reportList) {
+        for (Report report : reportList) {
             latitude = Double.parseDouble(report.getLatitude());
             longitude = Double.parseDouble(report.getLongitude());
             latLng = new LatLng(latitude, longitude);
             list.add(latLng);
         }
-        if(!list.isEmpty()){
+        if (!list.isEmpty()) {
             mProvider = new HeatmapTileProvider.Builder()
                     .data(list)
                     .build();
@@ -255,7 +286,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
-        if(menu instanceof MenuBuilder){
+        if (menu instanceof MenuBuilder) {
             MenuBuilder m = (MenuBuilder) menu;
             //noinspection RestrictedApi
             m.setOptionalIconsVisible(true);
@@ -267,24 +298,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                signOut();
-                return true;
-            case R.id.map2:
-                Intent intent = new Intent(this, MapActivity.class);
-                startActivity(intent);
-                return true;
-            case R.id.report:
-                Intent reportActivity = new Intent(this, ReportIncidentActivity.class);
-                startActivity(reportActivity);
-                break;
-            case R.id.userProfile:
-                Intent profileActivity = new Intent(this, MyProfileActivity.class);
-                startActivity(profileActivity);
-                break;
+
         }
         return super.onOptionsItemSelected(item);
     }
+
     private void signOut() {
         mAuth.signOut();
         Intent signOut = new Intent(this, MainActivity.class);
@@ -293,13 +311,49 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         finish();
     }
 
-    private void changeView(){
-        if(this.view){
+    private void changeView() {
+        if (this.view) {
             mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
-        }else{
+        } else {
             mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         }
+    }
+
+    @SuppressLint("RestrictedApi")
+    public void showPopup(View v) {
+        MenuBuilder menuBuilder = new MenuBuilder(this);
+        MenuInflater inflater = new MenuInflater(this);
+        inflater.inflate(R.menu.menu_main, menuBuilder);
+        MenuPopupHelper optionsMenu = new MenuPopupHelper(this, menuBuilder, v);
+        optionsMenu.setForceShowIcon(true);
+        Context context2 = this;
+        // Set Item Click Listener
+        menuBuilder.setCallback(new MenuBuilder.Callback() {
+            @Override
+            public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_settings:
+                        signOut();
+                        return true;
+                    case R.id.map2:
+                        Intent intent = new Intent(context2, MapActivity.class);
+                        startActivity(intent);
+                        return true;
+                    case R.id.report:
+                        Intent reportActivity = new Intent(context2, ReportIncidentActivity.class);
+                        startActivity(reportActivity);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+
+            @Override
+            public void onMenuModeChange(MenuBuilder menu) {
+            }
+        });
+        optionsMenu.show();
     }
 
 }

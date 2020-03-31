@@ -108,6 +108,22 @@ public class UserService {
                     });
                 }
             });
+
         }
+    }
+
+    public void updatePinSetting(boolean setting) {
+        String id = getCurrentFirebaseUserId();
+        databaseReference.child(FirebaseClasses.User).child(id).child("picker").setValue(setting);
+    }
+
+    public void updateheatMapSetting(boolean setting) {
+        String id = getCurrentFirebaseUserId();
+        databaseReference.child(FirebaseClasses.User).child(id).child("heatMap").setValue(setting);
+    }
+
+    public void updateViewTypeSetting(boolean setting) {
+        String id = getCurrentFirebaseUserId();
+        databaseReference.child(FirebaseClasses.User).child(id).child("viewType").setValue(setting);
     }
 }
