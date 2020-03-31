@@ -10,4 +10,5 @@ public final class FirebaseClasses {
     public static final String ReportPicture = "ReportPicture";
     public static final String UsernameAttribute = "username";
     public static final String CellphoneAttribute = "cellPhone";
+    public static final String ProfileImagesFolder = "myImages/";
 }

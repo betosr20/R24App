@@ -52,7 +52,6 @@ public class ReportIncidentActivity extends AppCompatActivity {
     private UserService userService;
     private TextView imagesSelectedText;
     private ReportService reportService;
-    //private boolean validFields;
     private ArrayList<Uri> imagesUri;
 
     @Override
@@ -64,7 +63,6 @@ public class ReportIncidentActivity extends AppCompatActivity {
         reportService = new ReportService();
         addItemsToSpinner();
         addActivateLocationListener();
-        addReturnButtonListener();
         addSubmitReportListener();
         addImagesButtonListener();
         addSpinnerListener();
@@ -72,7 +70,6 @@ public class ReportIncidentActivity extends AppCompatActivity {
         mapLocationLayout = findViewById(R.id.mapLocationLayout);
         reportDetailLayout = findViewById(R.id.reportDetailLayout);
         description = findViewById(R.id.reportDetailInput);
-        //validFields = true;
     }
 
     @Override
@@ -229,16 +226,6 @@ public class ReportIncidentActivity extends AppCompatActivity {
                 startMapActivity();
             }
         }, 3500);
-    }
-
-    private void addReturnButtonListener() {
-        ImageButton returnButton = findViewById(R.id.newReportReturnButton);
-        returnButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startMapActivity();
-            }
-        });
     }
 
     private void startMapActivity() {

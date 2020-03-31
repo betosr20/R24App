@@ -18,9 +18,35 @@
     <string name="requiredField">Espacio requerido *</string>
     <string name="imageSelected">Imagen Seleccionada</string>
     <string name="loadImages">Cargar Images</string>
+    <string name="fieldName">Ingrese su nombre</string>
+    <string name="fieldNameHint">Nombre</string>
+    <string name="fieldLastName">Ingrese sus apellidos</string>
+    <string name="fieldLastNameHint">Apellidos</string>
+    <string name="fieldUsername">Ingrese su nombre de usuario</string>
+    <string name="fieldUsernameHint">Nombre de usuario</string>
+    <string name="fieldPhoneNumber">Ingrese su número de teléfono</string>
+    <string name="fieldPhoneNumberHint">Número de teléfono</string>
+    <string name="fieldAddress">Ingrese su dirección</string>
+    <string name="fieldAddressHint">Dirección</string>
+    <string name="fieldEmailAddressHint">Correo electrónico</string>
+    <string name="emailAddressHelperText">Ingrese su correo electrónico</string>
+    <string name="passwordHelperText">Ingrese su contraseña</string>
+    <string name="changePasswordHelperText">Cambiar Contraseña</string>
+    <string name="fieldPasswordHint">Contraseña</string>
+    <string name="loginButtonText">Ingresar</string>
+    <string name="recoverPasswordButtonText">Recuperar Contraseña</string>
+    <string name="registerButtonText">Registrar</string>
+    <string name="nextButtonText">SIGUIENTE</string>
+    <string name="recoverPasswordText">Recuperar Contraseña</string>
     <string name="loginPageHeaderText">Bienvenido a la página de inicio de sesión</string>
+    <string name="reportsScreenHeader">Registre aquí su reporte</string>
     <string name="title_user_profile">Mi perfil</string>
     <string name="title_activity_searchUser">Buscar Usuario</string>
+    <string name="editButtonText">EDITAR</string>
+    <string name="saveButtonText">GUARDAR</string>
+    <string name="needHelpAction">Señal de auxilio</string>
+    <string name="amOkAction">Estoy bien</string>
+    <string name="changeViewSwitch">Vista</string>
     title_activity_searchUser
 
     <string-array name="disasterTypes_array">
