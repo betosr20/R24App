@@ -188,13 +188,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
         marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
-
         return false;
     }
 
@@ -226,7 +224,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onInfoWindowClick(Marker marker) {
                 Report report = (Report) marker.getTag();
-                Toast.makeText(getBaseContext(), "hello world " + report.getType(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "Detalle del evento " + report.getType(), Toast.LENGTH_LONG).show();
                 OnDetailSelected(report);
             }
         });
@@ -234,7 +232,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     public void OnDetailSelected(Report report) {
         Intent intent = new Intent(this, ReportDetailContainer.class);
-        intent.putExtra("report", report);
+        String id = report.getId();
+        intent.putExtra("idReport", id);
         startActivity(intent);
     }
 
@@ -276,10 +275,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     .build();
             mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
         }
-
-
     }
-
 
     @SuppressLint("RestrictedApi")
     @Override

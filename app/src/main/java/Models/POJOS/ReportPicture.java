@@ -5,6 +5,8 @@ public class ReportPicture {
     private String reportId;
     private String imageName;
 
+    public ReportPicture() {}
+
     public ReportPicture(String imageName, String reportId, String Id) {
         this.imageName = imageName;
         this.reportId = reportId;
