@@ -21,7 +21,6 @@ import Models.POJOS.ReportPicture;
 public class ReportService {
     private FirebaseDatabase database;
     private FirebaseStorage firebaseStorage;
-    private StorageReference firebaseStorageReference;
     private DatabaseReference databaseReference;
 
     public ReportService() {
@@ -51,7 +50,7 @@ public class ReportService {
     }
 
     public boolean saveReportImages(ArrayList<Uri> uris, final String reportId) {
-        firebaseStorageReference = firebaseStorage.getReference();
+        StorageReference firebaseStorageReference = firebaseStorage.getReference();
         final boolean[] successfulUpload = {true};
         int imagesCounter = 1;
 

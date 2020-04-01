@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getTransitionIntoMainView();
         email = findViewById(R.id.emailInput);
         password = findViewById(R.id.etLoginPassword);
         ingresar = findViewById(R.id.btnNextSignUp);
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                         FirebaseUser user = mAuth.getCurrentUser();
                         getTransitionIntoMainView();
                     } else {
-                        Toast.makeText(MainActivity.this, "Este usuario no existe en la base de datos.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "Las credenciales ingresadas no son válidas", Toast.LENGTH_LONG).show();
                     }
                 }
             });

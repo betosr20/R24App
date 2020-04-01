@@ -17,10 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.r24app.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,11 +27,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.Nullable;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.UploadTask;
-
-import java.io.ByteArrayOutputStream;
-import java.util.UUID;
 
 import Models.Constants.FirebaseClasses;
 import Models.POJOS.User;
@@ -47,10 +38,11 @@ public class SignUp extends AppCompatActivity {
     private String imageIdentifier, uploadedImageLink;
     private TextInputLayout inputLayoutName, inputLayoutLastName, inputLayoutUserName, inputLayoutCellPhone, inputLayoutAddress;
     private TextInputEditText name, lastName, userName, cellPhone, address;
-    private boolean alerts, notifications, needHelp, isActive, timeConfiguration, isOk;
+    //private boolean alerts, notifications, needHelp, isActive, timeConfiguration, isOk;
     private Bitmap bitmap;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
+    private Uri chosenImageData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +55,7 @@ public class SignUp extends AppCompatActivity {
         inputLayoutName = findViewById(R.id.LayoutName);
         name = findViewById(R.id.etName);
         // Input y editText de Apellidos
-        inputLayoutLastName = findViewById(R.id.LayoutLast);
+        inputLayoutLastName = findViewById(R.id.LayoutLastName);
         lastName = findViewById(R.id.etLastName);
         // Input y editText de nombre de usuario
         inputLayoutUserName = findViewById(R.id.LayoutUserName);
@@ -73,7 +65,7 @@ public class SignUp extends AppCompatActivity {
         cellPhone = findViewById(R.id.etCellPhone);
         // Input y editText de direccion
         inputLayoutAddress = findViewById(R.id.LayoutAddress);
-        address = findViewById(R.id.etAddres);
+        address = findViewById(R.id.etAddress);
         // boton que se encarga a disparar la accion de registarse en FireBase.
         btnNextStep = findViewById(R.id.btnSignUp);
         btnNextStep.setOnClickListener(new View.OnClickListener() {
@@ -83,12 +75,12 @@ public class SignUp extends AppCompatActivity {
             }
         });
         // boleanos por default
-        alerts = true;
+        /*alerts = true;
         notifications = true;
         needHelp = false;
         isActive = true;
         timeConfiguration = true;
-        isOk = true;
+        isOk = true;*/
         //images
         iconimgSelectImage = findViewById(R.id.imgFromGallery);
         imgSelectImage = findViewById(R.id.imgBigFoto);
@@ -105,13 +97,29 @@ public class SignUp extends AppCompatActivity {
                 selectImage();
             }
         });
+
+        disableFields();
+    }
+
+    public void disableFields() {
+        imgSelectImage.setEnabled(false);
+        imgSelectImage.setEnabled(false);
+        iconDeleteImage.setClickable(false);
+        iconDeleteImage.setClickable(false);
+    }
+
+    public void enableFields() {
+        imgSelectImage.setEnabled(true);
+        imgSelectImage.setEnabled(true);
+        iconDeleteImage.setClickable(true);
+        iconDeleteImage.setClickable(true);
     }
 
     /*
         Metodo que se encarga de extraer los datos de la vista sign_up y enviarlos a Firebase.
      */
     public void nextStepToRegisterUser() {
-        uploadTheSelectedImageTotheServer();
+        // uploadTheSelectedImageTotheServer();
         if (validateInputs()) {
             validateUserName();
         }
@@ -124,7 +132,13 @@ public class SignUp extends AppCompatActivity {
         intent.putExtra("userName", userName.getText().toString());
         intent.putExtra("cellPhone", cellPhone.getText().toString());
         intent.putExtra("address", address.getText().toString());
-        intent.putExtra("profileImage", uploadedImageLink);
+
+        if (chosenImageData != null) {
+            intent.putExtra("imageUri", chosenImageData.toString());
+        } else {
+            intent.putExtra("imageUri", "");
+        }
+
         startActivity(intent);
         finish();
     }
@@ -266,58 +280,15 @@ public class SignUp extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1000 && resultCode == RESULT_OK && data != null) {
-            Uri chosenImageData = data.getData();
+            chosenImageData = data.getData();
             configImageView(data.getDataString());
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageData);
                 imgSelectImage.setImageBitmap(bitmap);
+                enableFields();
             } catch (Exception e) {
-
                 e.printStackTrace();
             }
-        }
-    }
-
-    private void uploadTheSelectedImageTotheServer() {
-        // Get the data from an ImageView as bytes
-        if (bitmap != null) {
-
-            imgSelectImage.setDrawingCacheEnabled(true);
-            imgSelectImage.buildDrawingCache();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-//            imgSelectImage.setImageBitmap(bitmap); esto deberia pintar la imagen seleccionada pero no funciona,hay que solucionarlo
-            byte[] data = baos.toByteArray();
-            imageIdentifier = UUID.randomUUID().toString() + ".png";
-
-            final UploadTask uploadTask = FirebaseStorage.getInstance().getReference().
-                    child("myImages").
-                    child(imageIdentifier).putBytes(data);
-            uploadedImageLink = "myImages" + "/" + imageIdentifier;
-
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle unsuccessful uploads
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                    // ...
-                    taskSnapshot.getMetadata().getReference().getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Uri> task) {
-                            System.out.println(task.getResult());
-                            uploadedImageLink = task.getResult().toString();
-
-                        }
-                    });
-
-
-                }
-            });
         }
     }
 
@@ -331,8 +302,8 @@ public class SignUp extends AppCompatActivity {
     }
 
     private void configImageView(String fotoUrl) {
-        if (fotoUrl != null) {
-        } else {
+        if (fotoUrl == null) {
+            disableFields();
             imgSelectImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_person));
         }
     }

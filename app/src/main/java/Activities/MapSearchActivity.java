@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,7 +18,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -31,6 +32,7 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
     private GoogleMap googleMap;
     private SupportMapFragment mapFragment;
     private Place place;
+    private Boolean view = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,33 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapSearchViewFragment);
         setSearchViewInputListener();
         addCheckButtonListener();
+        addSwitchListener();
         place = null;
+    }
+
+    private void addSwitchListener() {
+        Switch switchButtonView = findViewById(R.id.switchButtonView);
+
+        switchButtonView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton view2, boolean isChecked) {
+                if (isChecked) {
+                    view = true;
+                    changeView();
+                } else {
+                    view = false;
+                    changeView();
+                }
+            }
+        });
+    }
+
+    private void changeView() {
+        if (this.view) {
+            googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        } else {
+            googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        }
     }
 
     private void addCheckButtonListener() {
@@ -108,7 +136,10 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
         // this.googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-        LatLngBounds CR = new LatLngBounds(new LatLng(9.9368345, -84.1077296), new LatLng(9.9368345, -84.1077296));
-        this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(9.9368345, -84.1077296), 16));
+        // LatLngBounds CR = new LatLngBounds(new LatLng(9.9368345, -84.1077296), new LatLng(9.9368345, -84.1077296));
+        // this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(9.9368345, -84.1077296), 16));
+
+        LatLng defaultPosition = new LatLng(9.932231, -84.091373);
+        this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(defaultPosition, 7));
     }
 }

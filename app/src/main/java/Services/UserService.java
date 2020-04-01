@@ -1,13 +1,23 @@
 package Services;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
+
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 import Models.Constants.FirebaseClasses;
 import Models.POJOS.User;
@@ -69,27 +79,51 @@ public class UserService {
         return successFulRegister[0];
     }
 
-    public void updatePinSetting(boolean setting){
-        String id = getCurrentFirebaseUserId();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        FirebaseDatabase.getInstance().getReference()
-                .child(FirebaseClasses.User).child(id).child("picker")
-                .setValue(setting);
+    public void uploadTheSelectedImageToServer(Bitmap bitmap) throws IOException {
+        if (bitmap != null) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            byte[] data = baos.toByteArray();
+            String profileImage = getCurrentFirebaseUserId() + ".png";
+
+            final UploadTask uploadTask = FirebaseStorage.getInstance().getReference().
+                    child("myImages").
+                    child(profileImage).putBytes(data);
+            final String[] imgPath = {"myImages" + "/" + profileImage};
+
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    taskSnapshot.getMetadata().getReference().getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            imgPath[0] = task.getResult().toString();
+                        }
+                    });
+                }
+            });
+
+        }
     }
 
-    public void updateheatMapSetting(boolean setting){
+    public void updatePinSetting(boolean setting) {
         String id = getCurrentFirebaseUserId();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        FirebaseDatabase.getInstance().getReference()
-                .child(FirebaseClasses.User).child(id).child("heatMap")
-                .setValue(setting);
+        databaseReference.child(FirebaseClasses.User).child(id).child("picker").setValue(setting);
     }
 
-    public void updateViewTypeSetting(boolean setting){
+    public void updateheatMapSetting(boolean setting) {
         String id = getCurrentFirebaseUserId();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        FirebaseDatabase.getInstance().getReference()
-                .child(FirebaseClasses.User).child(id).child("viewType")
-                .setValue(setting);
+        databaseReference.child(FirebaseClasses.User).child(id).child("heatMap").setValue(setting);
+    }
+
+    public void updateViewTypeSetting(boolean setting) {
+        String id = getCurrentFirebaseUserId();
+        databaseReference.child(FirebaseClasses.User).child(id).child("viewType").setValue(setting);
     }
 }
