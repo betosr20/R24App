@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -18,47 +17,40 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import Activities.MapActivity;
 import Activities.RecoveryPassword;
 import Activities.SignUp;
 
 public class MainActivity extends AppCompatActivity {
-    private FirebaseDatabase database;
-    private DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
-    TextInputEditText email, password;
-    TextInputLayout inputLayoutEmail, inputLayoutPassword;
-    private TextView recoveryPassword, singUpLink;
-    Button ingresar;
+    private TextInputEditText email, password;
+    private TextInputLayout inputLayoutEmail, inputLayoutPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getTransitionIntoMainView();
         email = findViewById(R.id.emailInput);
         password = findViewById(R.id.etLoginPassword);
-        ingresar = findViewById(R.id.btnNextSignUp);
+        Button login = findViewById(R.id.btnNextSignUp);
         inputLayoutEmail = findViewById(R.id.emailInputLayout);
         inputLayoutPassword = findViewById(R.id.LayoutLoginPassword);
-        ingresar.setOnClickListener(new View.OnClickListener() {
+        login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 login();
             }
         });
         mAuth = FirebaseAuth.getInstance();
-        recoveryPassword = findViewById(R.id.textRecoveryPassword);
+        TextView recoveryPassword = findViewById(R.id.textRecoveryPassword);
         recoveryPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 transitionRecoveryPasswordView();
             }
         });
-        singUpLink = findViewById(R.id.textCreateAcount);
+        TextView singUpLink = findViewById(R.id.textCreateAcount);
         singUpLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void login() {
-        if (validateInputs() != false) {
+        if (validateInputs()) {
             mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -104,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean validateInputs() {
         boolean isValid = true;
+
         if (email.getText() != null && email.getText().toString().trim().isEmpty()) {
             inputLayoutEmail.setError("Espacio requerido *");
             inputLayoutEmail.requestFocus();
@@ -118,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             inputLayoutPassword.setError(null);
         }
+
         return isValid;
     }
 }
