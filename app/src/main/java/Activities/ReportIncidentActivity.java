@@ -280,4 +280,8 @@ public class ReportIncidentActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void windowBack(View v) {
+        onBackPressed();
+    }
 }

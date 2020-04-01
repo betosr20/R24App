@@ -69,4 +69,8 @@ public class RecoveryPassword extends AppCompatActivity {
         }
         return isValid;
     }
+
+    public void windowBack(View v){
+        onBackPressed();
+    }
 }

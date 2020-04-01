@@ -408,4 +408,9 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void windowBack(View v){
+        onBackPressed();
+    }
+
 }

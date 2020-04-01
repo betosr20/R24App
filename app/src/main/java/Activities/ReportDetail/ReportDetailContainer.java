@@ -7,6 +7,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.r24app.R;
 import com.google.android.material.badge.BadgeDrawable;
@@ -56,5 +57,9 @@ public class ReportDetailContainer extends AppCompatActivity {
         tabLayoutMediator.attach();
 
 
+    }
+
+    public void windowBack(View v){
+        onBackPressed();
     }
 }
