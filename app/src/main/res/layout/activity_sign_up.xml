@@ -32,6 +32,19 @@
                 android:background="@android:color/transparent"
                 android:backgroundTint="@android:color/transparent">
 
+
+                <ImageButton
+                    android:id="@+id/imageButtonBack"
+                    android:layout_width="44dp"
+                    android:layout_height="55dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:backgroundTint="#B3FFFFFF"
+                    android:onClick="windowBack"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_action_back" />
+
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/imgBigFoto"
                     android:layout_width="150dp"

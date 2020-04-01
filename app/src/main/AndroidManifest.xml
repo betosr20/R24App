@@ -29,19 +29,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="Activities.RecoveryPassword" />
-        <activity android:name="Activities.SignUp" />
-        <activity android:name="Activities.PasswordValidation" />
+        <activity android:name="Activities.RecoveryPassword"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name="Activities.SignUp"
+                    android:parentActivityName=".MainActivity"
+            />
+        <activity android:name="Activities.PasswordValidation"
+            android:parentActivityName="Activities.SignUp"/>
         <activity
             android:name="Activities.MapSearchActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity
             android:name="Activities.ReportIncidentActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName="Activities.MapActivity"
+            />
         <activity
             android:name="Activities.MapActivity"
             android:label="@string/title_activity_map"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".MainActivity"/>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

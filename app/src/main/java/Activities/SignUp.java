@@ -140,7 +140,6 @@ public class SignUp extends AppCompatActivity {
         }
 
         startActivity(intent);
-        finish();
     }
 
     public boolean validateInputs() {
@@ -306,5 +305,9 @@ public class SignUp extends AppCompatActivity {
             disableFields();
             imgSelectImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_person));
         }
+    }
+
+    public void windowBack(View v){
+        onBackPressed();
     }
 }

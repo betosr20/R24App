@@ -132,4 +132,8 @@ public class PasswordValidation extends AppCompatActivity {
             userService.uploadTheSelectedImageToServer(bitmap);
         }
     }
+
+    public void windowBack(View v){
+        onBackPressed();
+    }
 }

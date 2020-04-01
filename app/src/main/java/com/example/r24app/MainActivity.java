@@ -85,13 +85,11 @@ public class MainActivity extends AppCompatActivity {
     private void transitionSingUpView() {
         Intent intent = new Intent(this, SignUp.class);
         startActivity(intent);
-        finish();
     }
 
     private void transitionRecoveryPasswordView() {
         Intent intent = new Intent(this, RecoveryPassword.class);
         startActivity(intent);
-        finish();
     }
 
     private boolean validateInputs() {
