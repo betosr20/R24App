@@ -2,16 +2,26 @@ package Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.widget.ImageView;
 
 import com.example.r24app.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import Models.Constants.FirebaseClasses;
@@ -20,14 +30,20 @@ import Models.POJOS.User;
 public class SearchUser extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
+    private FirebaseStorage firebaseStorage;
+    private StorageReference storageReference;
+    private StorageReference ref;
     ArrayList<User> userList = new ArrayList<>();
+    ArrayList<Uri>  uriArrayList= new ArrayList<>();
     User user =  new User();
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_user);
         database = FirebaseDatabase.getInstance();
+        recyclerView = findViewById(R.id.userList);
         databaseReference = database.getReference(FirebaseClasses.User);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -37,7 +53,7 @@ public class SearchUser extends AppCompatActivity {
                     for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
                         user = snapshot.getValue(User.class);
                         userList.add(user);
-                        getImageFile(user.getProfileImage(), "png");
+                        getImageFile(user.getProfileImage(), ".png");
                     }
 
                 }
@@ -51,19 +67,43 @@ public class SearchUser extends AppCompatActivity {
         });
 
     }
-    private void setImagesOnView() {
-        for (User user: userList) {
-            getImageFile(user.getProfileImage(), "png");
-        }
-    }
-    private void getImageFile(String idImage, String typeImage) {
+    private void getImageFile(String idImage, String typeImage)  {
         System.out.println(idImage);
        if (idImage != null) {
-           String[] splitResult = idImage.split(".png",2);
-           idImage = splitResult[0];
-           System.out.println(idImage);
+            storageReference = firebaseStorage.getInstance().getReference();
+            ref = storageReference.child("myImages/" + idImage);
+            ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    uriArrayList.add(uri);
+                    callRecycleView();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                }
+            });
+
+       } else {
+           uriArrayList.add(null);
+           callRecycleView();
        }
 
-
     }
+private void callRecycleView() {
+    ImageContactAdapter imageContactAdapter = new ImageContactAdapter(uriArrayList, this);
+    recyclerView.setAdapter(imageContactAdapter);
+    recyclerView.setLayoutManager(new LinearLayoutManager(this));
 }
+}
+
+//    String[] splitResult = idImage.split(".png",2);
+//           idImage = splitResult[0];
+//                   File localFile = null;
+//                   try {
+//                   localFile = File.createTempFile(idImage, typeImage);
+//                   } catch (IOException e) {
+//                   e.printStackTrace();
+//                   }
+//                   ImageView image = findViewById(R.id.imageExample);
