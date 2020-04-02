@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -210,7 +209,8 @@ public class ReportIncidentActivity extends AppCompatActivity {
         String reportId = userService.getCurrentFirebaseUserId() + simpleDateFormat.format(new Date());
 
         Report report = new Report(reportId, disasterType, description.getText().toString(), latitude, longitude, reportLocation.getText().toString(), isPathDisabled,
-                true, startDate.getTime(), endDate.getTime(), affectedAnimals, affectedPeople, userService.getCurrentFirebaseUserId());
+                true, startDate.getTime(), endDate.getTime(), affectedAnimals, affectedPeople, userService.getCurrentFirebaseUserId(),
+                getStringDate(true), getStringDate(false));
 
         if (reportService.addNewReport(report) && reportService.saveReportImages(imagesUri, reportId)) {
             Toast.makeText(ReportIncidentActivity.this, "Reporte registrado exitosamente", Toast.LENGTH_LONG).show();
@@ -226,6 +226,25 @@ public class ReportIncidentActivity extends AppCompatActivity {
                 startMapActivity();
             }
         }, 3500);
+    }
+
+    public String getStringDate(boolean isSartDate) {
+        String pattern = "dd-MM-yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        String stringDate = simpleDateFormat.format(new Date());
+
+        if (!isSartDate) {
+            String[] dateSplitted = stringDate.split("-");
+            dateSplitted[0] = Integer.parseInt(dateSplitted[0]) + 1 + "";
+
+            if (Integer.parseInt(dateSplitted[0]) <= 9) {
+                stringDate = "0" + dateSplitted[0] + "-" + dateSplitted[1] + "-" + dateSplitted[2];
+            } else {
+                stringDate = dateSplitted[0] + "-" + dateSplitted[1] + "-" + dateSplitted[2];
+            }
+        }
+
+        return stringDate;
     }
 
     private void startMapActivity() {

@@ -1,15 +1,14 @@
 package Activities.ReportDetail;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.r24app.R;
 import com.google.firebase.database.DataSnapshot;
@@ -32,18 +31,18 @@ import Models.POJOS.ReportPicture;
  * A simple {@link Fragment} subclass.
  */
 public class Images extends Fragment {
-   private View imageView;
-   private RecyclerView recyclerview;
-   private List<Image> imagesList;
-   private ImageAdapter imageAdapter;
-   private String idReport;
-   private Report report;
-   private FirebaseDatabase database;
-   private DatabaseReference databaseReference;
-   private List<ReportPicture> imagesReference = new ArrayList<>();
-   private List<StorageReference> referencesList = new ArrayList<>();
-   private StorageReference storageReference;
-   private FirebaseStorage storage;
+    private View imageView;
+    private RecyclerView recyclerview;
+    private List<Image> imagesList;
+    private ImageAdapter imageAdapter;
+    private String idReport;
+    private Report report;
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
+    private List<ReportPicture> imagesReference = new ArrayList<>();
+    private List<StorageReference> referencesList = new ArrayList<>();
+    private StorageReference storageReference;
+    private FirebaseStorage storage;
 
     public Images() {
         // Required empty public constructor
@@ -64,24 +63,25 @@ public class Images extends Fragment {
         // Inflate the layout for this fragment
         imageView = inflater.inflate(R.layout.fragment_images, container, false);
         recyclerview = imageView.findViewById(R.id.imageList);
-        recyclerview.setLayoutManager( new LinearLayoutManager(getActivity()));
+        recyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         imagesReference.add(snapshot.getValue(ReportPicture.class));
                     }
-                    for (ReportPicture reportPicture: imagesReference) {
+                    for (ReportPicture reportPicture : imagesReference) {
                         if (reportPicture.getReportId().equals(idReport)) {
-                            StorageReference reference = storageReference.child("ReportsImages/"+reportPicture.getImageName());
+                            StorageReference reference = storageReference.child("ReportsImages/" + reportPicture.getImageName());
                             referencesList.add(reference);
                         }
                     }
-                    imageAdapter =  new ImageAdapter(referencesList, getContext());
+                    imageAdapter = new ImageAdapter(referencesList, getContext());
                     recyclerview.setAdapter(imageAdapter);
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }

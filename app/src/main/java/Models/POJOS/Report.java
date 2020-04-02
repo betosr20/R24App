@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import java.util.Date;
 
 public class Report implements Parcelable {
-    private String Id, type, detail, latitude, longitude, place, ownerId;
+    private String Id, type, detail, latitude, longitude, place, ownerId, startDateString, endDateString;
     private boolean pathDisabled, isActive;
     private Date startDate, endDate;
     private int affectedPeople, affectedAnimals;
@@ -16,7 +16,7 @@ public class Report implements Parcelable {
 
     public Report(String Id, String type, String detail, String latitude, String longitude, String place,
                   boolean pathDisabled, boolean isActive, Date startDate, Date endDate, int affectedAnimals,
-                  int affectedPeople, String ownerId) {
+                  int affectedPeople, String ownerId, String startDateString, String endDateString) {
         this.Id = Id;
         this.place = place;
         this.type = type;
@@ -30,6 +30,8 @@ public class Report implements Parcelable {
         this.affectedAnimals = affectedAnimals;
         this.affectedPeople = affectedPeople;
         this.ownerId = ownerId;
+        this.startDateString = startDateString;
+        this.endDateString = endDateString;
     }
 
     public String getId() {
@@ -88,6 +90,22 @@ public class Report implements Parcelable {
         this.ownerId = ownerId;
     }
 
+    public String getStartDateString() {
+        return startDateString;
+    }
+
+    public void setStartDateString(String startDateString) {
+        this.startDateString = startDateString;
+    }
+
+    public String getEndDateString() {
+        return endDateString;
+    }
+
+    public void setEndDateString(String endDateString) {
+        this.endDateString = endDateString;
+    }
+
     public boolean isPathDisabled() {
         return pathDisabled;
     }
@@ -141,24 +159,11 @@ public class Report implements Parcelable {
         return 0;
     }
 
-//         type.setText("Tipo de Evento: " + "hi there");
-//         place.setText("Lugar del  Evento: " + fakeReport.getPlace());
-//         affectedPeople.setText("Cantidad de personas afectadas: " + fakeReport.getAffectedPeople());
-//         affectedAnimals.setText("Cantidad de Animales afectadas: " + fakeReport.getAffectedAnimals());
-//         details.setText("Detalle de Evento: " + fakeReport.getDetail());
-//         startDateTextView.setText("Fecha de Inicio: " + dateFormat.format(fakeReport.getStartDate()));
-//         endDateTextView.setText("Fecha de Fin: " + dateFormat.format(fakeReport.getEndDate()));
-
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-//        dest.writeString(this.Id);
         dest.writeString(this.type);
         dest.writeString(this.detail);
-//        dest.writeString(this.latitude);
-//        dest.writeString(this.longitude);
         dest.writeString(this.place);
-//        dest.writeByte((byte) (this.pathDisabled ? 1 : 0));
-//        dest.writeByte((byte) (this.isActive ? 1 : 0));
         dest.writeLong(this.startDate.getTime());
         dest.writeLong(this.endDate.getTime());
         dest.writeInt(this.affectedAnimals);
@@ -166,14 +171,9 @@ public class Report implements Parcelable {
     }
 
     protected Report(Parcel in) {
-//        Id = in.readString();
         type = in.readString();
         detail = in.readString();
-//        latitude = in.readString();
-//        longitude = in.readString();
         place = in.readString();
-//        pathDisabled = in.readByte() != 0;
-//        isActive = in.readByte() != 0;
         affectedPeople = in.readInt();
         affectedAnimals = in.readInt();
         startDate = new Date(in.readLong());

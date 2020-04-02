@@ -92,11 +92,11 @@ public class ImageChooserActivity extends AppCompatActivity {
                     imagesContainer.addView(currentImage);
                 }
             } else {
-                Toast.makeText(ImageChooserActivity.this, "Se permite un maximo de " + DataConstants.MAXNUMBERPHOTOS + " imágenes", Toast.LENGTH_LONG).show();
+                Toast.makeText(ImageChooserActivity.this, "Se permite un máximo de " + DataConstants.MAXNUMBERPHOTOS + " imágenes", Toast.LENGTH_LONG).show();
                 finish();
             }
         } else {
-            Toast.makeText(ImageChooserActivity.this, "Ninguna imagen fue seleccionada", Toast.LENGTH_LONG).show();
+            Toast.makeText(ImageChooserActivity.this, "Ninguna imágen fue seleccionada", Toast.LENGTH_LONG).show();
             finish();
         }
     }

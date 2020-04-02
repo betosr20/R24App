@@ -36,20 +36,24 @@ public class MainActivity extends AppCompatActivity {
         Button login = findViewById(R.id.btnNextSignUp);
         inputLayoutEmail = findViewById(R.id.emailInputLayout);
         inputLayoutPassword = findViewById(R.id.LayoutLoginPassword);
+
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 login();
             }
         });
+
         mAuth = FirebaseAuth.getInstance();
         TextView recoveryPassword = findViewById(R.id.textRecoveryPassword);
+
         recoveryPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 transitionRecoveryPasswordView();
             }
         });
+
         TextView singUpLink = findViewById(R.id.textCreateAcount);
         singUpLink.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,11 +69,16 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        Toast.makeText(MainActivity.this, "Se ingresaron correctamente las credenciales", Toast.LENGTH_LONG).show();
                         FirebaseUser user = mAuth.getCurrentUser();
                         getTransitionIntoMainView();
                     } else {
-                        Toast.makeText(MainActivity.this, "Las credenciales ingresadas no son válidas", Toast.LENGTH_LONG).show();
+                        boolean validEmailAddressFormat = android.util.Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches();
+
+                        if (!validEmailAddressFormat) {
+                            Toast.makeText(MainActivity.this, "Dirección de correo con formato inválido", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(MainActivity.this, "Las credenciales ingresadas no son válidas", Toast.LENGTH_LONG).show();
+                        }
                     }
                 }
             });
@@ -96,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         boolean isValid = true;
 
         if (email.getText() != null && email.getText().toString().trim().isEmpty()) {
-            inputLayoutEmail.setError("Espacio requerido *");
+            inputLayoutEmail.setError(getResources().getText(R.string.requiredField));
             inputLayoutEmail.requestFocus();
             isValid = false;
         } else {
@@ -104,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (password.getText() != null && password.getText().toString().trim().isEmpty()) {
-            inputLayoutPassword.setError("Espacio requerido *");
+            inputLayoutPassword.setError(getResources().getText(R.string.requiredField));
             isValid = false;
         } else {
             inputLayoutPassword.setError(null);
