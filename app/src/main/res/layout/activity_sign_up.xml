@@ -14,80 +14,42 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp">
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:layout_marginEnd="9dp"
-            android:background="@android:color/transparent"
-            android:backgroundTint="@android:color/transparent"
-            android:orientation="vertical"
+        <ImageButton
+            android:id="@+id/imageButtonBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#B3FFFFFF"
+            android:contentDescription="@string/title_user_profile"
+            android:onClick="windowBack"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_action_back" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgBigFoto"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_person"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                android:backgroundTint="@android:color/transparent">
-
-
-                <ImageButton
-                    android:id="@+id/imageButtonBack"
-                    android:layout_width="44dp"
-                    android:layout_height="55dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:backgroundTint="#B3FFFFFF"
-                    android:onClick="windowBack"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_action_back" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/imgBigFoto"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_person" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/imgDeleteFoto"
-                        style="@style/ImageViewButton"
-                        android:saveEnabled="false"
-                        android:src="@drawable/ic_close_box" />
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/imgFromGallery"
-                        style="@style/ImageViewButton"
-                        android:saveEnabled="false"
-                        android:src="@drawable/ic_image" />
-                </LinearLayout>
-
-            </FrameLayout>
-        </LinearLayout>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/LayoutName"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/MyTheme.DayNight.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
             app:boxBackgroundMode="outline"
-            app:errorEnabled="true"
             app:endIconMode="clear_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
             app:startIconDrawable="@drawable/ic_person">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -95,21 +57,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/fieldNameHint"
-                android:inputType="textPersonName|textCapWords"
+                android:digits="áéíóúabcdefghijklmnñopqrstuvwxyzÁÉÍÓÚABCDEFGHIJKLMNÑOPQRSTUVWXYZ "
+                android:inputType="text|textCapWords"
                 android:maxLength="30" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/LayoutLastName"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/MyTheme.DayNight.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
             app:boxBackgroundMode="outline"
-            app:errorEnabled="true"
             app:endIconMode="clear_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -121,21 +83,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/fieldLastNameHint"
-                android:inputType="textPersonName|textCapWords"
+                android:digits="áéíóúabcdefghijklmnñopqrstuvwxyzÁÉÍÓÚABCDEFGHIJKLMNÑOPQRSTUVWXYZ "
+                android:inputType="text|textCapWords"
                 android:maxLength="30" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/LayoutUserName"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/MyTheme.DayNight.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
             app:boxBackgroundMode="outline"
-            app:errorEnabled="true"
             app:endIconMode="clear_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -154,14 +116,13 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/LayoutCellPhone"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/MyTheme.DayNight.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
             app:boxBackgroundMode="outline"
-            app:errorEnabled="true"
             app:endIconMode="clear_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -173,6 +134,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:digits="0123456789+"
+                android:maxLength="12"
                 android:hint="@string/fieldPhoneNumberHint"
                 android:inputType="phone" />
 
@@ -180,14 +142,13 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/LayoutAddress"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/MyTheme.DayNight.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
             app:boxBackgroundMode="outline"
-            app:errorEnabled="true"
             app:endIconMode="clear_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -219,5 +180,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/LayoutAddress" />
 
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgBigFoto">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgDeleteFoto"
+                style="@style/ImageViewButton"
+                android:src="@drawable/ic_close_box" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgFromGallery"
+                style="@style/ImageViewButton"
+                android:src="@drawable/ic_image" />
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

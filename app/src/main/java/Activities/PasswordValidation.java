@@ -77,7 +77,7 @@ public class PasswordValidation extends AppCompatActivity {
                         String profileImage = userId + ".png";
 
                         User newUser = new User(userId, name, lastName, userName.toLowerCase(), email.getText().toString(), cellPhone, address, profileImage,
-                                true, true, true, false, true, true, true, true, true);
+                                true, true, true, false, true, true, true, true, false);
 
                         if (userService.addNewUser(newUser)) {
                             try {
@@ -94,7 +94,13 @@ public class PasswordValidation extends AppCompatActivity {
                             Toast.makeText(PasswordValidation.this, "Error durante el proceso de registro", Toast.LENGTH_LONG).show();
                         }
                     } else {
-                        Toast.makeText(PasswordValidation.this, "Esta dirección de correo ya existe en la base de datos", Toast.LENGTH_LONG).show();
+                        boolean validEmailAddressFormat = android.util.Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches();
+
+                        if (!validEmailAddressFormat) {
+                            Toast.makeText(PasswordValidation.this, "Dirección de correo con formato inválido", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(PasswordValidation.this, "Esta dirección de correo ya existe en la base de datos", Toast.LENGTH_LONG).show();
+                        }
                     }
                 }
             });
@@ -110,14 +116,14 @@ public class PasswordValidation extends AppCompatActivity {
     private boolean validateInputs() {
         boolean isValid = true;
         if (email.getText().toString() != null && email.getText().toString().trim().isEmpty()) {
-            layoutEmail.setError("Espacio requerido *");
+            layoutEmail.setError(getResources().getText(R.string.requiredField));
             layoutEmail.requestFocus();
             isValid = false;
         } else {
             layoutEmail.setError(null);
         }
         if (password1.getText().toString() != null && password1.getText().toString().trim().isEmpty()) {
-            layoutPassword.setError("Espacio requerido *");
+            layoutPassword.setError(getResources().getText(R.string.requiredField));
             layoutPassword.requestFocus();
             isValid = false;
         } else {
@@ -133,7 +139,7 @@ public class PasswordValidation extends AppCompatActivity {
         }
     }
 
-    public void windowBack(View v){
+    public void windowBack(View v) {
         onBackPressed();
     }
 }

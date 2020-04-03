@@ -1,14 +1,13 @@
 package Activities.ReportDetail;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.r24app.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -59,7 +58,7 @@ public class location extends Fragment implements OnMapReadyCallback {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //Valida si existe el arreglo, osea si hay datos
-                if(dataSnapshot.exists()) {
+                if (dataSnapshot.exists()) {
                     report = dataSnapshot.getValue(Report.class);
                 }
             }
@@ -76,7 +75,7 @@ public class location extends Fragment implements OnMapReadyCallback {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mapView = viewLocation.findViewById(R.id.mapEventDetail);
-        if(mapView != null) {
+        if (mapView != null) {
             mapView.onCreate(null);
             mapView.onResume();
             mapView.getMapAsync(this);
@@ -89,6 +88,7 @@ public class location extends Fragment implements OnMapReadyCallback {
         gMap = googleMap;
         this.populatePins(googleMap);
     }
+
     //metodo que se encarga de pintar el ping del lugar del evento
     public void populatePins(GoogleMap googleMap) {
         gMap = googleMap;
