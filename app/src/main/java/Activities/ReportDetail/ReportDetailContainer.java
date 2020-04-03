@@ -7,13 +7,12 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.r24app.R;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
-import Models.POJOS.Report;
 
 public class ReportDetailContainer extends AppCompatActivity {
 
@@ -25,9 +24,8 @@ public class ReportDetailContainer extends AppCompatActivity {
         ViewPager2 viewPager2 = findViewById(R.id.viewPaper);
         //fetch data from MapActivity
         Intent intent = getIntent();
-        Report report = intent.getExtras().getParcelable("report");
-        System.out.println(report.getType());
-        viewPager2.setAdapter(new OptionPageAdapter(this, report));
+        String idReport = intent.getStringExtra("idReport");
+        viewPager2.setAdapter(new OptionPageAdapter(this, idReport));
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(
                 tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
@@ -59,5 +57,9 @@ public class ReportDetailContainer extends AppCompatActivity {
         tabLayoutMediator.attach();
 
 
+    }
+
+    public void windowBack(View v){
+        onBackPressed();
     }
 }

@@ -21,42 +21,47 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        tools:context=".Map
-        sActivity" />
+        tools:context=".MapsActivity" />
 
-    <Switch
-        android:id="@+id/switchButtonHeat"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
         android:layout_marginTop="8dp"
-        android:text="Calor"
-        android:theme="@style/AppTheme.SwitchTheme"
+        android:background="#66FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Switch
-        android:id="@+id/switchButtonPins"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Pines"
-        app:layout_constraintStart_toEndOf="@id/switchButtonHeat"
-        app:layout_constraintTop_toTopOf="parent"
-        android:theme="@style/AppTheme.SwitchTheme" />
+        <Switch
+            android:id="@+id/switchButtonHeat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Calor"
+            android:theme="@style/AppTheme.SwitchTheme"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Switch
-        android:id="@+id/switchButtonView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Vista"
-        android:theme="@style/AppTheme.SwitchTheme"
-        app:layout_constraintStart_toEndOf="@+id/switchButtonPins"
-        app:layout_constraintTop_toTopOf="parent" />
+        <Switch
+            android:id="@+id/switchButtonPins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Pines"
+            android:theme="@style/AppTheme.SwitchTheme"
+            app:layout_constraintStart_toEndOf="@id/switchButtonHeat"
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <Switch
+            android:id="@+id/switchButtonView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Vista"
+            android:theme="@style/AppTheme.SwitchTheme"
+            app:layout_constraintStart_toEndOf="@+id/switchButtonPins"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <ImageButton
         android:id="@+id/buttonPopUpMenu"
         android:layout_width="135px"
@@ -80,5 +85,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/uptodatelogo" />
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
