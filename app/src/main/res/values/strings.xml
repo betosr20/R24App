@@ -38,7 +38,7 @@
     <string name="registerButtonText">Registrar</string>
     <string name="nextButtonText">SIGUIENTE</string>
     <string name="recoverPasswordText">Recuperar contraseña</string>
-    <string name="loginPageHeaderText">Bienvenido a la página de inicio de sesión</string>
+    <string name="loginPageHeaderText">Bienvenido(a) a la página de inicio de sesión</string>
     <string name="reportsScreenHeader">Registre aquí su reporte</string>
     <string name="title_user_profile">Mi perfil</string>
     <string name="title_activity_searchUser">Buscar usuario</string>
@@ -48,7 +48,6 @@
     <string name="amOkAction">Estoy bien</string>
     <string name="changeViewSwitch">Vista</string>
 
-
     <string-array name="disasterTypes_array">
         <item>Seleccione el tipo de desastre</item>
         <item>Erupción Volcánica</item>
@@ -56,15 +55,12 @@
         <item>Inundación</item>
     </string-array>
 
-
     <string name="title_activity_map">Mapa de incidentes</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="detalle_dialogDelete_message">¿Está seguro de querer eliminar esta imágen?</string>
     <string name="label_dialog_delete">Eliminar</string>
     <string name="label_dialog_cancel">Cancelar</string>
     <string name="title_activity_alerts">Alertas</string>
-
-
 </resources>
 
 
