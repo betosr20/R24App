@@ -16,8 +16,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
-
 import Models.Constants.FirebaseClasses;
 import Models.POJOS.Report;
 
@@ -26,7 +24,7 @@ import Models.POJOS.Report;
  */
 public class GeneralInformation extends Fragment {
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd");
+//    private SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY/MM/dd");
     private String idReport;
     private Report report;
     private FirebaseDatabase database;
@@ -34,10 +32,6 @@ public class GeneralInformation extends Fragment {
 
     TextView type, place, affectedPeople, affectedAnimals, details, startDateTextView, endDateTextView;
     View viewGeneralInformation;
-
-    public GeneralInformation() {
-
-    }
 
     public GeneralInformation(String idReport) {
         // Required empty public constructor
@@ -71,8 +65,8 @@ public class GeneralInformation extends Fragment {
                     affectedPeople.setText("Cantidad de personas afectadas: " + report.getAffectedPeople());
                     affectedAnimals.setText("Cantidad de animales afectadas: " + report.getAffectedAnimals());
                     details.setText("Detalle de vento: " + report.getDetail());
-                    startDateTextView.setText("Fecha de inicio: " + dateFormat.format(report.getStartDate()));
-                    endDateTextView.setText("Fecha de fin: " + dateFormat.format(report.getEndDate()));
+                    startDateTextView.setText("Fecha de inicio: " + report.getStartDateString());
+                    endDateTextView.setText("Fecha de fin: " + report.getEndDateString());
                 }
             }
 
