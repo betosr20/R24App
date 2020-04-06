@@ -14,6 +14,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuPopupHelper;
@@ -353,4 +354,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         optionsMenu.show();
     }
 
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle(R.string.exitAlertTittle)
+                .setMessage(R.string.exitAlert)
+                .setPositiveButton("Salir", (dialogInterface, i) -> signOut())
+                .setNegativeButton(R.string.label_dialog_cancel, null);
+        builder.show();
+    }
 }
