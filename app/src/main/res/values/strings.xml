@@ -16,6 +16,8 @@
     <string name="saveReportButton">REPORTAR</string>
     <string name="incidentPlace">Lugar del accidente…</string>
     <string name="requiredField">Espacio requerido *</string>
+    <string name="alphanumericPassword">Letras, números y símbolos son requeridos</string>
+    <string name="invalidEmailFormat">Dirección de correo con formato inválido</string>
     <string name="imageSelected">Imagen Seleccionada</string>
     <string name="loadImages">Cargar Images</string>
     <string name="fieldName">Ingrese su nombre</string>

@@ -24,6 +24,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import Models.POJOS.User;
 import Services.UserService;
@@ -69,12 +71,14 @@ public class PasswordValidation extends AppCompatActivity {
 
     private void registerUser() {
         if (validateInputs()) {
+            layoutEmail.setError(null);
+
             mAuth.createUserWithEmailAndPassword(email.getText().toString(), password1.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         userId = task.getResult().getUser().getUid();
-                        String profileImage = userId + ".png";
+                        String profileImage = chosenImageData != null && !TextUtils.isEmpty(chosenImageData.toString()) ? userId + ".png" : "";
 
                         User newUser = new User(userId, name, lastName, userName.toLowerCase(), email.getText().toString(), cellPhone, address, profileImage,
                                 true, true, true, false, true, true, true, true, false);
@@ -97,7 +101,8 @@ public class PasswordValidation extends AppCompatActivity {
                         boolean validEmailAddressFormat = android.util.Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches();
 
                         if (!validEmailAddressFormat) {
-                            Toast.makeText(PasswordValidation.this, "Dirección de correo con formato inválido", Toast.LENGTH_LONG).show();
+                            layoutEmail.setError(getResources().getText(R.string.invalidEmailFormat));
+                            layoutEmail.requestFocus();
                         } else {
                             Toast.makeText(PasswordValidation.this, "Esta dirección de correo ya existe en la base de datos", Toast.LENGTH_LONG).show();
                         }
@@ -128,8 +133,22 @@ public class PasswordValidation extends AppCompatActivity {
             isValid = false;
         } else {
             layoutPassword.setError(null);
+
         }
+
         return isValid;
+    }
+
+    public boolean isValidPassword(final String password) {
+        Pattern pattern;
+        Matcher matcher;
+
+        final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+
+        pattern = Pattern.compile(PASSWORD_PATTERN);
+        matcher = pattern.matcher(password);
+
+        return matcher.matches();
     }
 
     private void uploadTheSelectedImageToServer() throws IOException {

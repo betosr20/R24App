@@ -51,6 +51,7 @@ public class MyProfileActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private Bitmap bitmap;
     private ProgressBar progressBar;
+    private Boolean progressBarHide;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,7 @@ public class MyProfileActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         progressBar.setIndeterminate(true);
         progressBar.setVisibility(View.VISIBLE);
+        progressBarHide = false;
         /*ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", 100, 0);
         animation.setInterpolator(new DecelerateInterpolator());
         animation.start();*/
@@ -100,6 +102,7 @@ public class MyProfileActivity extends AppCompatActivity {
             public void onSuccess(Uri uri) {
                 Picasso.get().load(uri).fit().into(profileImage);
                 progressBar.setVisibility(View.INVISIBLE);
+                progressBarHide = true;
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -111,7 +114,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
     public void addListeners() {
         editSaveButton.setOnClickListener(v -> {
-            if (editSaveButton.getText().equals("EDITAR")) {
+            if (editSaveButton.getText().equals("EDITAR") && progressBarHide) {
                 editSaveButton.setText(R.string.saveButtonText);
                 enableFields();
             } else {
@@ -183,30 +186,39 @@ public class MyProfileActivity extends AppCompatActivity {
         }
     }
 
-    public void saveData() throws IOException {
+    public void saveData() {
         currentUser.setName(nameInput.getText().toString());
         currentUser.setLastName(lastNameInput.getText().toString());
         currentUser.setUsername(usernameInput.getText().toString().toLowerCase());
         currentUser.setCellPhone(phoneNumberInput.getText().toString());
         currentUser.setAddress(addressInput.getText().toString());
+        Toast.makeText(MyProfileActivity.this, "Por favor espere...", Toast.LENGTH_LONG).show();
 
-        if (userService.updateUser(currentUser)) {
-            uploadTheSelectedImageToServer();
-            Toast.makeText(MyProfileActivity.this, "Datos actualizados exitosamente", Toast.LENGTH_LONG).show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (userService.updateUser(currentUser)) {
+                    try {
+                        MyProfileActivity.this.uploadTheSelectedImageToServer();
+                        Toast.makeText(MyProfileActivity.this, "Datos actualizados exitosamente", Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(MyProfileActivity.this, "Los cambios pueden tomar varios minutos en reflejarse", Toast.LENGTH_LONG).show();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(MyProfileActivity.this, "Los cambios pueden tomar varios minutos en reflejarse", Toast.LENGTH_LONG).show();
+                        }
+                    }, 3600);
+
+                    getCurrentUserInfo();
+                    disableFields();
+                } else {
+                    Toast.makeText(MyProfileActivity.this, "Error durante el proceso de actualización", Toast.LENGTH_LONG).show();
                 }
-            }, 3600);
-
-
-            getCurrentUserInfo();
-            disableFields();
-        } else {
-            Toast.makeText(MyProfileActivity.this, "Error durante el proceso de actualización", Toast.LENGTH_LONG).show();
-        }
+            }
+        }, 3600);
     }
 
     private void uploadTheSelectedImageToServer() throws IOException {
@@ -237,11 +249,7 @@ public class MyProfileActivity extends AppCompatActivity {
                 }
 
                 if (isValidCellPhone) {
-                    try {
-                        saveData();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    saveData();
                 }
             }
 
@@ -394,6 +402,7 @@ public class MyProfileActivity extends AppCompatActivity {
                         setImageProfile();
                     } else {
                         progressBar.setVisibility(View.INVISIBLE);
+                        progressBarHide = true;
                         profileImage.setImageDrawable(ContextCompat.getDrawable(MyProfileActivity.this, R.drawable.ic_person));
                     }
 
