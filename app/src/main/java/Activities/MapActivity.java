@@ -88,7 +88,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                         .findFragmentById(R.id.map2);
                 mapFragment.getMapAsync(MapActivity.this::onMapReady);
-
             }
 
             @Override
@@ -112,7 +111,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     userService.updatePinSetting(false);
                     clearPins(mMap, false, activeHeatMap);
                 }
-
             }
         });
 
@@ -143,7 +141,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 }
             }
         });
-
     }
 
     @Override
@@ -177,17 +174,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     if (!view) {
                         changeView();
                     }
-
-                    LatLng latLng;
-                    latLng = new LatLng(9.932231, -84.091373);
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 7));
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
+
         });
+        LatLng latLng;
+        latLng = new LatLng(9.932231, -84.091373);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 7));
     }
 
     @Override
