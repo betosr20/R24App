@@ -20,6 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="Activities.MyProfileActivity" />
+        <activity android:name="Activities.SearchUser" />
         <activity android:name="Activities.ImageChooserActivity" />
         <activity android:name="Activities.ReportDetail.ReportDetailContainer" />
         <activity android:name=".MainActivity">

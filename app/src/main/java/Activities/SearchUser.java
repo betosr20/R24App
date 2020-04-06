@@ -22,6 +22,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 
 import Models.Constants.FirebaseClasses;
@@ -51,9 +52,9 @@ public class SearchUser extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
 
                     for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                        String stringUri;
                         user = snapshot.getValue(User.class);
                         userList.add(user);
-                        getImageFile(user.getProfileImage(), ".png");
                     }
 
                 }
@@ -65,10 +66,15 @@ public class SearchUser extends AppCompatActivity {
 
             }
         });
-
     }
-    private void getImageFile(String idImage, String typeImage)  {
-        System.out.println(idImage);
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        System.out.println(userList.size());
+    }
+
+    private void getImageFile(String idImage)  {
        if (idImage != null) {
             storageReference = firebaseStorage.getInstance().getReference();
             ref = storageReference.child("myImages/" + idImage);
@@ -76,7 +82,6 @@ public class SearchUser extends AppCompatActivity {
                 @Override
                 public void onSuccess(Uri uri) {
                     uriArrayList.add(uri);
-                    callRecycleView();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -87,23 +92,13 @@ public class SearchUser extends AppCompatActivity {
 
        } else {
            uriArrayList.add(null);
-           callRecycleView();
        }
 
     }
 private void callRecycleView() {
-    ImageContactAdapter imageContactAdapter = new ImageContactAdapter(uriArrayList, this);
-    recyclerView.setAdapter(imageContactAdapter);
-    recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    System.out.println(userList);
+//    ImageContactAdapter imageContactAdapter = new ImageContactAdapter(uriArrayList, this);
+//    recyclerView.setAdapter(imageContactAdapter);
+//    recyclerView.setLayoutManager(new LinearLayoutManager(this));
 }
 }
-
-//    String[] splitResult = idImage.split(".png",2);
-//           idImage = splitResult[0];
-//                   File localFile = null;
-//                   try {
-//                   localFile = File.createTempFile(idImage, typeImage);
-//                   } catch (IOException e) {
-//                   e.printStackTrace();
-//                   }
-//                   ImageView image = findViewById(R.id.imageExample);

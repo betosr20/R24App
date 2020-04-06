@@ -198,7 +198,7 @@ public class SignUp extends AppCompatActivity {
                         user = snapshot.getValue(User.class);
 
                         if (user.getCellPhone().equals(cellPhone.getText().toString())) {
-                            inputLayoutCellPhone.setError("El némero de teléfono ya existe");
+                            inputLayoutCellPhone.setError("El número de teléfono ya existe");
                             inputLayoutCellPhone.requestFocus();
                             isValidCellPhone = false;
                             break;
