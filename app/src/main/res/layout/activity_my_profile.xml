@@ -70,7 +70,8 @@
                 android:hint="@string/fieldNameHint"
                 android:digits="áéíóúabcdefghijklmnñopqrstuvwxyzÁÉÍÓÚABCDEFGHIJKLMNÑOPQRSTUVWXYZ "
                 android:inputType="text|textCapWords"
-                android:maxLength="30" />
+                android:maxLength="30"
+                android:importantForAutofill="noExcludeDescendants"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,7 +98,8 @@
                 android:hint="@string/fieldLastNameHint"
                 android:digits="áéíóúabcdefghijklmnñopqrstuvwxyzÁÉÍÓÚABCDEFGHIJKLMNÑOPQRSTUVWXYZ "
                 android:inputType="text|textCapWords"
-                android:maxLength="30" />
+                android:maxLength="30"
+                android:importantForAutofill="noExcludeDescendants"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -123,7 +125,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/fieldUsernameHint"
                 android:inputType="textPersonName|textCapWords"
-                android:maxLength="30" />
+                android:maxLength="30"
+                android:importantForAutofill="noExcludeDescendants"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -150,7 +153,8 @@
                 android:digits="0123456789"
                 android:maxLength="8"
                 android:hint="@string/fieldPhoneNumberHint"
-                android:inputType="phone" />
+                android:inputType="phone"
+                android:importantForAutofill="noExcludeDescendants"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -169,14 +173,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/LayoutCellPhone">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditTextag
                 android:id="@+id/etAddress"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:gravity="top|start"
                 android:hint="@string/fieldAddressHint"
                 android:inputType="textMultiLine"
-                android:maxLength="1000" />
+                android:maxLength="1000"
+                android:importantForAutofill="noExcludeDescendants"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
