@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -17,13 +18,23 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import Activities.MapActivity;
 import Activities.RecoveryPassword;
 import Activities.SignUp;
+import Models.Constants.FirebaseClasses;
+import Models.POJOS.User;
+import Services.UserService;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
+    private User user;
+    private UserService userService = new UserService();
     private TextInputEditText email, password;
     private TextInputLayout inputLayoutEmail, inputLayoutPassword;
 
@@ -36,20 +47,24 @@ public class MainActivity extends AppCompatActivity {
         Button login = findViewById(R.id.btnNextSignUp);
         inputLayoutEmail = findViewById(R.id.emailInputLayout);
         inputLayoutPassword = findViewById(R.id.LayoutLoginPassword);
+
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 login();
             }
         });
+
         mAuth = FirebaseAuth.getInstance();
         TextView recoveryPassword = findViewById(R.id.textRecoveryPassword);
+
         recoveryPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 transitionRecoveryPasswordView();
             }
         });
+
         TextView singUpLink = findViewById(R.id.textCreateAcount);
         singUpLink.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,11 +80,16 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        Toast.makeText(MainActivity.this, "Se ingresaron correctamente las credenciales", Toast.LENGTH_LONG).show();
                         FirebaseUser user = mAuth.getCurrentUser();
                         getTransitionIntoMainView();
                     } else {
-                        Toast.makeText(MainActivity.this, "Las credenciales ingresadas no son válidas", Toast.LENGTH_LONG).show();
+                        boolean validEmailAddressFormat = android.util.Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches();
+
+                        if (!validEmailAddressFormat) {
+                            Toast.makeText(MainActivity.this, "Dirección de correo con formato inválido", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(MainActivity.this, "Las credenciales ingresadas no son válidas", Toast.LENGTH_LONG).show();
+                        }
                     }
                 }
             });
@@ -96,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         boolean isValid = true;
 
         if (email.getText() != null && email.getText().toString().trim().isEmpty()) {
-            inputLayoutEmail.setError("Espacio requerido *");
+            inputLayoutEmail.setError(getResources().getText(R.string.requiredField));
             inputLayoutEmail.requestFocus();
             isValid = false;
         } else {
@@ -104,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (password.getText() != null && password.getText().toString().trim().isEmpty()) {
-            inputLayoutPassword.setError("Espacio requerido *");
+            inputLayoutPassword.setError(getResources().getText(R.string.requiredField));
             isValid = false;
         } else {
             inputLayoutPassword.setError(null);
@@ -112,4 +132,6 @@ public class MainActivity extends AppCompatActivity {
 
         return isValid;
     }
+
+
 }

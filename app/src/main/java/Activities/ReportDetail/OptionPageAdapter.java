@@ -5,12 +5,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import Models.POJOS.Report;
-
 public class OptionPageAdapter extends FragmentStateAdapter {
     private String idReport;
 
-    public OptionPageAdapter(@NonNull FragmentActivity fragmentActivity , String idReport) {
+    public OptionPageAdapter(@NonNull FragmentActivity fragmentActivity, String idReport) {
         super(fragmentActivity);
         this.idReport = idReport;
     }

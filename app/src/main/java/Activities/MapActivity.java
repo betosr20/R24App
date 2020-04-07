@@ -88,7 +88,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                         .findFragmentById(R.id.map2);
                 mapFragment.getMapAsync(MapActivity.this::onMapReady);
-
             }
 
             @Override
@@ -112,7 +111,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     userService.updatePinSetting(false);
                     clearPins(mMap, false, activeHeatMap);
                 }
-
             }
         });
 
@@ -141,6 +139,26 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     userService.updateViewTypeSetting(false);
                     changeView();
                 }
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        String id = userService.getCurrentFirebaseUserId();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference(FirebaseClasses.User).child(id);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                user = dataSnapshot.getValue(User.class);
+                userService.getImageProfileUri(user);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
 
@@ -177,17 +195,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     if (!view) {
                         changeView();
                     }
-
-                    LatLng latLng;
-                    latLng = new LatLng(9.932231, -84.091373);
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 7));
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
+
         });
+        LatLng latLng;
+        latLng = new LatLng(9.932231, -84.091373);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 7));
     }
 
     @Override

@@ -52,11 +52,10 @@ public class SearchUser extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
 
                     for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
-                        String stringUri;
                         user = snapshot.getValue(User.class);
                         userList.add(user);
                     }
-
+                    callRecycleView();
                 }
 
             }
@@ -68,11 +67,7 @@ public class SearchUser extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        System.out.println(userList.size());
-    }
+
 
     private void getImageFile(String idImage)  {
        if (idImage != null) {
@@ -96,9 +91,9 @@ public class SearchUser extends AppCompatActivity {
 
     }
 private void callRecycleView() {
-    System.out.println(userList);
-//    ImageContactAdapter imageContactAdapter = new ImageContactAdapter(uriArrayList, this);
-//    recyclerView.setAdapter(imageContactAdapter);
-//    recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+    ImageContactAdapter imageContactAdapter = new ImageContactAdapter(userList, this);
+    recyclerView.setAdapter(imageContactAdapter);
+    recyclerView.setLayoutManager(new LinearLayoutManager(this));
 }
 }

@@ -1,7 +1,5 @@
 package Activities;
 
-import android.animation.ObjectAnimator;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -11,7 +9,6 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -70,10 +67,11 @@ public class MyProfileActivity extends AppCompatActivity {
 
     public void setProgressBar() {
         progressBar = findViewById(R.id.progressBar);
-        ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", 0, 500);
-        animation.setDuration(5000);
+        progressBar.setIndeterminate(true);
+        progressBar.setVisibility(View.VISIBLE);
+        /*ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", 100, 0);
         animation.setInterpolator(new DecelerateInterpolator());
-        animation.start();
+        animation.start();*/
     }
 
     public void getElementsReference() {
@@ -169,7 +167,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
     private void deleteImage() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle("Eliminar Imagen")
+                .setTitle("Eliminar Imágen")
                 .setMessage(R.string.detalle_dialogDelete_message)
                 .setPositiveButton(R.string.label_dialog_delete, (dialogInterface, i) -> configImageView(null))
                 .setNegativeButton(R.string.label_dialog_cancel, null);
@@ -230,7 +228,7 @@ public class MyProfileActivity extends AppCompatActivity {
                         user = snapshot.getValue(User.class);
 
                         if (user.getCellPhone().equals(phoneNumberInput.getText().toString()) && !user.getId().equals(currentUser.getId())) {
-                            phoneNumberLayout.setError("El némero de teléfono ya existe");
+                            phoneNumberLayout.setError("El número de teléfono ya existe");
                             phoneNumberLayout.requestFocus();
                             isValidCellPhone = false;
                             break;
@@ -295,7 +293,7 @@ public class MyProfileActivity extends AppCompatActivity {
         boolean isValid = true;
 
         if (nameInput.getText() != null && nameInput.getText().toString().trim().isEmpty()) {
-            nameLayout.setError("Espacio requerido *");
+            nameLayout.setError(getResources().getText(R.string.requiredField));
             nameLayout.requestFocus();
             isValid = false;
         } else {
@@ -303,7 +301,7 @@ public class MyProfileActivity extends AppCompatActivity {
         }
 
         if (lastNameInput.getText() != null && lastNameInput.getText().toString().trim().isEmpty()) {
-            lastNameLayout.setError("Espacio requerido *");
+            lastNameLayout.setError(getResources().getText(R.string.requiredField));
             lastNameLayout.requestFocus();
             isValid = false;
         } else {
@@ -311,7 +309,7 @@ public class MyProfileActivity extends AppCompatActivity {
         }
 
         if (usernameInput.getText() != null && usernameInput.getText().toString().trim().isEmpty()) {
-            usernameLayout.setError("Espacio requerido *");
+            usernameLayout.setError(getResources().getText(R.string.requiredField));
             usernameLayout.requestFocus();
             isValid = false;
         } else {
@@ -319,7 +317,7 @@ public class MyProfileActivity extends AppCompatActivity {
         }
 
         if (phoneNumberInput.getText() != null && phoneNumberInput.getText().toString().trim().isEmpty()) {
-            phoneNumberLayout.setError("Espacio requerido *");
+            phoneNumberLayout.setError(getResources().getText(R.string.requiredField));
             phoneNumberLayout.requestFocus();
             isValid = false;
         } else {
@@ -327,7 +325,7 @@ public class MyProfileActivity extends AppCompatActivity {
         }
 
         if (addressInput.getText() != null && addressInput.getText().toString().trim().isEmpty()) {
-            addressLayout.setError("Espacio requerido *");
+            addressLayout.setError(getResources().getText(R.string.requiredField));
             addressLayout.requestFocus();
             isValid = false;
         } else {
@@ -395,6 +393,7 @@ public class MyProfileActivity extends AppCompatActivity {
                     if (!TextUtils.isEmpty(currentUser.getProfileImage())) {
                         setImageProfile();
                     } else {
+                        progressBar.setVisibility(View.INVISIBLE);
                         profileImage.setImageDrawable(ContextCompat.getDrawable(MyProfileActivity.this, R.drawable.ic_person));
                     }
 
@@ -409,8 +408,7 @@ public class MyProfileActivity extends AppCompatActivity {
         });
     }
 
-    public void windowBack(View v){
+    public void windowBack(View v) {
         onBackPressed();
     }
-
 }

@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:backgroundTint="#B3FFFFFF"
         android:onClick="windowBack"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,10 +19,21 @@
         app:srcCompat="@drawable/ic_action_back" />
 
     <View
+        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:background="@color/blueTertiary"
-        app:layout_constraintBottom_toBottomOf="@id/tabLayout"/>
+        app:layout_constraintBottom_toBottomOf="@id/tabLayout" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/blueTertiary"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.453"
+        tools:layout_editor_absoluteX="0dp" />
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
@@ -32,7 +43,8 @@
         app:tabMode="fixed"
         app:tabIndicatorHeight="3dp"
         app:tabPaddingBottom="8dp"
-        app:tabPaddingTop="15dp"/>
+        app:tabPaddingTop="15dp"
+        android:layout_marginTop="55dp"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPaper"

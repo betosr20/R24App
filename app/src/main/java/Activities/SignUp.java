@@ -119,7 +119,6 @@ public class SignUp extends AppCompatActivity {
         Metodo que se encarga de extraer los datos de la vista sign_up y enviarlos a Firebase.
      */
     public void nextStepToRegisterUser() {
-        // uploadTheSelectedImageTotheServer();
         if (validateInputs()) {
             validateUserName();
         }
@@ -145,35 +144,35 @@ public class SignUp extends AppCompatActivity {
     public boolean validateInputs() {
         boolean isValid = true;
         if (name.getText() != null && name.getText().toString().trim().isEmpty()) {
-            inputLayoutName.setError("Espacio requerido *");
+            inputLayoutName.setError(getResources().getText(R.string.requiredField));
             inputLayoutName.requestFocus();
             isValid = false;
         } else {
             inputLayoutName.setError(null);
         }
         if (lastName.getText() != null && lastName.getText().toString().trim().isEmpty()) {
-            inputLayoutLastName.setError("Espacio requerido *");
+            inputLayoutLastName.setError(getResources().getText(R.string.requiredField));
             inputLayoutLastName.requestFocus();
             isValid = false;
         } else {
             inputLayoutLastName.setError(null);
         }
         if (userName.getText() != null && userName.getText().toString().trim().isEmpty()) {
-            inputLayoutUserName.setError("Espacio requerido *");
+            inputLayoutUserName.setError(getResources().getText(R.string.requiredField));
             inputLayoutUserName.requestFocus();
             isValid = false;
         } else {
             inputLayoutUserName.setError(null);
         }
         if (cellPhone.getText() != null && cellPhone.getText().toString().trim().isEmpty()) {
-            inputLayoutCellPhone.setError("Espacio requerido *");
+            inputLayoutCellPhone.setError(getResources().getText(R.string.requiredField));
             inputLayoutCellPhone.requestFocus();
             isValid = false;
         } else {
             inputLayoutCellPhone.setError(null);
         }
         if (address.getText() != null && address.getText().toString().trim().isEmpty()) {
-            inputLayoutAddress.setError("Espacio requerido *");
+            inputLayoutAddress.setError(getResources().getText(R.string.requiredField));
             inputLayoutAddress.requestFocus();
             isValid = false;
         } else {
@@ -307,7 +306,7 @@ public class SignUp extends AppCompatActivity {
         }
     }
 
-    public void windowBack(View v){
+    public void windowBack(View v) {
         onBackPressed();
     }
 }

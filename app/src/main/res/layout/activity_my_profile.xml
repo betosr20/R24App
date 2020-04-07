@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
@@ -22,6 +21,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:backgroundTint="#B3FFFFFF"
+            android:contentDescription="@string/title_user_profile"
             android:onClick="windowBack"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -32,55 +32,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:visibility="visible"
+            android:indeterminate="true"
             android:indeterminateTint="@color/bluePrimary"
-            android:indeterminate="true" />
+            android:visibility="visible"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="29dp" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:layout_marginEnd="9dp"
-            android:orientation="vertical"
-            android:background="@android:color/transparent"
-            android:backgroundTint="@android:color/transparent"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/myProfileImage"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <FrameLayout
-                android:background="@android:color/transparent"
-                android:backgroundTint="@android:color/transparent"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/myProfileImage"
-                    android:layout_gravity="center"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"/>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/deletePhotoButton"
-                        android:saveEnabled="false"
-                        style="@style/ImageViewButton"
-                        android:src="@drawable/ic_close_box" />
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/selectImageButton"
-                        android:saveEnabled="false"
-                        style="@style/ImageViewButton"
-                        android:src="@drawable/ic_image" />
-                </LinearLayout>
-
-            </FrameLayout>
-        </LinearLayout>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/LayoutName"
@@ -90,12 +55,12 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
-            app:boxBackgroundMode="outline"
             android:enabled="false"
+            app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
             app:startIconDrawable="@drawable/ic_person">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -103,7 +68,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/fieldNameHint"
-                android:inputType="textPersonName|textCapWords"
+                android:digits="áéíóúabcdefghijklmnñopqrstuvwxyzÁÉÍÓÚABCDEFGHIJKLMNÑOPQRSTUVWXYZ "
+                android:inputType="text|textCapWords"
                 android:maxLength="30" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -116,8 +82,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
-            app:boxBackgroundMode="outline"
             android:enabled="false"
+            app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -129,7 +95,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/fieldLastNameHint"
-                android:inputType="textPersonName|textCapWords"
+                android:digits="áéíóúabcdefghijklmnñopqrstuvwxyzÁÉÍÓÚABCDEFGHIJKLMNÑOPQRSTUVWXYZ "
+                android:inputType="text|textCapWords"
                 android:maxLength="30" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -142,9 +109,9 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
+            android:enabled="false"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
-            android:enabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/LayoutLastName"
@@ -168,9 +135,9 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
+            android:enabled="false"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
-            android:enabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/LayoutUserName"
@@ -181,6 +148,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:digits="0123456789+"
+                android:maxLength="12"
                 android:hint="@string/fieldPhoneNumberHint"
                 android:inputType="phone" />
 
@@ -194,9 +162,9 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
+            android:enabled="false"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
-            android:enabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/LayoutCellPhone">
@@ -217,7 +185,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
             android:text="@string/editButtonText"
             app:iconGravity="textEnd"
@@ -225,5 +193,29 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/LayoutAddress" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/myProfileImage">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/deletePhotoButton"
+                style="@style/ImageViewButton"
+                android:saveEnabled="false"
+                android:src="@drawable/ic_close_box" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/selectImageButton"
+                style="@style/ImageViewButton"
+                android:saveEnabled="false"
+                android:src="@drawable/ic_image" />
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

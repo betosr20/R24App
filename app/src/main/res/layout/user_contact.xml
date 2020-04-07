@@ -19,7 +19,7 @@
         tools:ignore="MissingConstraints">
 
         <ProgressBar
-            android:id="@+id/loadImage"
+            android:id="@+id/loadContacImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
