@@ -133,8 +133,8 @@
                 android:id="@+id/etCellPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:digits="0123456789+"
-                android:maxLength="12"
+                android:digits="0123456789"
+                android:maxLength="8"
                 android:hint="@string/fieldPhoneNumberHint"
                 android:inputType="phone" />
 
