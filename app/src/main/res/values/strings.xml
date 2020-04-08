@@ -49,6 +49,7 @@
     <string name="needHelpAction">Señal de auxilio</string>
     <string name="amOkAction">Estoy bien</string>
     <string name="changeViewSwitch">Vista</string>
+    <string name="reportIncidentNotification">Nuevo reporte de incidente</string>
 
     <string-array name="disasterTypes_array">
         <item>Seleccione el tipo de desastre</item>

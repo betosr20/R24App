@@ -214,11 +214,10 @@ public class ReportIncidentActivity extends AppCompatActivity {
 
         if (reportService.addNewReport(report) && reportService.saveReportImages(imagesUri, reportId)) {
             Toast.makeText(ReportIncidentActivity.this, "Reporte registrado exitosamente", Toast.LENGTH_LONG).show();
+            reportService.sendNewReportNotification(report, this);
         } else {
             Toast.makeText(ReportIncidentActivity.this, "Hubo un problema al registrar el reporte", Toast.LENGTH_LONG).show();
         }
-
-        // validFields = false;
 
         new Handler().postDelayed(new Runnable() {
             @Override
