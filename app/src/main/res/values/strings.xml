@@ -16,6 +16,8 @@
     <string name="saveReportButton">REPORTAR</string>
     <string name="incidentPlace">Lugar del accidente…</string>
     <string name="requiredField">Espacio requerido *</string>
+    <string name="alphanumericPassword">Letras, números y símbolos son requeridos</string>
+    <string name="invalidEmailFormat">Dirección de correo con formato inválido</string>
     <string name="imageSelected">Imagen Seleccionada</string>
     <string name="loadImages">Cargar Images</string>
     <string name="fieldName">Ingrese su nombre</string>
@@ -62,6 +64,8 @@
     <string name="label_dialog_delete">Eliminar</string>
     <string name="label_dialog_cancel">Cancelar</string>
     <string name="title_activity_alerts">Alertas</string>
+    <string name="exitAlertTittle">¡Salir!</string>
+    <string name="exitAlert">¿Está seguro que desea salir de la aplicación?</string>
 </resources>
 
 

@@ -19,10 +19,12 @@
         android:roundIcon="@drawable/uptodatelogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="Activities.MyProfileActivity" />
+        <activity android:name="Activities.MyProfileActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
         <activity android:name="Activities.ImageChooserActivity" />
         <activity android:name="Activities.ReportDetail.ReportDetailContainer" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,6 +35,7 @@
             android:parentActivityName=".MainActivity"/>
         <activity android:name="Activities.SignUp"
                     android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             />
         <activity android:name="Activities.PasswordValidation"
             android:parentActivityName="Activities.SignUp"/>
@@ -43,6 +46,7 @@
         <activity
             android:name="Activities.ReportIncidentActivity"
             android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:parentActivityName="Activities.MapActivity"
             />
         <activity

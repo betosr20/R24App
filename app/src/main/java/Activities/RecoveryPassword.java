@@ -42,6 +42,8 @@ public class RecoveryPassword extends AppCompatActivity {
 
     private void changePassword() {
         if (validateInputs()) {
+            layoutEmail.setError(null);
+
             mAuth.sendPasswordResetEmail(etEmail.getText().toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
@@ -56,7 +58,8 @@ public class RecoveryPassword extends AppCompatActivity {
                     boolean validEmailAddressFormat = android.util.Patterns.EMAIL_ADDRESS.matcher(etEmail.getText().toString()).matches();
 
                     if (!validEmailAddressFormat) {
-                        Toast.makeText(RecoveryPassword.this, "Dirección de correo con formato inválido", Toast.LENGTH_LONG).show();
+                        layoutEmail.setError(getResources().getText(R.string.invalidEmailFormat));
+                        layoutEmail.requestFocus();
                     } else {
                         Toast.makeText(RecoveryPassword.this, "El correo ingresado no existe en la base de datos, por favor ingrese un correo electrónico válido.", Toast.LENGTH_LONG).show();
                     }

@@ -60,7 +60,6 @@ public class Images extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         imageView = inflater.inflate(R.layout.fragment_images, container, false);
         recyclerview = imageView.findViewById(R.id.imageList);
         recyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -76,6 +75,9 @@ public class Images extends Fragment {
                             StorageReference reference = storageReference.child("ReportsImages/" + reportPicture.getImageName());
                             referencesList.add(reference);
                         }
+                    }
+                    if(referencesList.isEmpty()) {
+                        referencesList.add( storageReference.child("myImages/image-placeholder.jpg"));
                     }
                     imageAdapter = new ImageAdapter(referencesList, getContext());
                     recyclerview.setAdapter(imageAdapter);

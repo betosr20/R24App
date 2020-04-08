@@ -14,6 +14,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuPopupHelper;
@@ -88,7 +89,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                         .findFragmentById(R.id.map2);
                 mapFragment.getMapAsync(MapActivity.this::onMapReady);
-
             }
 
             @Override
@@ -112,7 +112,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     userService.updatePinSetting(false);
                     clearPins(mMap, false, activeHeatMap);
                 }
-
             }
         });
 
@@ -143,7 +142,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 }
             }
         });
-
     }
 
     @Override
@@ -177,17 +175,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     if (!view) {
                         changeView();
                     }
-
-                    LatLng latLng;
-                    latLng = new LatLng(9.932231, -84.091373);
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 7));
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
+
         });
+        LatLng latLng;
+        latLng = new LatLng(9.932231, -84.091373);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 7));
     }
 
     @Override
@@ -356,4 +354,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         optionsMenu.show();
     }
 
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle(R.string.exitAlertTittle)
+                .setMessage(R.string.exitAlert)
+                .setPositiveButton("Salir", (dialogInterface, i) -> signOut())
+                .setNegativeButton(R.string.label_dialog_cancel, null);
+        builder.show();
+    }
 }

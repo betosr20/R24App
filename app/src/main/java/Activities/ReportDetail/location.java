@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +39,7 @@ public class location extends Fragment implements OnMapReadyCallback {
     Report report;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
+    private Switch switchButtonView;
 
     public location() {
         // Required empty public constructor
@@ -54,10 +57,20 @@ public class location extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         viewLocation = inflater.inflate(R.layout.fragment_location, container, false);
+        switchButtonView =  viewLocation.findViewById(R.id.switchButtonViewLocation);
+        switchButtonView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton view2, boolean isChecked) {
+                if (isChecked) {
+                    gMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                } else {
+                    gMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                }
+            }
+        });
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //Valida si existe el arreglo, osea si hay datos
                 if (dataSnapshot.exists()) {
                     report = dataSnapshot.getValue(Report.class);
                 }
@@ -89,8 +102,7 @@ public class location extends Fragment implements OnMapReadyCallback {
         this.populatePins(googleMap);
     }
 
-    //metodo que se encarga de pintar el ping del lugar del evento
-    public void populatePins(GoogleMap googleMap) {
+    private void populatePins(GoogleMap googleMap) {
         gMap = googleMap;
         double latitude, longitude;
         latitude = Double.parseDouble(report.getLatitude());
@@ -99,4 +111,5 @@ public class location extends Fragment implements OnMapReadyCallback {
         gMap.addMarker(new MarkerOptions().position(selectedPlace));
         gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 16));
     }
+
 }
