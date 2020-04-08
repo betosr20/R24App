@@ -219,8 +219,6 @@ public class ReportIncidentActivity extends AppCompatActivity {
             Toast.makeText(ReportIncidentActivity.this, "Hubo un problema al registrar el reporte", Toast.LENGTH_LONG).show();
         }
 
-        // validFields = false;
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
