@@ -20,8 +20,6 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
 
 import com.example.r24app.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -31,8 +29,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.Nullable;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -94,22 +90,24 @@ public class MyProfileActivity extends AppCompatActivity {
     }
 
     public void setImageProfile() {
-        StorageReference userProfileImageRef = FirebaseStorage.getInstance().getReference();
-        StorageReference userProfileImage = userProfileImageRef.child(FirebaseClasses.ProfileImagesFolder + currentUser.getId() + ".png");
+        Picasso.get().load(currentUser.getProfileImage()).fit().into(profileImage);
+        progressBar.setVisibility(View.INVISIBLE);
+        progressBarHide = true;
 
+        // Este codigo se puede utilizar para obtener el download URL de la imagen en caso de ser necesario
+        /*StorageReference userProfileImageRef = FirebaseStorage.getInstance().getReference();
+        StorageReference userProfileImage = userProfileImageRef.child(FirebaseClasses.ProfileImagesFolder + currentUser.getId() + ".png");
         userProfileImage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).fit().into(profileImage);
-                progressBar.setVisibility(View.INVISIBLE);
-                progressBarHide = true;
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
 
             }
-        });
+        });*/
     }
 
     public void addListeners() {
@@ -160,7 +158,6 @@ public class MyProfileActivity extends AppCompatActivity {
                 profileImage.setImageBitmap(bitmap);
                 deleteImageIcon.setEnabled(true);
                 deleteImageIcon.setClickable(true);
-                currentUser.setProfileImage(currentUser.getId() + ".png");
             } catch (Exception e) {
 
                 e.printStackTrace();
@@ -222,7 +219,7 @@ public class MyProfileActivity extends AppCompatActivity {
     }
 
     private void uploadTheSelectedImageToServer() throws IOException {
-        userService.uploadTheSelectedImageToServer(bitmap);
+        userService.uploadTheSelectedImageToServer(bitmap, currentUser, false);
     }
 
     public void validatePhoneNumber() {
