@@ -2,6 +2,7 @@ package com.example.r24app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -17,6 +18,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import Activities.MapActivity;
 import Activities.RecoveryPassword;
@@ -36,6 +39,12 @@ public class MainActivity extends AppCompatActivity {
         Button login = findViewById(R.id.btnNextSignUp);
         inputLayoutEmail = findViewById(R.id.emailInputLayout);
         inputLayoutPassword = findViewById(R.id.LayoutLoginPassword);
+
+        //CREAR EL TOKEN PARA LAS NOTIFICACIONES
+        createNotificationNewIncident();
+
+
+
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,5 +132,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return isValid;
+    }
+
+    private void createNotificationNewIncident(){
+
     }
 }

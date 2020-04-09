@@ -59,6 +59,7 @@ public class NotificationHandler extends ContextWrapper {
                     .setSmallIcon(R.drawable.ic_report_black_24dp)
                     .setGroup(DataConstants.SUMMARY_GROUP_NAME)
                     .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.uptodatelogo))
+                    .setContentIntent(pIntent)
                     .setAutoCancel(true);
         }
 

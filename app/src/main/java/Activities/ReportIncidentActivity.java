@@ -212,12 +212,14 @@ public class ReportIncidentActivity extends AppCompatActivity {
                 true, startDate.getTime(), endDate.getTime(), affectedAnimals, affectedPeople, userService.getCurrentFirebaseUserId(),
                 getStringDate(true), getStringDate(false));
 
-        if (reportService.addNewReport(report) && reportService.saveReportImages(imagesUri, reportId)) {
-            Toast.makeText(ReportIncidentActivity.this, "Reporte registrado exitosamente", Toast.LENGTH_LONG).show();
-            reportService.sendNewReportNotification(report, this);
-        } else {
-            Toast.makeText(ReportIncidentActivity.this, "Hubo un problema al registrar el reporte", Toast.LENGTH_LONG).show();
-        }
+        //BORRAR DESPUES DE LA PRUEBA
+        reportService.sendNewReportNotification(report, this);
+       // if (reportService.addNewReport(report) && reportService.saveReportImages(imagesUri, reportId)) {
+        //    Toast.makeText(ReportIncidentActivity.this, "Reporte registrado exitosamente", Toast.LENGTH_LONG).show();
+       //     reportService.sendNewReportNotification(report, this);
+       // } else {
+       //     Toast.makeText(ReportIncidentActivity.this, "Hubo un problema al registrar el reporte", Toast.LENGTH_LONG).show();
+        //}
 
         new Handler().postDelayed(new Runnable() {
             @Override
