@@ -78,14 +78,13 @@ public class PasswordValidation extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         userId = task.getResult().getUser().getUid();
-                        String profileImage = chosenImageData != null && !TextUtils.isEmpty(chosenImageData.toString()) ? userId + ".png" : "";
 
-                        User newUser = new User(userId, name, lastName, userName.toLowerCase(), email.getText().toString(), cellPhone, address, profileImage,
+                        User newUser = new User(userId, name, lastName, userName.toLowerCase(), email.getText().toString(), cellPhone, address, "",
                                 true, true, true, false, true, true, true, true, false);
 
                         if (userService.addNewUser(newUser)) {
                             try {
-                                uploadTheSelectedImageToServer();
+                                uploadTheSelectedImageToServer(newUser);
                                 Toast.makeText(PasswordValidation.this, "Se ha registrado exitosamente", Toast.LENGTH_LONG).show();
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 assert user != null;
@@ -151,10 +150,10 @@ public class PasswordValidation extends AppCompatActivity {
         return matcher.matches();
     }
 
-    private void uploadTheSelectedImageToServer() throws IOException {
+    private void uploadTheSelectedImageToServer(User newUser) throws IOException {
         if (chosenImageData != null && !TextUtils.isEmpty(chosenImageData.toString())) {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageData);
-            userService.uploadTheSelectedImageToServer(bitmap);
+            userService.uploadTheSelectedImageToServer(bitmap, newUser, true);
         }
     }
 
