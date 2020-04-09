@@ -142,28 +142,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
     }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        String id = userService.getCurrentFirebaseUserId();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = database.getReference(FirebaseClasses.User).child(id);
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                user = dataSnapshot.getValue(User.class);
-                userService.getImageProfileUri(user);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-
-    }
-
+    
     @Override
 
     public void onMapReady(final GoogleMap googleMap) {
