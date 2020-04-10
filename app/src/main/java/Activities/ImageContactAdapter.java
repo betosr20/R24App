@@ -40,13 +40,13 @@ public class ImageContactAdapter extends RecyclerView.Adapter<ImageContactAdapte
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final User user =  userList.get(position);
-        holder.fullName.setText(user.getName() + " " + user.getLastName());
-        holder.cellPhone.setText(user.getCellPhone());
+        holder.fullName.setText(" "+user.getName() + " " + user.getLastName());
+        holder.cellPhone.setText(" "+user.getCellPhone());
 
         if (user.getProfileImage() != null) {
             Picasso.get()
                     .load(user.getProfileImage())
-                    .resize(200,200)
+                    .resize(300,300)
                     .into(holder.imageView);
             holder.progressBar.setVisibility(View.INVISIBLE);
         }

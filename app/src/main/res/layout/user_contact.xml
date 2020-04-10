@@ -11,11 +11,11 @@
         android:layout_height="wrap_content"
         android:paddingRight="8dp"
         android:src="@mipmap/ic_launcher_round"
-        app:contentPaddingLeft="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:cardBackgroundColor="#fff"
+        app:cardCornerRadius="3dp"
+        app:cardElevation="3dp"
+        app:contentPadding="5dp"
+        app:cardUseCompatPadding="true"
         tools:ignore="MissingConstraints">
 
 
@@ -46,9 +46,11 @@
                 android:id="@+id/fullName_userContact"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:text="Nombre"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:text=" Nombre"
+                android:drawableLeft="@drawable/ic_person"
+                android:textSize="18sp"
                 app:layout_constraintStart_toEndOf="@+id/user_contact_image"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,7 +59,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="Telefono"
+                android:text=" Telefono"
+                android:drawableLeft="@drawable/contactphone"
+                android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="@+id/fullName_userContact"
                 app:layout_constraintTop_toBottomOf="@+id/fullName_userContact" />
 
