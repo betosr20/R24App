@@ -51,6 +51,7 @@ public class ImageContactAdapter extends RecyclerView.Adapter<ImageContactAdapte
             holder.progressBar.setVisibility(View.INVISIBLE);
         }
         else {
+            holder.progressBar.setVisibility(View.INVISIBLE);
             holder.imageView.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_person));
         }
 
