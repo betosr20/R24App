@@ -13,6 +13,7 @@ import android.os.Build;
 
 import com.example.r24app.R;
 
+import Activities.ReportDetail.ReportDetailContainer;
 import Activities.ReportIncidentActivity;
 import Models.Constants.DataConstants;
 import Models.POJOS.Report;
@@ -45,9 +46,10 @@ public class NotificationHandler extends ContextWrapper {
 
     private Notification.Builder createNotificationWithChannel(Report report) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Intent intent = new Intent(this, ReportIncidentActivity.class);
+            Intent intent = new Intent(this, ReportDetailContainer.class);
             intent.putExtra("title", getResources().getString(R.string.reportIncidentNotification));
             intent.putExtra("message", report.getType() + "\n" + report.getDetail());
+            intent.putExtra("idReport", report.getId());
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 

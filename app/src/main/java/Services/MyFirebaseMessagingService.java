@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -17,16 +18,26 @@ import androidx.core.app.NotificationManagerCompat;
 import com.example.r24app.MainActivity;
 import com.example.r24app.R;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Arrays;
+
 import Activities.MapActivity;
+import Activities.ReportIncidentActivity;
 import Models.Constants.DataConstants;
 import Models.Constants.FirebaseClasses;
 import Models.POJOS.Report;
@@ -35,6 +46,12 @@ import Models.POJOS.User;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private Context context = this;
     public static final String TAG = "NOTICIAS";
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+    }
 
     @Override
     public void onNewToken(String s) {
@@ -48,14 +65,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
 
         super.onMessageReceived(remoteMessage);
+        Log.d(TAG, "ESTOY EN EL HPTA ONRECEIVE!!!!!!! BIEN PERO MAL");
             if(remoteMessage.getData().size()>0){
                 Log.d(TAG, "DATA: " + remoteMessage.getData().get("incidentID"));
                 showIncidentNotification(remoteMessage.getData().get("incidentID"));
             }
-
-
-
-
     }
 
     private void showIncidentNotification(String tittle){
@@ -77,5 +91,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }
         });
     }
+
+
 
 }

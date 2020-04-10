@@ -2,12 +2,14 @@ package Activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,15 +24,27 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.r24app.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import Models.Constants.DataConstants;
 import Models.POJOS.Report;
@@ -56,6 +70,7 @@ public class ReportIncidentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_report_incident);
         naturalDisasterService = new NaturalDisasterService();
         userService = new UserService();
@@ -212,14 +227,21 @@ public class ReportIncidentActivity extends AppCompatActivity {
                 true, startDate.getTime(), endDate.getTime(), affectedAnimals, affectedPeople, userService.getCurrentFirebaseUserId(),
                 getStringDate(true), getStringDate(false));
 
-        //BORRAR DESPUES DE LA PRUEBA
+
         reportService.sendNewReportNotification(report, this);
-       // if (reportService.addNewReport(report) && reportService.saveReportImages(imagesUri, reportId)) {
-        //    Toast.makeText(ReportIncidentActivity.this, "Reporte registrado exitosamente", Toast.LENGTH_LONG).show();
-       //     reportService.sendNewReportNotification(report, this);
-       // } else {
-       //     Toast.makeText(ReportIncidentActivity.this, "Hubo un problema al registrar el reporte", Toast.LENGTH_LONG).show();
-        //}
+        if (reportService.addNewReport(report) && reportService.saveReportImages(imagesUri, reportId)) {
+            Toast.makeText(ReportIncidentActivity.this, "Reporte registrado exitosamente", Toast.LENGTH_LONG).show();
+            try {
+                reportService.sendNotificationToFirebase(this, report);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(ReportIncidentActivity.this, "Hubo un problema al registrar el reporte", Toast.LENGTH_LONG).show();
+        }
+
+
+
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -304,4 +326,6 @@ public class ReportIncidentActivity extends AppCompatActivity {
     public void windowBack(View v) {
         onBackPressed();
     }
+
+
 }
