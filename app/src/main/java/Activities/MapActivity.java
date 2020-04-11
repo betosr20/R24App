@@ -143,7 +143,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
     }
-
+    
     @Override
 
     public void onMapReady(final GoogleMap googleMap) {
@@ -341,6 +341,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     case R.id.myProfile:
                         Intent profileActivity = new Intent(context2, MyProfileActivity.class);
                         startActivity(profileActivity);
+                        return true;
+                    case R.id.action_search_user:
+                        Intent searchUserIntent = new Intent(context2, SearchUser.class);
+                        startActivity(searchUserIntent);
                         return true;
                     default:
                         return false;

@@ -37,6 +37,8 @@ public class PasswordValidation extends AppCompatActivity {
     private TextInputLayout layoutEmail, layoutPassword;
     private UserService userService;
     private Uri chosenImageData;
+    private User refreshUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,7 @@ public class PasswordValidation extends AppCompatActivity {
 
                         User newUser = new User(userId, name, lastName, userName.toLowerCase(), email.getText().toString(), cellPhone, address, "",
                                 true, true, true, false, true, true, true, true, false);
+                        refreshUser = newUser;
 
                         if (userService.addNewUser(newUser)) {
                             try {
@@ -90,6 +93,7 @@ public class PasswordValidation extends AppCompatActivity {
                                 assert user != null;
                                 user.sendEmailVerification();
                                 logInViewTransition();
+
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
