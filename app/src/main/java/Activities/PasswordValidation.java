@@ -28,6 +28,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import Models.POJOS.User;
+import Services.FirebaseNotificationService;
 import Services.UserService;
 
 public class PasswordValidation extends AppCompatActivity {
@@ -84,6 +85,7 @@ public class PasswordValidation extends AppCompatActivity {
 
                         if (userService.addNewUser(newUser)) {
                             try {
+                                new FirebaseNotificationService().subscribeToIncidentNotifications();
                                 uploadTheSelectedImageToServer(newUser);
                                 Toast.makeText(PasswordValidation.this, "Se ha registrado exitosamente", Toast.LENGTH_LONG).show();
                                 FirebaseUser user = mAuth.getCurrentUser();
