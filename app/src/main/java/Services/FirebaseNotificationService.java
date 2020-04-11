@@ -38,8 +38,6 @@ public class FirebaseNotificationService extends FirebaseMessagingService {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            String v = "kjgdkfjgh";
-                            System.out.println(v);
                         }
                     }
                 });
@@ -49,16 +47,16 @@ public class FirebaseNotificationService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         if (remoteMessage.getData().size() > 0) {
             String reportId = remoteMessage.getData().get("reportId");
-            String ownerId = remoteMessage.getData().get("ownerId");
-            showIncidentNotification(reportId, ownerId);
+            showIncidentNotification(reportId);
         }
     }
 
-    private void showIncidentNotification(String reportId, String ownerId) {
+    private void showIncidentNotification(String reportId) {
         String currentUserId = userService.getCurrentFirebaseUserId();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = database.getReference(FirebaseClasses.Report).child(reportId);
         Context context = this;
+
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
