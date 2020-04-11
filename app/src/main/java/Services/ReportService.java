@@ -1,5 +1,7 @@
 package Services;
 
+import android.app.Notification;
+import android.content.Context;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
@@ -82,5 +84,12 @@ public class ReportService {
         ReportPicture reportPicture = new ReportPicture(imageName + ".jpg", reportId, imageName);
         databaseReference = database.getReference(FirebaseClasses.ReportPicture).child(reportPicture.getId());
         databaseReference.setValue(reportPicture);
+    }
+
+    public void sendNewReportNotification(Report report, Context context) {
+        NotificationHandler notificationHandler = new NotificationHandler(context);
+        Notification.Builder notification = new NotificationHandler(context).createReportNotification(report);
+        notificationHandler.getManager().notify(1, notification.build());
+        notificationHandler.publishNotificationSummaryGroup();
     }
 }

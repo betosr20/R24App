@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void login() {
         if (validateInputs()) {
+            inputLayoutEmail.setError(null);
+
             mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -86,7 +88,8 @@ public class MainActivity extends AppCompatActivity {
                         boolean validEmailAddressFormat = android.util.Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches();
 
                         if (!validEmailAddressFormat) {
-                            Toast.makeText(MainActivity.this, "Dirección de correo con formato inválido", Toast.LENGTH_LONG).show();
+                            inputLayoutEmail.setError(getResources().getText(R.string.invalidEmailFormat));
+                            inputLayoutEmail.requestFocus();
                         } else {
                             Toast.makeText(MainActivity.this, "Las credenciales ingresadas no son válidas", Toast.LENGTH_LONG).show();
                         }
