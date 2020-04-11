@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
@@ -23,6 +24,9 @@ public class UserService {
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
+    private StorageReference storageReference;
+    private StorageReference ref;
+    private FirebaseStorage firebaseStorage;
 
     public UserService() {
         mAuth = FirebaseAuth.getInstance();
@@ -125,5 +129,21 @@ public class UserService {
     public void updateViewTypeSetting(boolean setting) {
         String id = getCurrentFirebaseUserId();
         databaseReference.child(FirebaseClasses.User).child(id).child("viewType").setValue(setting);
+    }
+    public void getImageProfileUri(User pupdateUser) {
+        storageReference = firebaseStorage.getInstance().getReference();
+        ref = storageReference.child("myImages/" + pupdateUser.getProfileImage());
+        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                pupdateUser.setProfileImage(uri.toString());
+                updateUser(pupdateUser);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
     }
 }

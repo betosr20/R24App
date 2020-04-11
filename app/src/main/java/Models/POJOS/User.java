@@ -1,8 +1,8 @@
 package Models.POJOS;
 
 public class User {
-    private String Id, name, lastName, username, email, cellPhone, address, profileImage;
-    private boolean alerts, notifications, needHelp, isActive, timeConfiguration, isOk, heatMap, picker, viewType;
+    private String id, name, lastName, username, email, cellPhone, address, profileImage;
+    private boolean alerts, notifications, needHelp, isActive, timeConfiguration, ok, heatMap, picker, viewType;
 
     public User() {
     }
@@ -10,7 +10,7 @@ public class User {
     public User(String Id, String name, String lastName, String username, String email, String cellPhone,
                 String address, String profileImage, boolean isOk, boolean alerts, boolean notifications,
                 boolean needHelp, boolean isActive, boolean timeConFiguration, boolean heatMap, boolean picker, boolean viewType) {
-        this.Id = Id;
+        this.id = Id;
         this.name = name;
         this.lastName = lastName;
         this.username = username;
@@ -23,18 +23,18 @@ public class User {
         this.needHelp = needHelp;
         this.isActive = isActive;
         this.timeConfiguration = timeConFiguration;
-        this.isOk = isOk;
+        this.ok = isOk;
         this.heatMap = heatMap;
         this.picker = picker;
         this.viewType = viewType;
     }
 
     public String getId() {
-        return Id;
+        return id;
     }
 
     public void setId(String id) {
-        Id = id;
+        id = id;
     }
 
     public String getName() {
@@ -134,11 +134,11 @@ public class User {
     }
 
     public boolean isOk() {
-        return isOk;
+        return ok;
     }
 
     public void setOk(boolean ok) {
-        isOk = ok;
+        ok = ok;
     }
 
     public boolean isHeatMap() {
