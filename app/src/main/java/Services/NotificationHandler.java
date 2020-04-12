@@ -13,6 +13,7 @@ import android.os.Build;
 
 import com.example.r24app.R;
 
+import Activities.ReportDetail.ReportDetailContainer;
 import Activities.ReportIncidentActivity;
 import Models.Constants.DataConstants;
 import Models.POJOS.Report;
@@ -45,20 +46,19 @@ public class NotificationHandler extends ContextWrapper {
 
     private Notification.Builder createNotificationWithChannel(Report report) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Intent intent = new Intent(this, ReportIncidentActivity.class);
-            intent.putExtra("title", getResources().getString(R.string.reportIncidentNotification));
-            intent.putExtra("message", report.getType() + "\n" + report.getDetail());
+            Intent intent = new Intent(this, ReportDetailContainer.class);
+            String id = report.getId();
+            intent.putExtra("idReport", id);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-            Notification.Action action = new Notification.Action.Builder(Icon.createWithResource(this, R.drawable.ic_report_black_24dp), "See Details", pIntent).build();
 
             return new Notification.Builder(getApplicationContext(), DataConstants.CHANNEL_HIGH_ID)
                     .setContentTitle(getResources().getString(R.string.reportIncidentNotification))
                     .setContentText(report.getType() + " en " + report.getPlace())
-                    .setSmallIcon(R.drawable.ic_report_black_24dp)
+                    .setSmallIcon(R.drawable.uptodatelogo)
                     .setGroup(DataConstants.SUMMARY_GROUP_NAME)
                     .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.uptodatelogo))
+                    .setContentIntent(pIntent)
                     .setAutoCancel(true);
         }
 
@@ -69,7 +69,7 @@ public class NotificationHandler extends ContextWrapper {
         return new Notification.Builder(getApplicationContext())
                 .setContentTitle(getResources().getString(R.string.reportIncidentNotification))
                 .setContentText(report.getType() + " en " + report.getPlace())
-                .setSmallIcon(R.drawable.ic_report_black_24dp)
+                .setSmallIcon(R.drawable.uptodatelogo)
                 .setVibrate(new long[] { 2000, 2000, 2000, 2000, 2000 })
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.uptodatelogo))
                 .setAutoCancel(true);
