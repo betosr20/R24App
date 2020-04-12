@@ -64,8 +64,8 @@ public class SignUp extends AppCompatActivity {
         inputLayoutCellPhone = findViewById(R.id.LayoutCellPhone);
         cellPhone = findViewById(R.id.etCellPhone);
         // Input y editText de direccion
-        inputLayoutAddress = findViewById(R.id.LayoutAddress);
-        address = findViewById(R.id.etAddress);
+        inputLayoutAddress = findViewById(R.id.LayoutDetailReport);
+        address = findViewById(R.id.etDetailReport);
         // boton que se encarga a disparar la accion de registarse en FireBase.
         btnNextStep = findViewById(R.id.btnSignUp);
         btnNextStep.setOnClickListener(new View.OnClickListener() {
