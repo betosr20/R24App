@@ -86,7 +86,7 @@ public class NotificationHandler extends ContextWrapper {
     public void publishNotificationSummaryGroup() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Notification summaryNotification = new Notification.Builder(getApplicationContext(), DataConstants.CHANNEL_HIGH_ID)
-                    .setSmallIcon(android.R.drawable.stat_notify_call_mute)
+                    .setSmallIcon(R.drawable.ic_report_black_24dp)
                     .setGroup(DataConstants.SUMMARY_GROUP_NAME)
                     .setGroupSummary(true)
                     .build();
