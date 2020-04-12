@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Proyecto-R24App.iml" filepath="$PROJECT_DIR$/Proyecto-R24App.iml" group="R24App" />
+      <module fileurl="file://$PROJECT_DIR$/ProyectoV2-R24App.iml" filepath="$PROJECT_DIR$/ProyectoV2-R24App.iml" group="R24App" />
+      <module fileurl="file://$PROJECT_DIR$/app/ProyectoV2-app.iml" filepath="$PROJECT_DIR$/app/ProyectoV2-app.iml" group="R24App/app" />
       <module fileurl="file://$PROJECT_DIR$/R24App.iml" filepath="$PROJECT_DIR$/R24App.iml" group="R24App" />
       <module fileurl="file://$PROJECT_DIR$/app/R24App-app.iml" filepath="$PROJECT_DIR$/app/R24App-app.iml" group="R24App/app" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="R24App/app" />
