@@ -60,7 +60,8 @@ public class SearchUser extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_user);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Lista de usuarios  ");
+        actionBar.setTitle("Lista de usuarios");
+        actionBar.setDisplayHomeAsUpEnabled(true);
         database = FirebaseDatabase.getInstance();
         recyclerView = findViewById(R.id.userList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

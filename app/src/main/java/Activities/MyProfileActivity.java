@@ -77,7 +77,7 @@ public class MyProfileActivity extends AppCompatActivity {
         lastNameLayout = findViewById(R.id.LayoutLastName);
         usernameLayout = findViewById(R.id.LayoutUserName);
         phoneNumberLayout = findViewById(R.id.LayoutCellPhone);
-        addressLayout = findViewById(R.id.LayoutAddress);
+        addressLayout = findViewById(R.id.LayoutDetailReport);
         deleteImageIcon = findViewById(R.id.deletePhotoButton);
         chooseImageIcon = findViewById(R.id.selectImageButton);
         profileImage = findViewById(R.id.myProfileImage);
@@ -86,7 +86,7 @@ public class MyProfileActivity extends AppCompatActivity {
         lastNameInput = findViewById(R.id.etLastName);
         usernameInput = findViewById(R.id.etUserName);
         phoneNumberInput = findViewById(R.id.etCellPhone);
-        addressInput = findViewById(R.id.etAddress);
+        addressInput = findViewById(R.id.etDetailReport);
     }
 
     public void setImageProfile() {
