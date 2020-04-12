@@ -20,7 +20,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="Activities.SearchUser"
-                                android:theme="@style/AppThemeSearch"/>
+                                android:theme="@style/AppThemeSearch"
+                                android:parentActivityName=".MainActivity"/>
         <activity android:name="Activities.MyProfileActivity"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
         <activity android:name="Activities.ImageChooserActivity" />
