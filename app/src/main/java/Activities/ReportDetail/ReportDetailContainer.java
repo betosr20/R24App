@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import Activities.MapActivity;
 import Models.Constants.FirebaseClasses;
 import Models.POJOS.ReportPicture;
 
@@ -90,6 +91,8 @@ public class ReportDetailContainer extends AppCompatActivity {
     }
 
     public void windowBack(View v) {
-        onBackPressed();
+        Intent intent = new Intent(this, MapActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

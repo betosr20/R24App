@@ -14,9 +14,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/uptodatelogo"
+        android:icon="@drawable/uptodatelogotransparente"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/uptodatelogo"
+        android:roundIcon="@drawable/uptodatelogotransparente"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="Activities.SearchUser"
@@ -70,7 +70,8 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="@string/google_maps_key"
+            />
 
         <service
             android:name="Services.FirebaseNotificationService"
