@@ -10,8 +10,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.request.RequestOptions;
 import com.example.r24app.R;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,8 @@ import Activities.modules.GlideApp;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder> {
     private Context context;
-    private List<StorageReference> referencesList = new ArrayList<>();
+    private List<StorageReference> referencesList;
+
     public  ImageAdapter (List<StorageReference> referencesList, Context context) {
         this.context = context;
         this.referencesList = referencesList;
@@ -37,6 +40,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         GlideApp.with(context)
                 .load(referencesList.get(position))
+                .centerCrop()
                 .into(holder.imageView);
         if (referencesList.get(position).toString().equals("gs://r24app-e1e7d.appspot.com/myImages/image-placeholder.jpg")) {
             Toast.makeText(context, "No hay imágenes en este reporte", Toast.LENGTH_LONG).show();

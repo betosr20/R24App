@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.r24app.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -73,8 +74,9 @@ public class ImageChooserActivity extends AppCompatActivity {
                         if (currentImage.getParent() != null) {
                             ((ViewGroup) currentImage.getParent()).removeView(currentImage);
                         }
-                        currentImage.setImageURI(clipData.getItemAt(i).getUri());
+                        //currentImage.setImageURI(clipData.getItemAt(i).getUri());
                         imagesUris.add(clipData.getItemAt(i).getUri());
+                        Picasso.get().load(clipData.getItemAt(i).getUri()).resize(650,450).into(currentImage);
                         imagesContainer.addView(currentImage);
                     }
                 } else {
