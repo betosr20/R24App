@@ -65,24 +65,25 @@
                 android:textColor="?android:attr/textColorSecondary"
                 android:textSize="20sp" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/LayoutDetailReport"
-                style="@style/MyTheme.DayNight.TextInputLayoutReport"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:boxBackgroundMode="outline">
+            <TextView
+                android:id="@+id/DetailReportTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Detalle del evento :"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="20sp" />
+            <TextView
+                android:id="@+id/DetailReport"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="20sp" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etDetailReport"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:enabled="false"
-                    android:gravity="top|start"
-                    android:hint="Detalle del reporte"
-                    android:inputType="textMultiLine"
-                    android:maxLength="1000"
-                    android:textSize="20sp" />
-            </com.google.android.material.textfield.TextInputLayout>
+
 
         </LinearLayout>
 

@@ -52,7 +52,7 @@ public class GeneralInformation extends Fragment {
         place = (TextView) viewGeneralInformation.findViewById(R.id.reportPlace);
         affectedPeople = (TextView) viewGeneralInformation.findViewById(R.id.reportAffectedPeople);
         affectedAnimals = (TextView) viewGeneralInformation.findViewById(R.id.reportAffectedAnimals);
-        reportDetail = (TextInputEditText) viewGeneralInformation.findViewById(R.id.etDetailReport);
+        details = (TextView) viewGeneralInformation.findViewById(R.id.DetailReport);
         startDateTextView = (TextView) viewGeneralInformation.findViewById(R.id.reportStartDate);
         endDateTextView = (TextView) viewGeneralInformation.findViewById(R.id.reportEndDate);
 
@@ -66,7 +66,7 @@ public class GeneralInformation extends Fragment {
                     setIconPlace(place,report.getPlace());
                     setAffectedPeopleIcon(affectedPeople,report.getAffectedPeople());
                     setAffectedAnimalsIcon(affectedAnimals,report.getAffectedAnimals());
-                    setEventDetailIcon(reportDetail,report.getDetail());
+                    setEventDetailIcon(details,report.getDetail());
                     setStarDateIcon(startDateTextView, report.getStartDateString());
                     setEndDateIcon(endDateTextView, report.getEndDateString());
                 }
@@ -139,7 +139,7 @@ public class GeneralInformation extends Fragment {
         textView.setText("   "+type);
     }
     public void setIconPlace(TextView textView, String place) {
-        textView.setCompoundDrawablesWithIntrinsicBounds( R.drawable.place, 0, 0, 0);
+        textView.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_location, 0, 0, 0);
         textView.setText("   "+place);
     }
     public void setAffectedPeopleIcon (TextView textView, int affectedPeople) {
@@ -147,7 +147,7 @@ public class GeneralInformation extends Fragment {
         textView.setText("   "+affectedPeople);
     }
     public void setAffectedAnimalsIcon (TextView textView, int affectedAnimals) {
-        textView.setCompoundDrawablesWithIntrinsicBounds( R.drawable.death, 0, 0, 0);
+        textView.setCompoundDrawablesWithIntrinsicBounds( R.drawable.animalsaffeted, 0, 0, 0);
         textView.setText("   "+affectedAnimals);
     }
     public void setStarDateIcon(TextView textView, String startDate) {
@@ -155,10 +155,10 @@ public class GeneralInformation extends Fragment {
         textView.setText("   "+startDate);
     }
     public void setEndDateIcon(TextView textView, String endDate) {
-        textView.setCompoundDrawablesWithIntrinsicBounds( R.drawable.no, 0, 0, 0);
-        textView.setText("   "+endDate);
+        textView.setText(""+endDate);
     }
-    public void setEventDetailIcon(TextInputEditText textView, String details) {
+    public void setEventDetailIcon(TextView textView, String details) {
+        textView.setCompoundDrawablesWithIntrinsicBounds( R.drawable.article, 0, 0, 0);
         textView.setText("   "+details);
     }
 
