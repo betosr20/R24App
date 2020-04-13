@@ -22,7 +22,7 @@
             android:layout_marginTop="8dp"
             android:textAppearance="?attr/textAppearanceBody2"
             android:textColor="?android:attr/textColorSecondary"
-            android:textSize="20sp" />
+                android:textSize="20sp"/>
             <TextView
                 android:id="@+id/reportPlace"
                 android:layout_width="wrap_content"
@@ -57,7 +57,16 @@
                 android:textColor="?android:attr/textColorSecondary"
                 android:textSize="20sp" />
             <TextView
-                android:id="@+id/reportPathDisabled"
+                android:id="@+id/DetailReportTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/detalle_del_evento"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="20sp" />
+            <TextView
+                android:id="@+id/DetailReport"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -65,13 +74,26 @@
                 android:textColor="?android:attr/textColorSecondary"
                 android:textSize="20sp" />
             <TextView
-                android:id="@+id/reportDetail"
+                android:id="@+id/isPathDisabledTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/estado_del_camino"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="20sp" />
+            <TextView
+                android:id="@+id/reportPathDisabled"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="?android:attr/textColorSecondary"
                 android:textSize="20sp" />
+
+
+
+
         </LinearLayout>
 
 

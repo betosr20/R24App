@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 
 import com.example.r24app.R;
@@ -54,13 +55,16 @@ public class SearchUser extends AppCompatActivity {
     ArrayList<User> userList = new ArrayList<>();
     User user =  new User();
     RecyclerView recyclerView;
+   private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_user);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Lista de usuarios  ");
+        actionBar.setTitle("Lista de usuarios");
+
+        actionBar.setDisplayHomeAsUpEnabled(true);
         database = FirebaseDatabase.getInstance();
         recyclerView = findViewById(R.id.userList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -94,27 +98,35 @@ public class SearchUser extends AppCompatActivity {
 
     }
     private void loadDataIntoRecycleView(String searchText) {
+//        if (!searchText.isEmpty()) {
+//            String firstLetterCapital = searchText.substring(0, 1).toUpperCase() + searchText.substring(1);
+//            System.out.println(firstLetterCapital);
+//        }
         Query query = databaseReference.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
         options = new FirebaseRecyclerOptions.Builder<User>().setQuery(query,User.class).build();
         adapter =  new FirebaseRecyclerAdapter<User, ImageContactAdapter>(options) {
             @Override
             protected void onBindViewHolder(@NonNull ImageContactAdapter holder, int position, @NonNull User model) {
+                holder.progressBar.setIndeterminate(true);
+                holder.progressBar.setVisibility(View.VISIBLE);
                 holder.fullName.setText(" "+model.getName() + " " + model.getLastName());
                 holder.cellPhone.setText(" "+model.getCellPhone());
                 if (!model.getProfileImage().isEmpty()) {
+                    holder.progressBar.setVisibility(View.INVISIBLE);
                     Picasso.get()
                             .load(model.getProfileImage())
                             .resize(300,300)
                             .into(holder.imageView);
-                    holder.progressBar.setVisibility(View.INVISIBLE);
+
 
                 }else {
-                    holder.progressBar.setVisibility(View.INVISIBLE);
 
+                    holder.progressBar.setVisibility(View.INVISIBLE);
                     Picasso.get()
                             .load("https://firebasestorage.googleapis.com/v0/b/r24app-e1e7d.appspot.com/o/myImages%2FemptyImage.jpg?alt=media&token=c216dd47-5de0-46ed-9ef1-79f573d25014")
                             .resize(300,300)
                             .into(holder.imageView);
+
                 }
             }
 
@@ -128,7 +140,6 @@ public class SearchUser extends AppCompatActivity {
         adapter.startListening();
         recyclerView.setAdapter(adapter);
     }
-
 
 }
 

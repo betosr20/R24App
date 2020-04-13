@@ -34,9 +34,7 @@
             android:layout_centerInParent="true"
             android:indeterminate="true"
             android:indeterminateTint="@color/bluePrimary"
-            android:visibility="visible"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="29dp" />
+            android:visibility="visible"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/myProfileImage"
@@ -159,7 +157,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/LayoutAddress"
+            android:id="@+id/LayoutDetailReport"
             style="@style/MyTheme.DayNight.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="100dp"
@@ -174,7 +172,7 @@
             app:layout_constraintTop_toBottomOf="@+id/LayoutCellPhone">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etAddress"
+                android:id="@+id/etDetailReport"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:gravity="top|start"
@@ -197,7 +195,7 @@
             app:iconPadding="1dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/LayoutAddress" />
+            app:layout_constraintTop_toBottomOf="@+id/LayoutDetailReport" />
 
         <LinearLayout
             android:id="@+id/linearLayout2"
