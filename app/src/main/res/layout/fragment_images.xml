@@ -1,15 +1,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/imagesContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/imagesContainer"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="Activities.ReportDetail.Images">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/imageList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/imageList"
         android:clipToPadding="false"
         android:paddingBottom="88dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -18,6 +18,5 @@
         app:layout_constraintLeft_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        tools:listitem="@layout/image_report"
-        />
+        tools:listitem="@layout/image_report" />
 </androidx.constraintlayout.widget.ConstraintLayout>
