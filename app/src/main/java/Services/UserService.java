@@ -130,6 +130,7 @@ public class UserService {
         String id = getCurrentFirebaseUserId();
         databaseReference.child(FirebaseClasses.User).child(id).child("viewType").setValue(setting);
     }
+
     public void getImageProfileUri(User pupdateUser) {
         storageReference = firebaseStorage.getInstance().getReference();
         ref = storageReference.child("myImages/" + pupdateUser.getProfileImage());
@@ -145,5 +146,10 @@ public class UserService {
 
             }
         });
+    }
+
+    public void updateNeedHelp(boolean setting) {
+        String id = getCurrentFirebaseUserId();
+        databaseReference.child(FirebaseClasses.User).child(id).child("needHelp").setValue(setting);
     }
 }

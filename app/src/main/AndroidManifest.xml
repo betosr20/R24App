@@ -14,16 +14,19 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/uptodatelogotransparente"
+        android:icon="@drawable/uptodatelogo"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/uptodatelogotransparente"
+        android:roundIcon="@drawable/uptodatelogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="Activities.SearchUser"
-                                android:theme="@style/AppThemeSearch"
-                                android:parentActivityName=".MainActivity"/>
-        <activity android:name="Activities.MyProfileActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
+        <activity android:name="Activities.DistressSignal"></activity>
+        <activity
+            android:name="Activities.SearchUser"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppThemeSearch" />
+        <activity
+            android:name="Activities.MyProfileActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name="Activities.ImageChooserActivity" />
         <activity android:name="Activities.ReportDetail.ReportDetailContainer" />
         <activity
@@ -38,7 +41,7 @@
         <activity
             android:name="Activities.RecoveryPassword"
             android:parentActivityName=".MainActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name="Activities.SignUp"
             android:parentActivityName=".MainActivity"
@@ -51,10 +54,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="Activities.ReportIncidentActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden|adjustResize"
             android:parentActivityName="Activities.MapActivity"
-            />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+
         <activity
             android:name="Activities.MapActivity"
             android:label="@string/title_activity_map"
@@ -70,8 +74,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key"
-            />
+            android:value="@string/google_maps_key" />
 
         <service
             android:name="Services.FirebaseNotificationService"
