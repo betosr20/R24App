@@ -20,23 +20,17 @@ import com.google.firebase.database.ValueEventListener;
 import Models.Constants.FirebaseClasses;
 import Models.POJOS.Report;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class GeneralInformation extends Fragment {
-
-//    private SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY/MM/dd");
     private String idReport;
     private Report report;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
 
-    TextView type, place, affectedPeople, affectedAnimals, details, startDateTextView, endDateTextView;
+    TextView type, place, affectedPeople, affectedAnimals, details, startDateTextView, pathDisabled;
     View viewGeneralInformation;
     TextInputEditText reportDetail;
 
     public GeneralInformation(String idReport) {
-        // Required empty public constructor
         this.idReport = idReport;
         this.database = FirebaseDatabase.getInstance();
         this.databaseReference = database.getReference(FirebaseClasses.Report).child(idReport);
@@ -46,20 +40,17 @@ public class GeneralInformation extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         viewGeneralInformation = inflater.inflate(R.layout.fragment_general_infomation, container, false);
-        type = (TextView) viewGeneralInformation.findViewById(R.id.reportType);
-        place = (TextView) viewGeneralInformation.findViewById(R.id.reportPlace);
-        affectedPeople = (TextView) viewGeneralInformation.findViewById(R.id.reportAffectedPeople);
-        affectedAnimals = (TextView) viewGeneralInformation.findViewById(R.id.reportAffectedAnimals);
-        details = (TextView) viewGeneralInformation.findViewById(R.id.DetailReport);
-        startDateTextView = (TextView) viewGeneralInformation.findViewById(R.id.reportStartDate);
-        endDateTextView = (TextView) viewGeneralInformation.findViewById(R.id.reportEndDate);
-
+        type = viewGeneralInformation.findViewById(R.id.reportType);
+        place = viewGeneralInformation.findViewById(R.id.reportPlace);
+        affectedPeople = viewGeneralInformation.findViewById(R.id.reportAffectedPeople);
+        affectedAnimals = viewGeneralInformation.findViewById(R.id.reportAffectedAnimals);
+        details = viewGeneralInformation.findViewById(R.id.DetailReport);
+        startDateTextView = viewGeneralInformation.findViewById(R.id.reportStartDate);
+        pathDisabled = viewGeneralInformation.findViewById(R.id.reportPathDisabled);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //Valida si existe el arreglo, osea si hay datos
                 if (dataSnapshot.exists()) {
                     report = dataSnapshot.getValue(Report.class);
                     setNaturalDisasterType(type,report.getType());
@@ -68,7 +59,7 @@ public class GeneralInformation extends Fragment {
                     setAffectedAnimalsIcon(affectedAnimals,report.getAffectedAnimals());
                     setEventDetailIcon(details,report.getDetail());
                     setStarDateIcon(startDateTextView, report.getStartDateString());
-                    setEndDateIcon(endDateTextView, report.getEndDateString());
+                    setPathDisabledIcon(pathDisabled, report.isPathDisabled());
                 }
             }
 
@@ -154,9 +145,14 @@ public class GeneralInformation extends Fragment {
         textView.setCompoundDrawablesWithIntrinsicBounds( R.drawable.event, 0, 0, 0);
         textView.setText("   "+startDate);
     }
-    public void setEndDateIcon(TextView textView, String endDate) {
-        textView.setText(""+endDate);
-    }
+     public void setPathDisabledIcon(TextView textView, boolean PathDisable) {
+         textView.setCompoundDrawablesWithIntrinsicBounds( R.drawable.road, 0, 0, 0);
+        if(PathDisable) {
+            textView.setText(" "+ "Bloqueado");
+        } else {
+            textView.setText(" "+ "Despejado");
+        }
+     }
     public void setEventDetailIcon(TextView textView, String details) {
         textView.setCompoundDrawablesWithIntrinsicBounds( R.drawable.article, 0, 0, 0);
         textView.setText("   "+details);
