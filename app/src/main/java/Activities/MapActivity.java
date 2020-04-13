@@ -224,7 +224,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onInfoWindowClick(Marker marker) {
                 Report report = (Report) marker.getTag();
-                Toast.makeText(getBaseContext(), "Detalle del evento " + report.getType(), Toast.LENGTH_LONG).show();
                 OnDetailSelected(report);
             }
         });
