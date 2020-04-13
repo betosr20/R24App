@@ -57,7 +57,7 @@
                 android:textColor="?android:attr/textColorSecondary"
                 android:textSize="20sp" />
             <TextView
-                android:id="@+id/reportEndDate"
+                android:id="@+id/reportPathDisabled"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"

@@ -30,7 +30,7 @@ public class GeneralInformation extends Fragment {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
 
-    TextView type, place, affectedPeople, affectedAnimals, details, startDateTextView, endDateTextView;
+    TextView type, place, affectedPeople, affectedAnimals, details, startDateTextView, pathDisabled;
     View viewGeneralInformation;
 
     public GeneralInformation(String idReport) {
@@ -46,13 +46,13 @@ public class GeneralInformation extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         viewGeneralInformation = inflater.inflate(R.layout.fragment_general_infomation, container, false);
-        type = (TextView) viewGeneralInformation.findViewById(R.id.reportType);
-        place = (TextView) viewGeneralInformation.findViewById(R.id.reportPlace);
-        affectedPeople = (TextView) viewGeneralInformation.findViewById(R.id.reportAffectedPeople);
-        affectedAnimals = (TextView) viewGeneralInformation.findViewById(R.id.reportAffectedAnimals);
-        details = (TextView) viewGeneralInformation.findViewById(R.id.reportDetail);
-        startDateTextView = (TextView) viewGeneralInformation.findViewById(R.id.reportStartDate);
-        endDateTextView = (TextView) viewGeneralInformation.findViewById(R.id.reportEndDate);
+        type = viewGeneralInformation.findViewById(R.id.reportType);
+        place = viewGeneralInformation.findViewById(R.id.reportPlace);
+        affectedPeople = viewGeneralInformation.findViewById(R.id.reportAffectedPeople);
+        affectedAnimals = viewGeneralInformation.findViewById(R.id.reportAffectedAnimals);
+        details = viewGeneralInformation.findViewById(R.id.reportDetail);
+        startDateTextView = viewGeneralInformation.findViewById(R.id.reportStartDate);
+        pathDisabled = viewGeneralInformation.findViewById(R.id.reportPathDisabled);
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -63,10 +63,14 @@ public class GeneralInformation extends Fragment {
                     type.setText("Tipo de evento: " + report.getType());
                     place.setText("Lugar del  evento: " + report.getPlace());
                     affectedPeople.setText("Cantidad de personas afectadas: " + report.getAffectedPeople());
-                    affectedAnimals.setText("Cantidad de animales afectadas: " + report.getAffectedAnimals());
+                    affectedAnimals.setText("Cantidad de animales afectados: " + report.getAffectedAnimals());
                     details.setText("Detalle de vento: " + report.getDetail());
                     startDateTextView.setText("Fecha de inicio: " + report.getStartDateString());
-                    endDateTextView.setText("Fecha de fin: " + report.getEndDateString());
+                    if (report.isPathDisabled()) {
+                        pathDisabled.setText("El camino se encuentra bloqueado");
+                    } else {
+                        pathDisabled.setText("El camino se encuentra despejado");
+                    }
                 }
             }
 
