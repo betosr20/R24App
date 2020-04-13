@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:background="@color/quantum_grey200"
     tools:context="Activities.ReportIncidentActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,22 +21,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:backgroundTint="#B3FFFFFF"
+            android:backgroundTint="@color/quantum_grey200"
             android:contentDescription="@string/title_user_profile"
             android:onClick="windowBack"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_action_back" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imgBigFoto"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="8dp"
-            android:src="@drawable/ic_person"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/LayoutName"
@@ -43,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
@@ -56,8 +47,8 @@
                 android:id="@+id/etName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/fieldNameHint"
                 android:digits="áéíóúabcdefghijklmnñopqrstuvwxyzÁÉÍÓÚABCDEFGHIJKLMNÑOPQRSTUVWXYZ "
+                android:hint="@string/fieldNameHint"
                 android:inputType="text|textCapWords"
                 android:maxLength="30" />
 
@@ -189,18 +180,25 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgBigFoto"
-            >
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imgDeleteFoto"
-                style="@style/ImageViewButton"
-                android:src="@drawable/ic_close_box" />
+                android:id="@+id/imgBigPhoto"
+                android:layout_width="150dp"
+                android:layout_height="160dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_person"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imgFromGallery"
+                android:id="@+id/imgEditPhoto"
                 style="@style/ImageViewButton"
-                android:src="@drawable/ic_image" />
+                android:layout_gravity="bottom"
+                android:paddingBottom="10dp"
+                android:src="@drawable/edit" />
         </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

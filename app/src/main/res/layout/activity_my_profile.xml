@@ -14,6 +14,17 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp">
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/bluePrimary"
+            android:visibility="visible"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="29dp" />
+
         <ImageButton
             android:id="@+id/imageButtonBack"
             android:layout_width="wrap_content"
@@ -27,23 +38,60 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_action_back" />
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:indeterminate="true"
-            android:indeterminateTint="@color/bluePrimary"
-            android:visibility="visible"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/myProfileImage"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="8dp"
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgBigPhoto"
+                android:layout_width="150dp"
+                android:layout_height="160dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_person"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgEditPhoto"
+                style="@style/ImageViewButton"
+                android:layout_gravity="bottom"
+                android:paddingBottom="10dp"
+                android:src="@drawable/edit" />
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/LayoutEmail"
+            style="@style/MyTheme.DayNight.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp"
+            android:enabled="false"
+            app:boxBackgroundMode="outline"
+            app:endIconMode="clear_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            app:startIconDrawable="@drawable/mail">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etUserEmail"
+                android:hint="@string/fieldEmailAddressHint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text|textCapWords"
+                android:maxLength="50" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/LayoutName"
@@ -58,18 +106,18 @@
             app:endIconMode="clear_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            app:layout_constraintTop_toBottomOf="@+id/LayoutEmail"
             app:startIconDrawable="@drawable/ic_person">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/fieldNameHint"
                 android:digits="áéíóúabcdefghijklmnñopqrstuvwxyzÁÉÍÓÚABCDEFGHIJKLMNÑOPQRSTUVWXYZ "
+                android:hint="@string/fieldNameHint"
+                android:importantForAutofill="noExcludeDescendants"
                 android:inputType="text|textCapWords"
-                android:maxLength="30"
-                android:importantForAutofill="noExcludeDescendants"/>
+                android:maxLength="30" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -93,11 +141,11 @@
                 android:id="@+id/etLastName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/fieldLastNameHint"
                 android:digits="áéíóúabcdefghijklmnñopqrstuvwxyzÁÉÍÓÚABCDEFGHIJKLMNÑOPQRSTUVWXYZ "
+                android:hint="@string/fieldLastNameHint"
+                android:importantForAutofill="noExcludeDescendants"
                 android:inputType="text|textCapWords"
-                android:maxLength="30"
-                android:importantForAutofill="noExcludeDescendants"/>
+                android:maxLength="30" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -122,9 +170,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/fieldUsernameHint"
+                android:importantForAutofill="noExcludeDescendants"
                 android:inputType="textPersonName|textCapWords"
-                android:maxLength="30"
-                android:importantForAutofill="noExcludeDescendants"/>
+                android:maxLength="30" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -149,10 +197,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:digits="0123456789"
-                android:maxLength="8"
                 android:hint="@string/fieldPhoneNumberHint"
+                android:importantForAutofill="noExcludeDescendants"
                 android:inputType="phone"
-                android:importantForAutofill="noExcludeDescendants"/>
+                android:maxLength="8" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -177,9 +225,9 @@
                 android:layout_height="80dp"
                 android:gravity="top|start"
                 android:hint="@string/fieldAddressHint"
+                android:importantForAutofill="noExcludeDescendants"
                 android:inputType="textMultiLine"
-                android:maxLength="1000"
-                android:importantForAutofill="noExcludeDescendants"/>
+                android:maxLength="1000" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
@@ -196,29 +244,5 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/LayoutDetailReport" />
-
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/myProfileImage">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/deletePhotoButton"
-                style="@style/ImageViewButton"
-                android:saveEnabled="false"
-                android:src="@drawable/ic_close_box" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/selectImageButton"
-                style="@style/ImageViewButton"
-                android:saveEnabled="false"
-                android:src="@drawable/ic_image" />
-        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

@@ -3,20 +3,18 @@ package Activities;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
 
 import com.example.r24app.R;
@@ -34,20 +32,21 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 
 import Models.Constants.FirebaseClasses;
+import Models.POJOS.CircleTransform;
 import Models.POJOS.User;
 import Services.UserService;
 
 public class MyProfileActivity extends AppCompatActivity {
     private User currentUser;
     private UserService userService;
-    private TextInputEditText nameInput, lastNameInput, usernameInput, phoneNumberInput, addressInput;
-    private TextInputLayout nameLayout, lastNameLayout, usernameLayout, phoneNumberLayout, addressLayout;
-    private AppCompatImageView deleteImageIcon, chooseImageIcon, profileImage;
+    private TextInputEditText nameInput, lastNameInput, usernameInput, phoneNumberInput, addressInput, emailInput;
+    private TextInputLayout nameLayout, lastNameLayout, usernameLayout, phoneNumberLayout, addressLayout, emailLayout;
+    private ImageView iconEditProfileImage, profileImage;
     private Button editSaveButton;
     private FirebaseDatabase database;
     private Bitmap bitmap;
     private ProgressBar progressBar;
-    private Boolean progressBarHide;
+    private Boolean progressBarHide, editPhotoPressed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +56,7 @@ public class MyProfileActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         currentUser = null;
         userService = new UserService();
+        editPhotoPressed = false;
         getElementsReference();
         addListeners();
         getCurrentUserInfo();
@@ -78,19 +78,22 @@ public class MyProfileActivity extends AppCompatActivity {
         usernameLayout = findViewById(R.id.LayoutUserName);
         phoneNumberLayout = findViewById(R.id.LayoutCellPhone);
         addressLayout = findViewById(R.id.LayoutDetailReport);
-        deleteImageIcon = findViewById(R.id.deletePhotoButton);
-        chooseImageIcon = findViewById(R.id.selectImageButton);
-        profileImage = findViewById(R.id.myProfileImage);
+        emailLayout = findViewById(R.id.LayoutEmail);
+        profileImage = findViewById(R.id.imgBigPhoto);
+        iconEditProfileImage = findViewById(R.id.imgEditPhoto);
         editSaveButton = findViewById(R.id.btnEditSave);
         nameInput = findViewById(R.id.etName);
         lastNameInput = findViewById(R.id.etLastName);
         usernameInput = findViewById(R.id.etUserName);
         phoneNumberInput = findViewById(R.id.etCellPhone);
         addressInput = findViewById(R.id.etDetailReport);
+        emailInput = findViewById(R.id.etUserEmail);
     }
 
     public void setImageProfile() {
-        Picasso.get().load(currentUser.getProfileImage()).fit().into(profileImage);
+        editPhotoPressed = true;
+        iconEditProfileImage.setImageDrawable(ContextCompat.getDrawable(MyProfileActivity.this, R.drawable.delete));
+        Picasso.get().load(currentUser.getProfileImage()).transform(new CircleTransform()).into(profileImage);
         progressBar.setVisibility(View.INVISIBLE);
         progressBarHide = true;
 
@@ -122,13 +125,19 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
 
-        deleteImageIcon.setOnClickListener(v -> {
-            deleteImage();
-
-        });
-
-        chooseImageIcon.setOnClickListener(v -> {
-            selectImage();
+        iconEditProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!editPhotoPressed) {
+                    selectImage();
+                } else {
+                    bitmap = null;
+                    currentUser.setProfileImage("");
+                    editPhotoPressed = false;
+                    iconEditProfileImage.setImageDrawable(ContextCompat.getDrawable(MyProfileActivity.this, R.drawable.edit));
+                    profileImage.setImageDrawable(ContextCompat.getDrawable(MyProfileActivity.this, R.drawable.ic_person));
+                }
+            }
         });
     }
 
@@ -151,39 +160,21 @@ public class MyProfileActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1000 && resultCode == RESULT_OK && data != null) {
-            Uri chosenImageData = data.getData();
-            configImageView(data.getDataString());
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageData);
-                profileImage.setImageBitmap(bitmap);
-                deleteImageIcon.setEnabled(true);
-                deleteImageIcon.setClickable(true);
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data.getData());
+                //profileImage.setImageBitmap(bitmap);
+                Picasso.get().load(data.getData()).transform(new CircleTransform()).into(profileImage);
+                editPhotoPressed = true;
+                iconEditProfileImage.setImageDrawable(ContextCompat.getDrawable(MyProfileActivity.this, R.drawable.delete));
             } catch (Exception e) {
-
                 e.printStackTrace();
             }
         }
     }
 
-    private void deleteImage() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle("Eliminar Imágen")
-                .setMessage(R.string.detalle_dialogDelete_message)
-                .setPositiveButton(R.string.label_dialog_delete, (dialogInterface, i) -> configImageView(null))
-                .setNegativeButton(R.string.label_dialog_cancel, null);
-        builder.show();
-    }
-
-    private void configImageView(String fotoUrl) {
-        if (fotoUrl == null) {
-            currentUser.setProfileImage("");
-            profileImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_person));
-            deleteImageIcon.setEnabled(false);
-            deleteImageIcon.setClickable(false);
-        }
-    }
-
     public void saveData() {
+        disableFields();
+        editSaveButton.setEnabled(false);
         currentUser.setName(nameInput.getText().toString());
         currentUser.setLastName(lastNameInput.getText().toString());
         currentUser.setUsername(usernameInput.getText().toString().toLowerCase());
@@ -206,11 +197,11 @@ public class MyProfileActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             Toast.makeText(MyProfileActivity.this, "Los cambios pueden tomar varios minutos en reflejarse", Toast.LENGTH_LONG).show();
+                            editSaveButton.setEnabled(true);
                         }
                     }, 3600);
 
                     getCurrentUserInfo();
-                    disableFields();
                 } else {
                     Toast.makeText(MyProfileActivity.this, "Error durante el proceso de actualización", Toast.LENGTH_LONG).show();
                 }
@@ -237,7 +228,7 @@ public class MyProfileActivity extends AppCompatActivity {
                         user = snapshot.getValue(User.class);
 
                         if (user.getCellPhone().equals(phoneNumberInput.getText().toString()) && !user.getId().equals(currentUser.getId())) {
-                            phoneNumberLayout.setError("El número de teléfono ya existe");
+                            phoneNumberLayout.setError(getResources().getText(R.string.duplicatedPhoneNumber));
                             phoneNumberLayout.requestFocus();
                             isValidCellPhone = false;
                             break;
@@ -274,7 +265,7 @@ public class MyProfileActivity extends AppCompatActivity {
                         String newUsername = usernameInput.getText().toString().toLowerCase();
 
                         if (userName.equals(newUsername) && !user.getId().equals(currentUser.getId())) {
-                            usernameLayout.setError("El nombre de usuario ya existe");
+                            usernameLayout.setError(getResources().getText(R.string.duplicatedUsername));
                             usernameLayout.requestFocus();
                             isValidUserName = false;
                             break;
@@ -345,11 +336,9 @@ public class MyProfileActivity extends AppCompatActivity {
         lastNameLayout.setEnabled(false);
         usernameLayout.setEnabled(false);
         phoneNumberLayout.setEnabled(false);
+        emailLayout.setEnabled(false);
         addressLayout.setEnabled(false);
-        deleteImageIcon.setEnabled(false);
-        chooseImageIcon.setEnabled(false);
-        deleteImageIcon.setClickable(false);
-        chooseImageIcon.setClickable(false);
+        iconEditProfileImage.setEnabled(false);
         editSaveButton.setText(R.string.editButtonText);
     }
 
@@ -359,21 +348,13 @@ public class MyProfileActivity extends AppCompatActivity {
         usernameLayout.setEnabled(true);
         phoneNumberLayout.setEnabled(true);
         addressLayout.setEnabled(true);
-        deleteImageIcon.setEnabled(true);
-        chooseImageIcon.setEnabled(true);
-        deleteImageIcon.setClickable(true);
-        chooseImageIcon.setClickable(true);
-
-        if (TextUtils.isEmpty(currentUser.getProfileImage())) {
-            deleteImageIcon.setEnabled(false);
-            deleteImageIcon.setClickable(false);
-            profileImage.setImageDrawable(ContextCompat.getDrawable(MyProfileActivity.this, R.drawable.ic_person));
-        }
+        iconEditProfileImage.setEnabled(true);
     }
 
     public void displayUserInfo() {
         if (currentUser != null) {
             nameInput.setText(currentUser.getName());
+            emailInput.setText(currentUser.getEmail());
             lastNameInput.setText(currentUser.getLastName());
             usernameInput.setText(currentUser.getUsername());
             phoneNumberInput.setText(currentUser.getCellPhone());
@@ -383,6 +364,7 @@ public class MyProfileActivity extends AppCompatActivity {
             usernameLayout.setEndIconVisible(false);
             addressLayout.setEndIconVisible(false);
             phoneNumberLayout.setEndIconVisible(false);
+            emailLayout.setEndIconVisible(false);
         }
     }
 
