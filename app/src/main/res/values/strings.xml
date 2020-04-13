@@ -67,8 +67,6 @@
     <string name="title_activity_alerts">Alertas</string>
     <string name="exitAlertTittle">¡Salir!</string>
     <string name="exitAlert">¿Está seguro que desea salir de la aplicación?</string>
-    <string name="detalle_del_evento">Detalle del evento :</string>
-    <string name="estado_del_camino">Estado del camino:</string>
 </resources>
 
 

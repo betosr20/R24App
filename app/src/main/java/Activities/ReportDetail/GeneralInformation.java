@@ -146,12 +146,10 @@ public class GeneralInformation extends Fragment {
         textView.setText("   "+startDate);
     }
      public void setPathDisabledIcon(TextView textView, boolean PathDisable) {
-
+         textView.setCompoundDrawablesWithIntrinsicBounds( R.drawable.road, 0, 0, 0);
         if(PathDisable) {
-            textView.setCompoundDrawablesWithIntrinsicBounds( R.drawable.alert, 0, 0, 0);
             textView.setText(" "+ "Bloqueado");
         } else {
-            textView.setCompoundDrawablesWithIntrinsicBounds( R.drawable.road, 0, 0, 0);
             textView.setText(" "+ "Despejado");
         }
      }
