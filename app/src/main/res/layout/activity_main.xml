@@ -45,7 +45,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
-            android:hint="@string/fieldEmailAddressHint"
             app:boxBackgroundMode="outline"
             app:endIconMode="clear_text"
             app:errorEnabled="true"
@@ -59,6 +58,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/emailInput"
                 android:layout_width="match_parent"
+                android:hint="@string/fieldEmailAddressHint"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNext"
                 android:inputType="textEmailAddress"

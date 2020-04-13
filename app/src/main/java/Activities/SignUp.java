@@ -3,7 +3,6 @@ package Activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -12,112 +11,79 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.r24app.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.Nullable;
+import com.squareup.picasso.Picasso;
 
 import Models.Constants.FirebaseClasses;
+import Models.POJOS.CircleTransform;
 import Models.POJOS.User;
 
 public class SignUp extends AppCompatActivity {
-    private FirebaseAuth mAuth;
-    private Button btnNextStep;
-    private ImageView imgSelectImage, iconimgSelectImage, iconDeleteImage;
-    private String imageIdentifier, uploadedImageLink;
+    private ImageView iconEditProfileImage, profileImage;
     private TextInputLayout inputLayoutName, inputLayoutLastName, inputLayoutUserName, inputLayoutCellPhone, inputLayoutAddress;
     private TextInputEditText name, lastName, userName, cellPhone, address;
-    //private boolean alerts, notifications, needHelp, isActive, timeConfiguration, isOk;
-    private Bitmap bitmap;
     private FirebaseDatabase database;
-    private DatabaseReference databaseReference;
     private Uri chosenImageData;
+    private boolean editPhotoPressed;
+
+    public SignUp() {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference();
-//        mAuth = FirebaseAuth.getInstance();
-        // Input y editText de Nombre
+        editPhotoPressed = false;
+
         inputLayoutName = findViewById(R.id.LayoutName);
-        name = findViewById(R.id.etName);
-        // Input y editText de Apellidos
         inputLayoutLastName = findViewById(R.id.LayoutLastName);
-        lastName = findViewById(R.id.etLastName);
-        // Input y editText de nombre de usuario
-        inputLayoutUserName = findViewById(R.id.LayoutUserName);
-        userName = findViewById(R.id.etUserName);
-        // Input y editText de Numero de telefono
         inputLayoutCellPhone = findViewById(R.id.LayoutCellPhone);
-        cellPhone = findViewById(R.id.etCellPhone);
-        // Input y editText de direccion
+        inputLayoutUserName = findViewById(R.id.LayoutUserName);
         inputLayoutAddress = findViewById(R.id.LayoutAddress);
+
+        name = findViewById(R.id.etName);
+        lastName = findViewById(R.id.etLastName);
+        userName = findViewById(R.id.etUserName);
+        cellPhone = findViewById(R.id.etCellPhone);
         address = findViewById(R.id.etAddress);
-        // boton que se encarga a disparar la accion de registarse en FireBase.
-        btnNextStep = findViewById(R.id.btnSignUp);
+
+        Button btnNextStep = findViewById(R.id.btnSignUp);
         btnNextStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 nextStepToRegisterUser();
             }
         });
-        // boleanos por default
-        /*alerts = true;
-        notifications = true;
-        needHelp = false;
-        isActive = true;
-        timeConfiguration = true;
-        isOk = true;*/
-        //images
-        iconimgSelectImage = findViewById(R.id.imgFromGallery);
-        imgSelectImage = findViewById(R.id.imgBigFoto);
-        iconDeleteImage = findViewById(R.id.imgDeleteFoto);
-        iconDeleteImage.setOnClickListener(new View.OnClickListener() {
+
+        profileImage = findViewById(R.id.imgBigPhoto);
+
+        iconEditProfileImage = findViewById(R.id.imgEditPhoto);
+        iconEditProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteImage();
+                if (!editPhotoPressed) {
+                    selectImage();
+                } else {
+                    editPhotoPressed = false;
+                    iconEditProfileImage.setImageDrawable(ContextCompat.getDrawable(SignUp.this, R.drawable.edit));
+                    profileImage.setImageDrawable(ContextCompat.getDrawable(SignUp.this, R.drawable.ic_person));
+                }
             }
         });
-        iconimgSelectImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectImage();
-            }
-        });
-
-        disableFields();
     }
 
-    public void disableFields() {
-        imgSelectImage.setEnabled(false);
-        imgSelectImage.setEnabled(false);
-        iconDeleteImage.setClickable(false);
-        iconDeleteImage.setClickable(false);
-    }
-
-    public void enableFields() {
-        imgSelectImage.setEnabled(true);
-        imgSelectImage.setEnabled(true);
-        iconDeleteImage.setClickable(true);
-        iconDeleteImage.setClickable(true);
-    }
-
-    /*
-        Metodo que se encarga de extraer los datos de la vista sign_up y enviarlos a Firebase.
-     */
     public void nextStepToRegisterUser() {
         if (validateInputs()) {
             validateUserName();
@@ -143,6 +109,7 @@ public class SignUp extends AppCompatActivity {
 
     public boolean validateInputs() {
         boolean isValid = true;
+
         if (name.getText() != null && name.getText().toString().trim().isEmpty()) {
             inputLayoutName.setError(getResources().getText(R.string.requiredField));
             inputLayoutName.requestFocus();
@@ -150,6 +117,7 @@ public class SignUp extends AppCompatActivity {
         } else {
             inputLayoutName.setError(null);
         }
+
         if (lastName.getText() != null && lastName.getText().toString().trim().isEmpty()) {
             inputLayoutLastName.setError(getResources().getText(R.string.requiredField));
             inputLayoutLastName.requestFocus();
@@ -157,6 +125,7 @@ public class SignUp extends AppCompatActivity {
         } else {
             inputLayoutLastName.setError(null);
         }
+
         if (userName.getText() != null && userName.getText().toString().trim().isEmpty()) {
             inputLayoutUserName.setError(getResources().getText(R.string.requiredField));
             inputLayoutUserName.requestFocus();
@@ -164,6 +133,7 @@ public class SignUp extends AppCompatActivity {
         } else {
             inputLayoutUserName.setError(null);
         }
+
         if (cellPhone.getText() != null && cellPhone.getText().toString().trim().isEmpty()) {
             inputLayoutCellPhone.setError(getResources().getText(R.string.requiredField));
             inputLayoutCellPhone.requestFocus();
@@ -171,6 +141,7 @@ public class SignUp extends AppCompatActivity {
         } else {
             inputLayoutCellPhone.setError(null);
         }
+
         if (address.getText() != null && address.getText().toString().trim().isEmpty()) {
             inputLayoutAddress.setError(getResources().getText(R.string.requiredField));
             inputLayoutAddress.requestFocus();
@@ -197,7 +168,7 @@ public class SignUp extends AppCompatActivity {
                         user = snapshot.getValue(User.class);
 
                         if (user.getCellPhone().equals(cellPhone.getText().toString())) {
-                            inputLayoutCellPhone.setError("El número de teléfono ya existe");
+                            inputLayoutCellPhone.setError(getResources().getText(R.string.duplicatedPhoneNumber));
                             inputLayoutCellPhone.requestFocus();
                             isValidCellPhone = false;
                             break;
@@ -235,7 +206,7 @@ public class SignUp extends AppCompatActivity {
                         String newUsername = userName.getText().toString().toLowerCase();
 
                         if (userNameFound.equals(newUsername)) {
-                            inputLayoutUserName.setError("El nombre de usuario ya existe");
+                            inputLayoutUserName.setError(getResources().getText(R.string.duplicatedUsername));
                             inputLayoutUserName.requestFocus();
                             isValidUserName = false;
                             break;
@@ -279,32 +250,28 @@ public class SignUp extends AppCompatActivity {
 
         if (requestCode == 1000 && resultCode == RESULT_OK && data != null) {
             chosenImageData = data.getData();
-            configImageView(data.getDataString());
+
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageData);
-                imgSelectImage.setImageBitmap(bitmap);
-                enableFields();
+                //Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageData);
+                //profileImage.setImageBitmap(bitmap);
+
+                Picasso.get().load(data.getData()).transform(new CircleTransform()).into(profileImage);
+                editPhotoPressed = true;
+                iconEditProfileImage.setImageDrawable(ContextCompat.getDrawable(SignUp.this, R.drawable.delete));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void deleteImage() {
+    /*private void deleteImage() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle("Eliminar Imagen")
                 .setMessage(R.string.detalle_dialogDelete_message)
                 .setPositiveButton(R.string.label_dialog_delete, (dialogInterface, i) -> configImageView(null))
                 .setNegativeButton(R.string.label_dialog_cancel, null);
         builder.show();
-    }
-
-    private void configImageView(String fotoUrl) {
-        if (fotoUrl == null) {
-            disableFields();
-            imgSelectImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_person));
-        }
-    }
+    }*/
 
     public void windowBack(View v) {
         onBackPressed();

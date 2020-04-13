@@ -34,7 +34,7 @@ public class User {
     }
 
     public void setId(String id) {
-        id = id;
+        this.id = id;
     }
 
     public String getName() {
@@ -138,7 +138,7 @@ public class User {
     }
 
     public void setOk(boolean ok) {
-        ok = ok;
+        this.ok = ok;
     }
 
     public boolean isHeatMap() {
