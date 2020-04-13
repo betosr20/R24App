@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     tools:context="Activities.ReportDetail.ReportDetailContainer">
 
+
     <ImageButton
         android:id="@+id/imageButtonBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
+        android:layout_width="45dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="10dp"
         android:backgroundTint="#B3FFFFFF"
         android:onClick="windowBack"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,31 +20,28 @@
 
     <View
         android:id="@+id/view"
-        android:layout_width="match_parent"
+        android:layout_width="320dp"
         android:layout_height="3dp"
         android:background="@color/blueTertiary"
-        app:layout_constraintBottom_toBottomOf="@id/tabLayout" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:background="@color/blueTertiary"
-        app:layout_constraintBottom_toTopOf="@+id/view"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.453"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintBottom_toBottomOf="@id/tabLayout"
+        app:layout_constraintEnd_toEndOf="@+id/tabLayout"
+        app:layout_constraintStart_toStartOf="@+id/tabLayout" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="320dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonBack"
         app:layout_constraintTop_toTopOf="parent"
+        app:tabMaxWidth="0dp"
         app:tabMode="fixed"
-        app:tabIndicatorHeight="3dp"
-        app:tabPaddingBottom="8dp"
-        app:tabPaddingTop="15dp"
-        android:layout_marginTop="55dp"/>
+        app:tabGravity="fill"
+        app:tabTextAppearance="@style/MineCustomTabText"
+        app:tabIndicatorHeight="3dp" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPaper"
