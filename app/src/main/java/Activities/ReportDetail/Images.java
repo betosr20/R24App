@@ -22,9 +22,8 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import Adapters.ImageAdapter;
 import Models.Constants.FirebaseClasses;
-import Models.POJOS.Image;
-import Models.POJOS.Report;
 import Models.POJOS.ReportPicture;
 
 /**

@@ -52,6 +52,9 @@
     <string name="saveButtonText">GUARDAR</string>
     <string name="needHelpAction">Señal de auxilio</string>
     <string name="amOkAction">Estoy bien</string>
+    <string name="editAction">Editar</string>
+    <string name="viewAction">Ver</string>
+    <string name="deleteAction">Eliminar</string>
     <string name="changeViewSwitch">Vista</string>
     <string name="reportIncidentNotification">Nuevo reporte de incidente</string>
 
@@ -68,6 +71,7 @@
     <string name="label_dialog_delete">Eliminar</string>
     <string name="label_dialog_cancel">Cancelar</string>
     <string name="title_activity_alerts">Alertas</string>
+    <string name="title_activity_myReports">Mis Reportes</string>
     <string name="exitAlertTittle">¡Salir!</string>
     <string name="exitAlert">¿Está seguro que desea salir de la aplicación?</string>
 </resources>
