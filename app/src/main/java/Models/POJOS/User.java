@@ -138,7 +138,7 @@ public class User {
     }
 
     public void setOk(boolean ok) {
-        ok = ok;
+        this.ok = ok;
     }
 
     public boolean isHeatMap() {

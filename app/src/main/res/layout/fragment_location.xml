@@ -12,20 +12,24 @@
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="80dp"
         tools:layout_editor_absoluteY="16dp" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:paddingLeft="10dp"
-        android:background="#66FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <Switch
             android:id="@+id/switchButtonViewLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Vista"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="8dp"
+            android:paddingStart="10dp"
+            android:background="#66FFFFFF"
+            android:text="@string/changeViewSwitch"
             android:theme="@style/AppTheme.SwitchTheme"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

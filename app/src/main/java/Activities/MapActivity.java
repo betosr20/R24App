@@ -145,7 +145,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
     }
-    
+
     @Override
 
     public void onMapReady(final GoogleMap googleMap) {
@@ -203,7 +203,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Marker marker;
         LatLng latLng;
 
-
         for (Report report : reportList) {
             latitude = Double.parseDouble(report.getLatitude());
             longitude = Double.parseDouble(report.getLongitude());
@@ -215,10 +214,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             marker.setTag(report);
             markerList.add(marker);
         }
+
         for (Marker m : markerList) {
             latLng = new LatLng(m.getPosition().latitude, m.getPosition().longitude);
             mMap.addMarker(new MarkerOptions().position(latLng));
         }
+
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override

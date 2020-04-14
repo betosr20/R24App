@@ -11,12 +11,15 @@
     <string name="affectedAnimalsLabel">Cantidad animales afectados</string>
     <string name="pathDisabledLabel">Camino bloqueado</string>
     <string name="addImagesLabel">Añadir imágenes</string>
-    <string name="disasTerTypeLabel">Seleccione el tipo de desastre</string>
+    <string name="noImagesSelected">No hay imágenes seleccionadas</string>
+    <string name="disasterTypeLabel">Seleccione el tipo de desastre</string>
     <string name="enableMapLocation">Mostrar ubicación en el mapa</string>
     <string name="disasterLocation">Lugar del desastre</string>
     <string name="saveReportButton">REPORTAR</string>
     <string name="incidentPlace">Lugar del accidente…</string>
     <string name="requiredField">Espacio requerido *</string>
+    <string name="duplicatedPhoneNumber">El número de teléfono ya existe</string>
+    <string name="duplicatedUsername">El nombre de usuario ya existe</string>
     <string name="alphanumericPassword">Letras, números y símbolos son requeridos</string>
     <string name="invalidEmailFormat">Dirección de correo con formato inválido</string>
     <string name="imageSelected">Imagen Seleccionada</string>

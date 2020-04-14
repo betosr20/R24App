@@ -95,13 +95,13 @@ public class ReportIncidentActivity extends AppCompatActivity {
             }
         } else {
             activateMapLocation.setChecked(false);
-            imagesSelectedText.setText("No hay imágenes seleccionadas");
+            imagesSelectedText.setText(getResources().getText(R.string.noImagesSelected));
         }
     }
 
     private void addImagesButtonListener() {
         imagesSelectedText = findViewById(R.id.imagesSelectedText);
-        imagesSelectedText.setText("No hay imágenes seleccionadas");
+        imagesSelectedText.setText(getResources().getText(R.string.noImagesSelected));
         Button addImagesButton = findViewById(R.id.addImagesButton);
 
         addImagesButton.setOnClickListener(new View.OnClickListener() {
@@ -214,7 +214,6 @@ public class ReportIncidentActivity extends AppCompatActivity {
 
         if (reportService.addNewReport(report) && reportService.saveReportImages(imagesUri, reportId)) {
             Toast.makeText(ReportIncidentActivity.this, "Reporte registrado exitosamente", Toast.LENGTH_LONG).show();
-            //reportService.sendNewReportNotification(report, this);
         } else {
             Toast.makeText(ReportIncidentActivity.this, "Hubo un problema al registrar el reporte", Toast.LENGTH_LONG).show();
         }
@@ -253,7 +252,7 @@ public class ReportIncidentActivity extends AppCompatActivity {
 
     private void addItemsToSpinner() {
         ArrayList<String> disasterTypeList = new ArrayList<>();
-        disasterTypeList.add("Seleccione el tipo de desastre");
+        disasterTypeList.add(getResources().getString(R.string.disasterTypeLabel));
         naturalDisasterService.getDisasterTypes(disasterTypeList);
         disasterTypeSpinner = findViewById(R.id.disasterTypeSpinner);
 
