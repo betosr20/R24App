@@ -30,11 +30,12 @@
             android:layout_height="match_parent">
 
 
-
             <ImageView
                 android:id="@+id/user_contact_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="89dp"
+                android:layout_height="95dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
                 android:src="@mipmap/ic_launcher_round"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -63,6 +64,17 @@
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="@+id/fullName_userContact"
                 app:layout_constraintTop_toBottomOf="@+id/fullName_userContact" />
+
+            <TextView
+                android:id="@+id/userHelpDistress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text=" Telefono"
+                android:drawableLeft="@drawable/ic_sos"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="@+id/cellPhone_userContact"
+                app:layout_constraintTop_toBottomOf="@+id/cellPhone_userContact" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

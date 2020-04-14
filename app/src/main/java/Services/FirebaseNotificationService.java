@@ -17,6 +17,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import Models.Constants.FirebaseClasses;
+import Models.POJOS.DistressSignal;
 import Models.POJOS.Report;
 
 public class FirebaseNotificationService extends FirebaseMessagingService {
@@ -41,13 +42,29 @@ public class FirebaseNotificationService extends FirebaseMessagingService {
                         }
                     }
                 });
+
+        FirebaseMessaging.getInstance().subscribeToTopic("DistressAlert")
+
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                        }
+                    }
+                });
     }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         if (remoteMessage.getData().size() > 0) {
             String reportId = remoteMessage.getData().get("reportId");
-            showIncidentNotification(reportId);
+            if(remoteMessage.getNotification().getTitle().equals("Nueva alerta de auxilio")){
+                showDistressNotification(reportId);
+            }else{
+                showIncidentNotification(reportId);
+            }
+
+
         }
     }
 
@@ -75,4 +92,31 @@ public class FirebaseNotificationService extends FirebaseMessagingService {
             }
         });
     }
+
+    private void showDistressNotification(String reportId) {
+        String currentUserId = userService.getCurrentFirebaseUserId();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference(FirebaseClasses.DistressSignal).child(reportId);
+        Context context = this;
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                DistressSignal distress = dataSnapshot.getValue(DistressSignal.class);
+
+                if (!distress.getId().equals(currentUserId)) {
+                    NotificationHandler notificationHandler = new NotificationHandler(context);
+                    Notification.Builder notification = new NotificationHandler(context).createDistressNotification(distress);
+                    notificationHandler.getManager().notify(1, notification.build());
+                    notificationHandler.publishNotificationSummaryGroup();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+
 }

@@ -50,7 +50,7 @@
 
     <group android:id="@+id/settings7">
         <item
-            android:id="@+id/neddHelp"
+            android:id="@+id/needHelp"
             android:orderInCategory="100"
             android:title="@string/needHelpAction"
             app:showAsAction="never"
