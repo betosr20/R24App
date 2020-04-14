@@ -11,12 +11,12 @@
         android:id="@+id/mapSearchViewFragmentDistress"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="0dp"
-        android:layout_height="310dp"
-        android:layout_marginTop="24dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <fragment
         android:id="@+id/autocomplete_fragment"
@@ -24,24 +24,12 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="@+id/mapSearchViewFragmentDistress"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/mapSearchViewFragmentDistress"
         app:layout_constraintTop_toTopOf="@+id/mapSearchViewFragmentDistress" />
-
-    <ImageButton
-        android:id="@+id/checkButton"
-        android:layout_width="84dp"
-        android:layout_height="63dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="10dp"
-        android:backgroundTint="@android:color/transparent"
-        android:tint="@color/quantum_grey"
-        app:layout_constraintBottom_toBottomOf="@+id/mapSearchViewFragmentDistress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/check" />
 
     <Switch
         android:id="@+id/switchButtonView"
@@ -58,15 +46,15 @@
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="70dp"
-        android:layout_height="72dp"
+        android:layout_width="46dp"
+        android:layout_height="44dp"
         android:layout_marginStart="161dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="161dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mapSearchViewFragmentDistress"
         app:srcCompat="@drawable/ic_sos" />
 
     <Button
@@ -76,35 +64,22 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="35dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="23dp"
         android:text="@string/saveReportButton"
         app:iconGravity="textEnd"
         app:iconPadding="1dp"
+        app:layout_constraintBottom_toBottomOf="@+id/mapSearchViewFragmentDistress"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mapSearchViewFragmentDistress" />
-
-    <TextView
-        android:id="@+id/headerDistress"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="16dp"
-        android:text="Emitir señal de auxilio"
-        android:textAlignment="center"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/imageButtonBackDistress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
         android:backgroundTint="@android:color/transparent"
         android:onClick="windowBack"
         app:layout_constraintStart_toStartOf="parent"
