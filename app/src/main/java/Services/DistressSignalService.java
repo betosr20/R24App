@@ -7,9 +7,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import Activities.DistressSignal;
 import Models.Constants.FirebaseClasses;
-import Models.POJOS.DistressCall;
+import Models.POJOS.DistressSignal;
 
 public class DistressSignalService {
 
@@ -21,7 +20,7 @@ public class DistressSignalService {
 
     }
 
-    public boolean createDistressReport(DistressCall distressCall){
+    public boolean createDistressReport(DistressSignal distressCall){
         final boolean[] successFulRegister = {true};
 
         databaseReference = database.getReference(FirebaseClasses.DistressSignal).child(distressCall.getId());

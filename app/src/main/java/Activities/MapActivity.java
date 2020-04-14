@@ -44,7 +44,7 @@ import java.util.List;
 
 import Activities.ReportDetail.ReportDetailContainer;
 import Models.Constants.FirebaseClasses;
-import Models.POJOS.DistressCall;
+import Models.POJOS.DistressSignal;
 import Models.POJOS.Report;
 import Models.POJOS.User;
 import Services.DistressSignalService;
@@ -340,7 +340,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         if(user.isNeedHelp()){
                             Toast.makeText(getBaseContext(), "Usted ya reportó una señal de auxilio, primero debe indicar que esta bien para poder reportar otra", Toast.LENGTH_LONG).show();
                         }else{
-                            Intent distressActivity = new Intent(context2, DistressSignal.class);
+                            Intent distressActivity = new Intent(context2, DistressSignalActivity.class);
                             startActivity(distressActivity);
                         }
 

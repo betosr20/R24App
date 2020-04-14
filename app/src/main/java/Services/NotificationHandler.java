@@ -16,6 +16,7 @@ import com.example.r24app.R;
 import Activities.ReportDetail.ReportDetailContainer;
 import Activities.ReportIncidentActivity;
 import Models.Constants.DataConstants;
+import Models.POJOS.DistressSignal;
 import Models.POJOS.Report;
 
 public class NotificationHandler extends ContextWrapper {
@@ -91,6 +92,41 @@ public class NotificationHandler extends ContextWrapper {
                     .setGroupSummary(true)
                     .build();
             getManager().notify(DataConstants.SUMMARY_GROUP_ID, summaryNotification);
+        }
+    }
+
+    private Notification.Builder createDistressWithChannel(DistressSignal distress) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            return new Notification.Builder(getApplicationContext(), DataConstants.CHANNEL_HIGH_ID)
+                    .setContentTitle("Nueva alerta de auxilio ")
+                    .setContentText(distress.getName() +  " " + distress.getLastName() + " ha emitido una señal de auxilio" +
+                            " en " + distress.getLocationPlace())
+                    .setSmallIcon(R.drawable.uptodatelogo)
+                    .setGroup(DataConstants.SUMMARY_GROUP_NAME)
+                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.uptodatelogo))
+                    .setAutoCancel(true);
+        }
+
+        return null;
+    }
+
+    public Notification.Builder createDistressWithoutChannel(DistressSignal distress) {
+        return new Notification.Builder(getApplicationContext())
+                .setContentTitle("Nueva alerta de auxilio")
+                .setContentText(distress.getName() +  " " + distress.getLastName() + " ha emitido una señal de auxilio" +
+                        " en " + distress.getLocationPlace())
+                .setSmallIcon(R.drawable.uptodatelogo)
+                .setVibrate(new long[] { 2000, 2000, 2000, 2000, 2000 })
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.uptodatelogo))
+                .setAutoCancel(true);
+    }
+
+    public Notification.Builder createDistressNotification(DistressSignal distress) {
+        if (Build.VERSION.SDK_INT >= 26) {
+            return createDistressWithChannel(distress);
+        } else {
+            return createDistressWithoutChannel(distress);
         }
     }
 }

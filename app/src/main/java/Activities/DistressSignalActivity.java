@@ -3,15 +3,11 @@ package Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -37,15 +33,13 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Arrays;
 import java.util.Objects;
 
-import Models.Constants.DataConstants;
 import Models.Constants.FirebaseClasses;
-import Models.POJOS.DistressCall;
 import Models.POJOS.User;
 import Services.DistressSignalService;
 import Services.UserService;
 
 
-public class DistressSignal extends AppCompatActivity implements OnMapReadyCallback {
+public class DistressSignalActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap googleMap;
     private SupportMapFragment mapFragment;
@@ -193,35 +187,25 @@ public class DistressSignal extends AppCompatActivity implements OnMapReadyCallb
         @Override
         public void onClick(View v) {
            if (place != null) {
-               Toast.makeText(DistressSignal.this, user.getId(), Toast.LENGTH_LONG).show();
+               Toast.makeText(DistressSignalActivity.this, user.getId(), Toast.LENGTH_LONG).show();
             boolean isRegistered;
-           DistressCall distressCall = new DistressCall(user.getId(), user.getName(), user.getLastName(), String.valueOf(place.getName()),
+           Models.POJOS.DistressSignal distressCall = new Models.POJOS.DistressSignal(user.getId(), user.getName(), user.getLastName(), String.valueOf(place.getName()),
                    String.valueOf(place.getLatLng().latitude),   String.valueOf(place.getLatLng().longitude));
 
                DistressSignalService distressService = new DistressSignalService();
               isRegistered = distressService.createDistressReport(distressCall);
               if(isRegistered){
-                  Toast.makeText(DistressSignal.this, "La señal de alerta se ha creado correctamente", Toast.LENGTH_LONG).show();
-                  new Handler().postDelayed(new Runnable() {
-                      @Override
-                      public void run() {
-                         startMapActivity();
-                      }
-                  }, 3500);
+                  Toast.makeText(DistressSignalActivity.this, "La señal de alerta se ha creado correctamente", Toast.LENGTH_LONG).show();
+                  finish();
               }else{
-                  Toast.makeText(DistressSignal.this, "Ha ocurrido un problema al registrar la señal de alerta", Toast.LENGTH_LONG).show();
+                  Toast.makeText(DistressSignalActivity.this, "Ha ocurrido un problema al registrar la señal de alerta", Toast.LENGTH_LONG).show();
               }
 
       }else{
-               Toast.makeText(DistressSignal.this, "Debe indicar una ubicación en el mapa", Toast.LENGTH_LONG).show();
+               Toast.makeText(DistressSignalActivity.this, "Debe indicar una ubicación en el mapa", Toast.LENGTH_LONG).show();
            }
       }
      });
      }
 
-    private void startMapActivity() {
-        Intent mapIntent = new Intent(DistressSignal.this, MapActivity.class);
-        startActivityForResult(mapIntent, DataConstants.LAUNCH_MAPSEARCH_ACTIVITY);
-        finish();
-    }
 }

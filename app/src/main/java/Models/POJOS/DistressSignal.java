@@ -1,10 +1,13 @@
 package Models.POJOS;
 
-public class DistressCall {
+public class DistressSignal {
 
     private String id, name, lastName, locationPlace, latitude, longitude;
 
-    public DistressCall(String id, String name, String lastName, String locationPlace, String latitude, String longitude) {
+
+    public DistressSignal(){}
+
+    public DistressSignal(String id, String name, String lastName, String locationPlace, String latitude, String longitude) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;

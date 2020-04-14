@@ -19,7 +19,7 @@
         android:roundIcon="@drawable/uptodatelogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="Activities.DistressSignal"></activity>
+        <activity android:name="Activities.DistressSignalActivity"></activity>
         <activity
             android:name="Activities.SearchUser"
             android:parentActivityName=".MainActivity"
