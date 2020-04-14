@@ -11,6 +11,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Icon;
 import android.os.Build;
 
+import androidx.core.app.NotificationCompat;
+
 import com.example.r24app.R;
 
 import Activities.ReportDetail.ReportDetailContainer;
@@ -100,6 +102,9 @@ public class NotificationHandler extends ContextWrapper {
 
             return new Notification.Builder(getApplicationContext(), DataConstants.CHANNEL_HIGH_ID)
                     .setContentTitle("Nueva alerta de auxilio ")
+                    .setStyle(new Notification.BigTextStyle()
+                            .bigText(distress.getName() +  " " + distress.getLastName() + " ha emitido una señal de auxilio" +
+                                    " en " + distress.getLocationPlace()))
                     .setContentText(distress.getName() +  " " + distress.getLastName() + " ha emitido una señal de auxilio" +
                             " en " + distress.getLocationPlace())
                     .setSmallIcon(R.drawable.uptodatelogo)

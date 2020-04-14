@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/quantum_grey200"
     android:fillViewport="true"
     tools:context=".MainActivity">
 
@@ -58,8 +59,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/emailInput"
                 android:layout_width="match_parent"
-                android:hint="@string/fieldEmailAddressHint"
                 android:layout_height="wrap_content"
+                android:hint="@string/fieldEmailAddressHint"
                 android:imeOptions="actionNext"
                 android:inputType="textEmailAddress"
                 android:maxLength="50"
