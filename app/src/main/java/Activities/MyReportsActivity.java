@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,6 +35,9 @@ public class MyReportsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_reports);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Mis Reportes");
+        actionBar.setDisplayHomeAsUpEnabled(true);
         setProgressBar();
         userReportsList = findViewById(R.id.userReportsList);
         userReportsList.setHasFixedSize(true);

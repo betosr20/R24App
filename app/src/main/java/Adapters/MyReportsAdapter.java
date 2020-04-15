@@ -1,11 +1,14 @@
 package Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,10 +36,42 @@ public class MyReportsAdapter extends RecyclerView.Adapter<MyReportsAdapter.MyVi
         return new MyViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.reportType.setText(userReports.get(position).getType());
-        holder.reportDate.setText(userReports.get(position).getStartDateString());
+        try {
+            holder.reportType.setText("Incidente: " + userReports.get(position).getType());
+            holder.reportDate.setText("Fecha: " + userReports.get(position).getStartDateString());
+
+            holder.moreOptionsButton.setOnClickListener(view -> {
+                if (view.getId() == R.id.moreOptionsButton) {
+                    PopupMenu popup = new PopupMenu(context, view);
+                    popup.getMenuInflater().inflate(R.menu.myreportsmenu, popup.getMenu());
+                    popup.show();
+
+                    popup.setOnMenuItemClickListener(item -> {
+                        switch (item.getItemId()) {
+                            case R.id.viewReportOption:
+                                Toast.makeText(context, "Ver reporte " + userReports.get(position).getType(), Toast.LENGTH_LONG).show();
+                                break;
+                            case R.id.editReportOption:
+                                Toast.makeText(context, "Editar reporte " + userReports.get(position).getType(), Toast.LENGTH_LONG).show();
+                                break;
+                            case R.id.deleteReportOption:
+                                Toast.makeText(context, "Eliminar reporte " + userReports.get(position).getType(), Toast.LENGTH_LONG).show();
+                                break;
+                            default:
+                                break;
+                        }
+
+                        return true;
+                    });
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -45,19 +80,15 @@ public class MyReportsAdapter extends RecyclerView.Adapter<MyReportsAdapter.MyVi
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
-        ImageView viewReport;
-        ImageView editReport;
-        ImageView deleteReport;
         TextView reportType;
         TextView reportDate;
+        ImageView moreOptionsButton;
 
         MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            viewReport = itemView.findViewById(R.id.viewReport);
-            editReport = itemView.findViewById(R.id.editReport);
-            deleteReport = itemView.findViewById(R.id.deleteReport);
             reportType = itemView.findViewById(R.id.reportType);
             reportDate = itemView.findViewById(R.id.reportDate);
+            moreOptionsButton = itemView.findViewById(R.id.moreOptionsButton);
         }
     }
 }

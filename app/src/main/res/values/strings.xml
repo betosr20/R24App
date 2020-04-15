@@ -46,6 +46,7 @@
     <string name="recoverPasswordText">Recuperar contraseña</string>
     <string name="loginPageHeaderText">Bienvenido(a) a la página de inicio de sesión</string>
     <string name="reportsScreenHeader">Registre aquí su reporte</string>
+    <string name="myReportsScreenHeader">Mis reportes</string>
     <string name="title_user_profile">Mi perfil</string>
     <string name="title_activity_searchUser">Buscar usuario</string>
     <string name="editButtonText">EDITAR</string>
@@ -71,7 +72,7 @@
     <string name="label_dialog_delete">Eliminar</string>
     <string name="label_dialog_cancel">Cancelar</string>
     <string name="title_activity_alerts">Alertas</string>
-    <string name="title_activity_myReports">Mis Reportes</string>
+    <string name="title_activity_myReports"> Mis Reportes</string>
     <string name="exitAlertTittle">¡Salir!</string>
     <string name="exitAlert">¿Está seguro que desea salir de la aplicación?</string>
 </resources>
