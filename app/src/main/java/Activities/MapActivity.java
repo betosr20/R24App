@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -318,10 +319,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     @SuppressLint("RestrictedApi")
     public void showPopup(View v) {
+        Context wrapper = new ContextThemeWrapper(this, R.style.AppTheme_CustomPopupStyle);
         MenuBuilder menuBuilder = new MenuBuilder(this);
         MenuInflater inflater = new MenuInflater(this);
         inflater.inflate(R.menu.menu_main, menuBuilder);
-        MenuPopupHelper optionsMenu = new MenuPopupHelper(this, menuBuilder, v);
+        MenuPopupHelper optionsMenu = new MenuPopupHelper(wrapper, menuBuilder, v);
+
         optionsMenu.setForceShowIcon(true);
         Context context2 = this;
         // Set Item Click Listener
