@@ -1,13 +1,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.r24app.MainActivity">
-    <group android:id="@+id/settings1">
+    tools:context="com.example.r24app.MainActivity"
+    style="@style/AppTheme.CustomPopupStyle">
+    <group android:id="@+id/settings1"
+        style="@style/AppTheme.CustomPopupStyle">
+
         <item
             android:id="@+id/report"
             android:orderInCategory="100"
             android:title="@string/title_register_report"
             app:showAsAction="never"
+            style="@style/AppTheme.CustomPopupStyle"
             android:icon="@drawable/ic_report_black_24dp"/>
     </group>
 
