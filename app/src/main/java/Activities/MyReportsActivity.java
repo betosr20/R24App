@@ -75,9 +75,10 @@ public class MyReportsActivity extends AppCompatActivity {
 
                     MyReportsAdapter myReportsAdapter = new MyReportsAdapter(userReports, MyReportsActivity.this);
                     userReportsList.setAdapter(myReportsAdapter);
-                    progressBar.setVisibility(View.INVISIBLE);
                     checkExistingElements();
                 }
+
+                progressBar.setVisibility(View.INVISIBLE);
             }
 
             @Override
