@@ -132,7 +132,7 @@ public class GeneralInformation extends Fragment {
 
     public void setIconPlace(TextView textView, String place) {
         textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_location, 0, 0, 0);
-        textView.setText("   " + place);
+        textView.setText("     " + place);
     }
 
     public void setAffectedPeopleIcon(TextView textView, int affectedPeople) {

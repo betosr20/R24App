@@ -45,7 +45,6 @@ import java.util.List;
 
 import Activities.ReportDetail.ReportDetailContainer;
 import Models.Constants.FirebaseClasses;
-import Models.POJOS.DistressSignal;
 import Models.POJOS.Report;
 import Models.POJOS.User;
 import Services.DistressSignalService;
@@ -166,7 +165,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     //Itera el contenido del arreglo
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         Report report = snapshot.getValue(Report.class);
-                        if(report.isActive()){
+                        if (report.isActive()) {
                             reportList.add(report);
                         }
 
@@ -345,9 +344,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         return true;
 
                     case R.id.needHelp:
-                        if(user.isNeedHelp()){
+                        if (user.isNeedHelp()) {
                             Toast.makeText(getBaseContext(), "Usted ya reportó una señal de auxilio, primero debe indicar que esta bien para poder reportar otra", Toast.LENGTH_LONG).show();
-                        }else{
+                        } else {
                             Intent distressActivity = new Intent(context2, DistressSignalActivity.class);
                             startActivity(distressActivity);
                         }
@@ -356,14 +355,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                     case R.id.okButton:
 
-                        if(!user.isNeedHelp()){
+                        if (!user.isNeedHelp()) {
                             Toast.makeText(getBaseContext(), "No se ha reportado ninguna señal de auxilio", Toast.LENGTH_LONG).show();
-                        }else{
+                        } else {
                             DistressSignalService distressService = new DistressSignalService();
-                            if(distressService.deleteDistressReport(user.getId())){
+                            if (distressService.deleteDistressReport(user.getId())) {
                                 Toast.makeText(getBaseContext(), "Usted ha indicado que se encuentra bien", Toast.LENGTH_LONG).show();
                                 user.setNeedHelp(false);
-                            }else{
+                            } else {
                                 Toast.makeText(getBaseContext(), "Hubo un problema al comunicarse con la base de datos, por favor" +
                                         "intente de nuevo", Toast.LENGTH_LONG).show();
                             }
@@ -383,6 +382,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     case R.id.action_search_user:
                         Intent searchUserIntent = new Intent(context2, SearchUser.class);
                         startActivity(searchUserIntent);
+                        return true;
+                    case R.id.myReports:
+                        Intent myReportsIntent = new Intent(context2, MyReportsActivity.class);
+                        startActivity(myReportsIntent);
                         return true;
                     default:
                         return false;
