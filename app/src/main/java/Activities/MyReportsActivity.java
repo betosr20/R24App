@@ -3,6 +3,7 @@ package Activities;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -28,8 +29,8 @@ import Services.UserService;
 public class MyReportsActivity extends AppCompatActivity {
     private List<Report> userReports;
     private RecyclerView userReportsList;
-    private MyReportsAdapter myReportsAdapter;
     private ProgressBar progressBar;
+    private TextView noElementsText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,7 @@ public class MyReportsActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Mis Reportes");
         actionBar.setDisplayHomeAsUpEnabled(true);
+        noElementsText = findViewById(R.id.noElementsText);
         setProgressBar();
         userReportsList = findViewById(R.id.userReportsList);
         userReportsList.setHasFixedSize(true);
@@ -66,12 +68,15 @@ public class MyReportsActivity extends AppCompatActivity {
 
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         report = snapshot.getValue(Report.class);
-                        userReports.add(report);
+                        if (report.isActive()) {
+                            userReports.add(report);
+                        }
                     }
 
-                    myReportsAdapter = new MyReportsAdapter(userReports, MyReportsActivity.this);
+                    MyReportsAdapter myReportsAdapter = new MyReportsAdapter(userReports, MyReportsActivity.this);
                     userReportsList.setAdapter(myReportsAdapter);
                     progressBar.setVisibility(View.INVISIBLE);
+                    checkExistingElements();
                 }
             }
 
@@ -80,5 +85,13 @@ public class MyReportsActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void checkExistingElements() {
+        if (userReports.size() > 0) {
+            noElementsText.setVisibility(View.INVISIBLE);
+        } else {
+            noElementsText.setVisibility(View.VISIBLE);
+        }
     }
 }

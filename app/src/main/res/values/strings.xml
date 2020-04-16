@@ -57,6 +57,7 @@
     <string name="viewAction">Ver</string>
     <string name="deleteAction">Eliminar</string>
     <string name="changeViewSwitch">Vista</string>
+    <string name="noReportsRegistered">No tienes reportes registrados</string>
     <string name="reportIncidentNotification">Nuevo reporte de incidente</string>
 
     <string-array name="disasterTypes_array">

@@ -40,7 +40,7 @@ public class UserService {
     }
 
     public boolean updateUser(User user) {
-        final boolean[] successFulRegister = {true};
+        final boolean[] successFulUpdate = {true};
 
         databaseReference.child(FirebaseClasses.User).child(String.valueOf(user.getId())).setValue(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -52,11 +52,11 @@ public class UserService {
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                successFulRegister[0] = false;
+                successFulUpdate[0] = false;
             }
         });
 
-        return successFulRegister[0];
+        return successFulUpdate[0];
     }
 
     public boolean addNewUser(User user) {
@@ -130,6 +130,7 @@ public class UserService {
         String id = getCurrentFirebaseUserId();
         databaseReference.child(FirebaseClasses.User).child(id).child("viewType").setValue(setting);
     }
+
     public void getImageProfileUri(User pupdateUser) {
         storageReference = firebaseStorage.getInstance().getReference();
         ref = storageReference.child("myImages/" + pupdateUser.getProfileImage());

@@ -2,6 +2,7 @@ package Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,10 @@ import com.example.r24app.R;
 
 import java.util.List;
 
+import Activities.MyReportsActivity;
+import Activities.ReportDetail.ReportDetailContainer;
 import Models.POJOS.Report;
+import Services.ReportService;
 
 public class MyReportsAdapter extends RecyclerView.Adapter<MyReportsAdapter.MyViewHolder> {
 
@@ -52,13 +56,29 @@ public class MyReportsAdapter extends RecyclerView.Adapter<MyReportsAdapter.MyVi
                     popup.setOnMenuItemClickListener(item -> {
                         switch (item.getItemId()) {
                             case R.id.viewReportOption:
-                                Toast.makeText(context, "Ver reporte " + userReports.get(position).getType(), Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(context, ReportDetailContainer.class);
+                                intent.putExtra("idReport", userReports.get(position).getId());
+                                context.startActivity(intent);
                                 break;
                             case R.id.editReportOption:
                                 Toast.makeText(context, "Editar reporte " + userReports.get(position).getType(), Toast.LENGTH_LONG).show();
                                 break;
                             case R.id.deleteReportOption:
-                                Toast.makeText(context, "Eliminar reporte " + userReports.get(position).getType(), Toast.LENGTH_LONG).show();
+                                ReportService reportService = new ReportService();
+                                userReports.get(position).setActive(false);
+
+                                if (reportService.deleteReport(userReports.get(position))) {
+                                    userReports.remove(position);
+                                    notifyDataSetChanged();
+                                    Toast.makeText(context, "Reporte eliminado exitosamente", Toast.LENGTH_LONG).show();
+
+                                    if (userReports.size() == 0) {
+                                        ((MyReportsActivity) context).checkExistingElements();
+                                    }
+                                } else {
+                                    Toast.makeText(context, "Error durante el proceso de eliminación", Toast.LENGTH_LONG).show();
+                                }
+
                                 break;
                             default:
                                 break;
@@ -80,8 +100,7 @@ public class MyReportsAdapter extends RecyclerView.Adapter<MyReportsAdapter.MyVi
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView reportType;
-        TextView reportDate;
+        TextView reportType, reportDate;
         ImageView moreOptionsButton;
 
         MyViewHolder(@NonNull View itemView) {
