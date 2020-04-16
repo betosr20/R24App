@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -44,8 +45,10 @@ import java.util.List;
 
 import Activities.ReportDetail.ReportDetailContainer;
 import Models.Constants.FirebaseClasses;
+import Models.POJOS.DistressSignal;
 import Models.POJOS.Report;
 import Models.POJOS.User;
+import Services.DistressSignalService;
 import Services.UserService;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -162,7 +165,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 if (dataSnapshot.exists()) {
                     //Itera el contenido del arreglo
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        reportList.add(snapshot.getValue(Report.class));
+                        Report report = snapshot.getValue(Report.class);
+                        if(report.isActive()){
+                            reportList.add(report);
+                        }
+
                     }
                     if (activeMarker) {
                         populatePins(googleMap);
@@ -316,10 +323,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     @SuppressLint("RestrictedApi")
     public void showPopup(View v) {
+        Context wrapper = new ContextThemeWrapper(this, R.style.AppTheme_CustomPopupStyle);
         MenuBuilder menuBuilder = new MenuBuilder(this);
         MenuInflater inflater = new MenuInflater(this);
         inflater.inflate(R.menu.menu_main, menuBuilder);
-        MenuPopupHelper optionsMenu = new MenuPopupHelper(this, menuBuilder, v);
+        MenuPopupHelper optionsMenu = new MenuPopupHelper(wrapper, menuBuilder, v);
+
         optionsMenu.setForceShowIcon(true);
         Context context2 = this;
         // Set Item Click Listener
@@ -334,6 +343,35 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         Intent intent = new Intent(context2, MapActivity.class);
                         startActivity(intent);
                         return true;
+
+                    case R.id.needHelp:
+                        if(user.isNeedHelp()){
+                            Toast.makeText(getBaseContext(), "Usted ya reportó una señal de auxilio, primero debe indicar que esta bien para poder reportar otra", Toast.LENGTH_LONG).show();
+                        }else{
+                            Intent distressActivity = new Intent(context2, DistressSignalActivity.class);
+                            startActivity(distressActivity);
+                        }
+
+                        return true;
+
+                    case R.id.okButton:
+
+                        if(!user.isNeedHelp()){
+                            Toast.makeText(getBaseContext(), "No se ha reportado ninguna señal de auxilio", Toast.LENGTH_LONG).show();
+                        }else{
+                            DistressSignalService distressService = new DistressSignalService();
+                            if(distressService.deleteDistressReport(user.getId())){
+                                Toast.makeText(getBaseContext(), "Usted ha indicado que se encuentra bien", Toast.LENGTH_LONG).show();
+                                user.setNeedHelp(false);
+                            }else{
+                                Toast.makeText(getBaseContext(), "Hubo un problema al comunicarse con la base de datos, por favor" +
+                                        "intente de nuevo", Toast.LENGTH_LONG).show();
+                            }
+
+
+                        }
+                        return true;
+
                     case R.id.report:
                         Intent reportActivity = new Intent(context2, ReportIncidentActivity.class);
                         startActivity(reportActivity);

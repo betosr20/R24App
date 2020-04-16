@@ -11,10 +11,14 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Icon;
 import android.os.Build;
 
+import androidx.core.app.NotificationCompat;
+
 import com.example.r24app.R;
 
+import Activities.ReportDetail.ReportDetailContainer;
 import Activities.ReportIncidentActivity;
 import Models.Constants.DataConstants;
+import Models.POJOS.DistressSignal;
 import Models.POJOS.Report;
 
 public class NotificationHandler extends ContextWrapper {
@@ -45,20 +49,19 @@ public class NotificationHandler extends ContextWrapper {
 
     private Notification.Builder createNotificationWithChannel(Report report) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Intent intent = new Intent(this, ReportIncidentActivity.class);
-            intent.putExtra("title", getResources().getString(R.string.reportIncidentNotification));
-            intent.putExtra("message", report.getType() + "\n" + report.getDetail());
+            Intent intent = new Intent(this, ReportDetailContainer.class);
+            String id = report.getId();
+            intent.putExtra("idReport", id);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-            Notification.Action action = new Notification.Action.Builder(Icon.createWithResource(this, R.drawable.ic_report_black_24dp), "See Details", pIntent).build();
 
             return new Notification.Builder(getApplicationContext(), DataConstants.CHANNEL_HIGH_ID)
                     .setContentTitle(getResources().getString(R.string.reportIncidentNotification))
                     .setContentText(report.getType() + " en " + report.getPlace())
-                    .setSmallIcon(R.drawable.ic_report_black_24dp)
+                    .setSmallIcon(R.drawable.uptodatelogo)
                     .setGroup(DataConstants.SUMMARY_GROUP_NAME)
                     .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.uptodatelogo))
+                    .setContentIntent(pIntent)
                     .setAutoCancel(true);
         }
 
@@ -69,7 +72,7 @@ public class NotificationHandler extends ContextWrapper {
         return new Notification.Builder(getApplicationContext())
                 .setContentTitle(getResources().getString(R.string.reportIncidentNotification))
                 .setContentText(report.getType() + " en " + report.getPlace())
-                .setSmallIcon(R.drawable.ic_report_black_24dp)
+                .setSmallIcon(R.drawable.uptodatelogo)
                 .setVibrate(new long[] { 2000, 2000, 2000, 2000, 2000 })
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.uptodatelogo))
                 .setAutoCancel(true);
@@ -91,6 +94,44 @@ public class NotificationHandler extends ContextWrapper {
                     .setGroupSummary(true)
                     .build();
             getManager().notify(DataConstants.SUMMARY_GROUP_ID, summaryNotification);
+        }
+    }
+
+    private Notification.Builder createDistressWithChannel(DistressSignal distress) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            return new Notification.Builder(getApplicationContext(), DataConstants.CHANNEL_HIGH_ID)
+                    .setContentTitle("Nueva alerta de auxilio ")
+                    .setStyle(new Notification.BigTextStyle()
+                            .bigText(distress.getName() +  " " + distress.getLastName() + " ha emitido una señal de auxilio" +
+                                    " en " + distress.getLocationPlace()))
+                    .setContentText(distress.getName() +  " " + distress.getLastName() + " ha emitido una señal de auxilio" +
+                            " en " + distress.getLocationPlace())
+                    .setSmallIcon(R.drawable.uptodatelogo)
+                    .setGroup(DataConstants.SUMMARY_GROUP_NAME)
+                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.uptodatelogo))
+                    .setAutoCancel(true);
+        }
+
+        return null;
+    }
+
+    public Notification.Builder createDistressWithoutChannel(DistressSignal distress) {
+        return new Notification.Builder(getApplicationContext())
+                .setContentTitle("Nueva alerta de auxilio")
+                .setContentText(distress.getName() +  " " + distress.getLastName() + " ha emitido una señal de auxilio" +
+                        " en " + distress.getLocationPlace())
+                .setSmallIcon(R.drawable.uptodatelogo)
+                .setVibrate(new long[] { 2000, 2000, 2000, 2000, 2000 })
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.uptodatelogo))
+                .setAutoCancel(true);
+    }
+
+    public Notification.Builder createDistressNotification(DistressSignal distress) {
+        if (Build.VERSION.SDK_INT >= 26) {
+            return createDistressWithChannel(distress);
+        } else {
+            return createDistressWithoutChannel(distress);
         }
     }
 }

@@ -23,6 +23,8 @@
             android:name="Activities.MyReportsActivity"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppThemeSearch" />
+
+        <activity android:name="Activities.DistressSignalActivity" />
         <activity
             android:name="Activities.SearchUser"
             android:parentActivityName=".MainActivity"
@@ -30,8 +32,11 @@
         <activity
             android:name="Activities.MyProfileActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+
         <activity android:name="Activities.ImageChooserActivity" />
+
         <activity android:name="Activities.ReportDetail.ReportDetailContainer" />
+
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="stateHidden|adjustResize">
@@ -41,10 +46,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="Activities.RecoveryPassword"
             android:parentActivityName=".MainActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+
         <activity
             android:name="Activities.SignUp"
             android:parentActivityName=".MainActivity"
@@ -52,19 +59,21 @@
         <activity
             android:name="Activities.PasswordValidation"
             android:parentActivityName="Activities.SignUp" />
+
         <activity
             android:name="Activities.MapSearchActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name="Activities.ReportIncidentActivity"
             android:parentActivityName="Activities.MapActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+
         <activity
             android:name="Activities.MapActivity"
             android:label="@string/title_activity_map"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:parentActivityName=".MainActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -85,5 +94,4 @@
             </intent-filter>
         </service>
     </application>
-
 </manifest>

@@ -42,7 +42,7 @@ exports.newIncidentReport = functions.database.ref('/Report/{id}')
                 message = {
                     notification: {
                         title: 'Nueva alerta de auxilio',
-                        body:  snapshot._data.name +  ' ' + snapshot._data.lastName + ' ha emitido una señal de auxilio'
+                        body:  snapshot._data.name +  ' ' + snapshot._data.lastName + ' ha emitido una señal de auxilio' + ' en ' + snapshot._data.locationPlace
                     },
 
                     data: {

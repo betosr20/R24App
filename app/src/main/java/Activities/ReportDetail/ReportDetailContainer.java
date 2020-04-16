@@ -22,13 +22,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import Activities.MapActivity;
 import Adapters.OptionPageAdapter;
 import Models.Constants.FirebaseClasses;
 import Models.POJOS.ReportPicture;
 
 public class ReportDetailContainer extends AppCompatActivity {
-    private FirebaseDatabase database;
-    private DatabaseReference databaseReference;
     private List<ReportPicture> imagesReference = new ArrayList<>();
     private int counter = 0;
 
@@ -41,8 +40,8 @@ public class ReportDetailContainer extends AppCompatActivity {
         String idReport = intent.getStringExtra("idReport");
         viewPager2.setAdapter(new OptionPageAdapter(this, idReport));
         TabLayout tabLayout = findViewById(R.id.tabLayout);
-        this.database = FirebaseDatabase.getInstance();
-        this.databaseReference = database.getReference(FirebaseClasses.ReportPicture);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference(FirebaseClasses.ReportPicture);
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -84,6 +83,7 @@ public class ReportDetailContainer extends AppCompatActivity {
                 );
                 tabLayoutMediator.attach();
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
@@ -91,6 +91,8 @@ public class ReportDetailContainer extends AppCompatActivity {
     }
 
     public void windowBack(View v) {
-        onBackPressed();
+        Intent intent = new Intent(this, MapActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

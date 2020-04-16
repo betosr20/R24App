@@ -147,4 +147,9 @@ public class UserService {
             }
         });
     }
+
+    public void updateNeedHelp(boolean setting) {
+        String id = getCurrentFirebaseUserId();
+        databaseReference.child(FirebaseClasses.User).child(id).child("needHelp").setValue(setting);
+    }
 }

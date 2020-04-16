@@ -98,6 +98,15 @@ public class SearchUser extends AppCompatActivity {
                 holder.progressBar.setVisibility(View.VISIBLE);
                 holder.fullName.setText(" "+model.getName() + " " + model.getLastName());
                 holder.cellPhone.setText(" "+model.getCellPhone());
+
+                if(model.isNeedHelp()){
+                    holder.needHelp.setText(" Auxilio");
+                    holder.needHelp.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_sos, 0, 0, 0);
+                }else{
+                    holder.needHelp.setText(" Estoy bien");
+                    holder.needHelp.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_okstatus, 0, 0, 0);
+                }
+
                 if (!model.getProfileImage().isEmpty()) {
                     holder.progressBar.setVisibility(View.INVISIBLE);
                     Picasso.get()

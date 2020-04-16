@@ -25,12 +25,15 @@ public class ImageContactAdapter extends RecyclerView.ViewHolder {
     TextView cellPhone;
     ImageView imageView;
     ProgressBar progressBar;
+    TextView needHelp;
+
     public ImageContactAdapter(@NonNull View itemView) {
         super(itemView);
         fullName = itemView.findViewById(R.id.fullName_userContact);
         cellPhone = itemView.findViewById(R.id.cellPhone_userContact);
         imageView = itemView.findViewById(R.id.user_contact_image);
         progressBar = itemView.findViewById(R.id.loadContacImage);
+        needHelp = itemView.findViewById(R.id.userHelpDistress);
 
     }
 }

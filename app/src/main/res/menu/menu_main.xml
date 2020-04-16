@@ -1,14 +1,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.r24app.MainActivity">
+    tools:context="com.example.r24app.MainActivity"
+    style="@style/AppTheme.CustomPopupStyle">
+    <group android:id="@+id/settings1"
+        style="@style/AppTheme.CustomPopupStyle">
 
-    <group android:id="@+id/settings1">
         <item
             android:id="@+id/report"
             android:orderInCategory="100"
             android:title="@string/title_register_report"
             app:showAsAction="never"
+            style="@style/AppTheme.CustomPopupStyle"
             android:icon="@drawable/ic_report_black_24dp"/>
     </group>
 
@@ -23,11 +26,11 @@
 
     <group android:id="@+id/settings5">
         <item
-            android:id="@+id/myReports"
+            android:id="@+id/alerts"
             android:orderInCategory="100"
-            android:title="@string/title_activity_myReports"
+            android:title="@string/title_activity_alerts"
             app:showAsAction="never"
-            android:icon="@drawable/report_24dp"/>
+            android:icon="@drawable/ic_announcement_black_24dp"/>
     </group>
 
 
@@ -51,7 +54,7 @@
 
     <group android:id="@+id/settings7">
         <item
-            android:id="@+id/neddHelp"
+            android:id="@+id/needHelp"
             android:orderInCategory="100"
             android:title="@string/needHelpAction"
             app:showAsAction="never"
