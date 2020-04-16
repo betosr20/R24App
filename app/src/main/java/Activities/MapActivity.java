@@ -165,7 +165,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 if (dataSnapshot.exists()) {
                     //Itera el contenido del arreglo
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        reportList.add(snapshot.getValue(Report.class));
+                        Report report = snapshot.getValue(Report.class);
+                        if(report.isActive()){
+                            reportList.add(report);
+                        }
+
                     }
                     if (activeMarker) {
                         populatePins(googleMap);
