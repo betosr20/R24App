@@ -1,15 +1,21 @@
 package Activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.example.r24app.R;
 import com.google.android.gms.common.api.Status;
@@ -28,39 +34,85 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import java.util.Arrays;
 import java.util.Objects;
 
-public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCallback {
+import Models.Constants.DataConstants;
+
+public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
     private GoogleMap googleMap;
     private SupportMapFragment mapFragment;
     private Place place;
-    private Boolean view = true;
+    private Boolean view, isGPSActivated, isNetworkActivated;
+    private Location currentLocation;
+    private AutocompleteSupportFragment autocompleteFragment;
+    private Switch switchAutoLocalization;
+    private int markersCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_search);
-
-        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapSearchViewFragment);
+        instantiateElements();
         setSearchViewInputListener();
         addCheckButtonListener();
         addSwitchListener();
+        getLocation();
+    }
+
+    private void instantiateElements() {
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapSearchViewFragment);
+        autocompleteFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+        view = true;
+        isGPSActivated = false;
+        isNetworkActivated = false;
         place = null;
+        markersCount = 0;
+        currentLocation = null;
     }
 
     private void addSwitchListener() {
         Switch switchButtonView = findViewById(R.id.switchButtonView);
 
-        switchButtonView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton view2, boolean isChecked) {
-                if (isChecked) {
-                    view = true;
-                    changeView();
-                } else {
-                    view = false;
-                    changeView();
-                }
+        switchButtonView.setOnCheckedChangeListener((view2, isChecked) -> {
+            if (isChecked) {
+                view = true;
+                changeView();
+            } else {
+                view = false;
+                changeView();
             }
         });
+
+        switchAutoLocalization = findViewById(R.id.autoLocalizationSwitch);
+
+        switchAutoLocalization.setOnCheckedChangeListener((view2, isChecked) -> {
+            if (isChecked) {
+                getLocation();
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }
+        });
+    }
+
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (isGPSActivated && isNetworkActivated && currentLocation != null) {
+                    populatePins(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
+                } else {
+                    switchAutoLocalization.setChecked(false);
+                    Toast.makeText(this, "Asegurate de tener conexión a internet y tu ubicación activada", Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(this, "Acceso a ubicación negado, por favor habilite el acceso en configuraciones del dispositivo", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    public void populatePins(LatLng selectedPlace) {
+        this.googleMap.addMarker(new MarkerOptions()
+                .position(selectedPlace)
+        );
+
+        this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedPlace, 16));
+        markersCount = markersCount + 1;
     }
 
     private void changeView() {
@@ -74,25 +126,22 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
     private void addCheckButtonListener() {
         ImageButton checkButton = findViewById(R.id.checkButton);
 
-        checkButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (place != null) {
-                    Intent returnIntent = new Intent();
-                    returnIntent.putExtra("selectedPlace", String.valueOf(place.getName()));
-                    returnIntent.putExtra("longitude", String.valueOf(place.getLatLng().longitude));
-                    returnIntent.putExtra("latitude", String.valueOf(place.getLatLng().latitude));
-                    setResult(Activity.RESULT_OK, returnIntent);
-                }
-
-                finish();
+        checkButton.setOnClickListener(v -> {
+            if (place != null && markersCount == 1) {
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("selectedPlace", String.valueOf(place.getName()));
+                returnIntent.putExtra("longitude", String.valueOf(place.getLatLng().longitude));
+                returnIntent.putExtra("latitude", String.valueOf(place.getLatLng().latitude));
+                setResult(Activity.RESULT_OK, returnIntent);
+            } else if (markersCount > 1) {
+                Toast.makeText(MapSearchActivity.this, "No puede haber mas de un lugar seleccionado", Toast.LENGTH_LONG).show();
             }
+
+            finish();
         });
     }
 
     private void setSearchViewInputListener() {
-        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-
         assert autocompleteFragment != null;
         Objects.requireNonNull(autocompleteFragment.getView()).setBackgroundColor(Color.WHITE);
         autocompleteFragment.setHint("Lugar del incidente...");
@@ -101,8 +150,10 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
-            public void onPlaceSelected(Place place) {
-                populatePins(place);
+            public void onPlaceSelected(@NonNull Place place) {
+                MapSearchActivity.this.place = place;
+                LatLng selectedPlace = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
+                populatePins(selectedPlace);
             }
 
             @Override
@@ -121,15 +172,26 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
         mapFragment.getMapAsync(this);
     }
 
-    public void populatePins(Place place) {
-        this.place = place;
-        LatLng selectedPlace = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
+    /* Reference link https://www.journaldev.com/13325/android-location-api-tracking-gps*/
+    private void getLocation() {
+        try {
+            LocationManager locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+            isGPSActivated = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER); // get GPS status
+            isNetworkActivated = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER); // get network provider status
 
-        this.googleMap.addMarker(new MarkerOptions()
-                .position(selectedPlace)
-        );
+            if (isGPSActivated) { // if GPS Enabled get lat/long using GPS Services
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                }
 
-        this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedPlace, 16));
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, DataConstants.MIN_TIME_BW_UPDATES, DataConstants.MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -141,5 +203,25 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
 
         LatLng defaultPosition = new LatLng(9.932231, -84.091373);
         this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(defaultPosition, 7));
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 }
