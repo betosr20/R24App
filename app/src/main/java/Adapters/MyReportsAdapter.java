@@ -3,7 +3,10 @@ package Adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -12,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.r24app.R;
@@ -40,7 +45,8 @@ public class MyReportsAdapter extends RecyclerView.Adapter<MyReportsAdapter.MyVi
         return new MyViewHolder(view);
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "RestrictedApi"})
+
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         try {
@@ -49,43 +55,53 @@ public class MyReportsAdapter extends RecyclerView.Adapter<MyReportsAdapter.MyVi
 
             holder.moreOptionsButton.setOnClickListener(view -> {
                 if (view.getId() == R.id.moreOptionsButton) {
-                    PopupMenu popup = new PopupMenu(context, view);
-                    popup.getMenuInflater().inflate(R.menu.myreportsmenu, popup.getMenu());
-                    popup.show();
 
-                    popup.setOnMenuItemClickListener(item -> {
-                        switch (item.getItemId()) {
-                            case R.id.viewReportOption:
-                                Intent intent = new Intent(context, ReportDetailContainer.class);
-                                intent.putExtra("idReport", userReports.get(position).getId());
-                                context.startActivity(intent);
-                                break;
-                            case R.id.editReportOption:
-                                Toast.makeText(context, "Editar reporte " + userReports.get(position).getType(), Toast.LENGTH_LONG).show();
-                                break;
-                            case R.id.deleteReportOption:
-                                ReportService reportService = new ReportService();
-                                userReports.get(position).setActive(false);
+                    Context wrapper = new ContextThemeWrapper(context, R.style.AppTheme_CustomPopupStyle);
+                    @SuppressLint("RestrictedApi") MenuBuilder menuBuilder =new MenuBuilder(context);
+                    MenuInflater inflater = new MenuInflater(context);
+                    inflater.inflate(R.menu.myreportsmenu, menuBuilder);
+                    @SuppressLint("RestrictedApi") MenuPopupHelper optionsMenu = new MenuPopupHelper(wrapper, menuBuilder, view);
+                    optionsMenu.setForceShowIcon(true);
 
-                                if (reportService.deleteReport(userReports.get(position))) {
-                                    userReports.remove(position);
-                                    notifyDataSetChanged();
-                                    Toast.makeText(context, "Reporte eliminado exitosamente", Toast.LENGTH_LONG).show();
+                    // Set Item Click Listener
+                    menuBuilder.setCallback(new MenuBuilder.Callback() {
+                        @Override
+                        public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.viewReportOption:
+                                    Intent intent = new Intent(context, ReportDetailContainer.class);
+                                    intent.putExtra("idReport", userReports.get(position).getId());
+                                    context.startActivity(intent);
+                                    return true;
+                                case R.id.editReportOption:
+                                    Toast.makeText(context, "Editar reporte " + userReports.get(position).getType(), Toast.LENGTH_LONG).show();
+                                    return true;
+                                case R.id.deleteReportOption:
+                                    ReportService reportService = new ReportService();
+                                    userReports.get(position).setActive(false);
 
-                                    if (userReports.size() == 0) {
-                                        ((MyReportsActivity) context).checkExistingElements();
+                                    if (reportService.deleteReport(userReports.get(position))) {
+                                        userReports.remove(position);
+                                        notifyDataSetChanged();
+                                        Toast.makeText(context, "Reporte eliminado exitosamente", Toast.LENGTH_LONG).show();
+
+                                        if (userReports.size() == 0) {
+                                            ((MyReportsActivity) context).checkExistingElements();
+                                        }
+                                    } else {
+                                        Toast.makeText(context, "Error durante el proceso de eliminación", Toast.LENGTH_LONG).show();
                                     }
-                                } else {
-                                    Toast.makeText(context, "Error durante el proceso de eliminación", Toast.LENGTH_LONG).show();
-                                }
-
-                                break;
-                            default:
-                                break;
+                                    return true;
+                                default:
+                                    return false;
+                            }
                         }
 
-                        return true;
+                        @Override
+                        public void onMenuModeChange(MenuBuilder menu) {}
                     });
+                    // Display the menu
+                    optionsMenu.show();
                 }
             });
 
