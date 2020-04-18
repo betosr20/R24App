@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -31,15 +33,19 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import Models.Constants.DataConstants;
+import Models.POJOS.MapPlace;
 
 public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
     private GoogleMap googleMap;
     private SupportMapFragment mapFragment;
-    private Place place;
+    private MapPlace place;
     private Boolean view, isGPSActivated, isNetworkActivated;
     private Location currentLocation;
     private AutocompleteSupportFragment autocompleteFragment;
@@ -95,7 +101,13 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
         if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (isGPSActivated && isNetworkActivated && currentLocation != null) {
-                    populatePins(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
+                    try {
+                        String placeName = getCurrentLocationName(currentLocation.getLongitude(), currentLocation.getLatitude());
+                        place = new MapPlace(placeName, String.valueOf(currentLocation.getLatitude()), String.valueOf(currentLocation.getLongitude()));
+                        populatePins(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     switchAutoLocalization.setChecked(false);
                     Toast.makeText(this, "Asegurate de tener conexión a internet y tu ubicación activada", Toast.LENGTH_LONG).show();
@@ -104,6 +116,12 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
                 Toast.makeText(this, "Acceso a ubicación negado, por favor habilite el acceso en configuraciones del dispositivo", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    public String getCurrentLocationName(double longitude, double latitude) throws IOException {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+        return addresses.get(0).getAddressLine(0);
     }
 
     public void populatePins(LatLng selectedPlace) {
@@ -127,13 +145,16 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
         ImageButton checkButton = findViewById(R.id.checkButton);
 
         checkButton.setOnClickListener(v -> {
+            Intent returnIntent = new Intent();
+
             if (place != null && markersCount == 1) {
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra("selectedPlace", String.valueOf(place.getName()));
-                returnIntent.putExtra("longitude", String.valueOf(place.getLatLng().longitude));
-                returnIntent.putExtra("latitude", String.valueOf(place.getLatLng().latitude));
+                returnIntent.putExtra("selectedPlace", place.getPlaceName());
+                returnIntent.putExtra("longitude", place.getLongitude());
+                returnIntent.putExtra("latitude", place.getLatitude());
                 setResult(Activity.RESULT_OK, returnIntent);
             } else if (markersCount > 1) {
+                returnIntent.putExtra("selectedPlace", "");
+                setResult(Activity.RESULT_OK, returnIntent);
                 Toast.makeText(MapSearchActivity.this, "No puede haber mas de un lugar seleccionado", Toast.LENGTH_LONG).show();
             }
 
@@ -151,9 +172,8 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
-                MapSearchActivity.this.place = place;
-                LatLng selectedPlace = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
-                populatePins(selectedPlace);
+                MapSearchActivity.this.place = new MapPlace(place.getName(), String.valueOf(place.getLatLng().latitude), String.valueOf(place.getLatLng().longitude));
+                populatePins(new LatLng(place.getLatLng().latitude, place.getLatLng().longitude));
             }
 
             @Override
