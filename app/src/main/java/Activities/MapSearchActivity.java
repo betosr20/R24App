@@ -155,7 +155,7 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
             } else if (markersCount > 1) {
                 returnIntent.putExtra("selectedPlace", "");
                 setResult(Activity.RESULT_OK, returnIntent);
-                Toast.makeText(MapSearchActivity.this, "No puede haber mas de un lugar seleccionado", Toast.LENGTH_LONG).show();
+                Toast.makeText(MapSearchActivity.this, "No puede haber más de un lugar seleccionado", Toast.LENGTH_LONG).show();
             }
 
             finish();

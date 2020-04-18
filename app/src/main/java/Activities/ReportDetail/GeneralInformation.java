@@ -127,40 +127,40 @@ public class GeneralInformation extends Fragment {
                 break;
         }
 
-        textView.setText("   " + type);
+        textView.setText(type);
     }
 
     public void setIconPlace(TextView textView, String place) {
         textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_location, 0, 0, 0);
-        textView.setText("     " + place);
+        textView.setText(place);
     }
 
     public void setAffectedPeopleIcon(TextView textView, int affectedPeople) {
         textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.peopleaffected, 0, 0, 0);
-        textView.setText("   " + affectedPeople);
+        textView.setText(String.valueOf(affectedPeople));
     }
 
     public void setAffectedAnimalsIcon(TextView textView, int affectedAnimals) {
         textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.animalsaffeted, 0, 0, 0);
-        textView.setText("   " + affectedAnimals);
+        textView.setText(String.valueOf(affectedAnimals));
     }
 
     public void setStarDateIcon(TextView textView, String startDate) {
         textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.event, 0, 0, 0);
-        textView.setText("   " + startDate);
+        textView.setText(startDate);
     }
 
     public void setPathDisabledIcon(TextView textView, boolean PathDisable) {
         textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.road, 0, 0, 0);
         if (PathDisable) {
-            textView.setText("   " + "Bloqueado");
+            textView.setText("Bloqueado");
         } else {
-            textView.setText("   " + "Despejado");
+            textView.setText("Despejado");
         }
     }
 
     public void setEventDetailIcon(TextView textView, String details) {
         textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.article, 0, 0, 0);
-        textView.setText("   " + details);
+        textView.setText(details);
     }
 }
