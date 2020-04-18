@@ -33,24 +33,39 @@
         android:layout_height="63dp"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="10dp"
-        android:tint="@color/quantum_grey"
         android:backgroundTint="@android:color/transparent"
+        android:tint="@color/quantum_grey"
         app:layout_constraintBottom_toBottomOf="@+id/mapSearchViewFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/check" />
 
-    <Switch
-        android:id="@+id/switchButtonView"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="15dp"
         android:background="@drawable/layout_bg"
         android:paddingStart="10dp"
-        android:text="@string/changeViewSwitch"
-        android:theme="@style/AppTheme.SwitchTheme"
-        app:layout_constraintStart_toStartOf="@+id/mapSearchViewFragment"
-        app:layout_constraintTop_toBottomOf="@+id/autocomplete_fragment" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/autocomplete_fragment">
 
+        <Switch
+            android:id="@+id/switchButtonView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/changeViewSwitch"
+            android:theme="@style/AppTheme.SwitchTheme"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <Switch
+            android:id="@+id/autoLocalizationSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/autoLocalizationSwitch"
+            android:theme="@style/AppTheme.SwitchTheme"
+            app:layout_constraintStart_toEndOf="@+id/switchButtonView"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
