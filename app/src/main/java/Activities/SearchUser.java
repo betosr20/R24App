@@ -86,11 +86,14 @@ public class SearchUser extends AppCompatActivity {
     }
     private void loadDataIntoRecycleView(String searchText) {
         String firstLetterCapital = searchText;
+        String realText = "";
         if (!searchText.isEmpty()) {
-             firstLetterCapital = searchText.substring(0, 1).toUpperCase() + searchText.substring(1);
-            System.out.println(firstLetterCapital);
+             firstLetterCapital = searchText.substring(0, 1).toUpperCase();
+            realText  =  searchText.substring(1).toLowerCase();
+            realText = firstLetterCapital + realText;
+
         }
-        Query query = databaseReference.orderByChild(FirebaseClasses.UsersNameAttribute).startAt(firstLetterCapital).endAt(firstLetterCapital + "\uf8ff");
+        Query query = databaseReference.orderByChild(FirebaseClasses.UsersNameAttribute).startAt(realText).endAt(realText + "\uf8ff");
         options = new FirebaseRecyclerOptions.Builder<User>().setQuery(query,User.class).build();
         adapter =  new FirebaseRecyclerAdapter<User, ImageContactAdapter>(options) {
             @Override
