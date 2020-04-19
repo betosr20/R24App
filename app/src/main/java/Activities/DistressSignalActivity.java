@@ -187,6 +187,7 @@ public class DistressSignalActivity extends AppCompatActivity implements OnMapRe
         @Override
         public void onClick(View v) {
            if (place != null) {
+               submitButton.setEnabled(false);
                Toast.makeText(DistressSignalActivity.this, user.getId(), Toast.LENGTH_LONG).show();
             boolean isRegistered;
            Models.POJOS.DistressSignal distressCall = new Models.POJOS.DistressSignal(user.getId(), user.getName(), user.getLastName(), String.valueOf(place.getName()),
