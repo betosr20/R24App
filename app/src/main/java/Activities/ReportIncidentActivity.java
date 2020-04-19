@@ -80,17 +80,25 @@ public class ReportIncidentActivity extends AppCompatActivity {
                 case DataConstants.LAUNCH_MAPSEARCH_ACTIVITY:
                     activateMapLocation.setChecked(false);
                     String selectedPlace = data.getStringExtra("selectedPlace");
-                    latitude = data.getStringExtra("latitude");
-                    longitude = data.getStringExtra("longitude");
-                    reportLocation.setText(selectedPlace);
+
+                    if (!TextUtils.isEmpty(selectedPlace)) {
+                        latitude = data.getStringExtra("latitude");
+                        longitude = data.getStringExtra("longitude");
+                        reportLocation.setText(selectedPlace);
+                    } else {
+                        reportLocation.setText("");
+                    }
+
                     break;
 
                 case DataConstants.SELECT_MULTIPLE_PHOTOS:
                     imagesUri = (ArrayList<Uri>) data.getSerializableExtra("imagesUris");
                     int imagesSelected = data.getIntExtra("selectedImages", 0);
+
                     if (imagesSelected > 0) {
                         imagesSelectedText.setText(imagesSelected + " imagen(es) para mostrar");
                     }
+
                     break;
             }
         } else {

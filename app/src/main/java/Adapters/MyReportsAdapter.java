@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +45,6 @@ public class MyReportsAdapter extends RecyclerView.Adapter<MyReportsAdapter.MyVi
     }
 
     @SuppressLint({"SetTextI18n", "RestrictedApi"})
-
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         try {
@@ -55,9 +53,8 @@ public class MyReportsAdapter extends RecyclerView.Adapter<MyReportsAdapter.MyVi
 
             holder.moreOptionsButton.setOnClickListener(view -> {
                 if (view.getId() == R.id.moreOptionsButton) {
-
                     Context wrapper = new ContextThemeWrapper(context, R.style.AppTheme_CustomPopupStyle);
-                    @SuppressLint("RestrictedApi") MenuBuilder menuBuilder =new MenuBuilder(context);
+                    @SuppressLint("RestrictedApi") MenuBuilder menuBuilder = new MenuBuilder(context);
                     MenuInflater inflater = new MenuInflater(context);
                     inflater.inflate(R.menu.myreportsmenu, menuBuilder);
                     @SuppressLint("RestrictedApi") MenuPopupHelper optionsMenu = new MenuPopupHelper(wrapper, menuBuilder, view);
@@ -73,9 +70,9 @@ public class MyReportsAdapter extends RecyclerView.Adapter<MyReportsAdapter.MyVi
                                     intent.putExtra("idReport", userReports.get(position).getId());
                                     context.startActivity(intent);
                                     return true;
-                                case R.id.editReportOption:
+                                /*case R.id.editReportOption:
                                     Toast.makeText(context, "Editar reporte " + userReports.get(position).getType(), Toast.LENGTH_LONG).show();
-                                    return true;
+                                    return true;*/
                                 case R.id.deleteReportOption:
                                     ReportService reportService = new ReportService();
                                     userReports.get(position).setActive(false);
@@ -98,8 +95,10 @@ public class MyReportsAdapter extends RecyclerView.Adapter<MyReportsAdapter.MyVi
                         }
 
                         @Override
-                        public void onMenuModeChange(MenuBuilder menu) {}
+                        public void onMenuModeChange(MenuBuilder menu) {
+                        }
                     });
+
                     // Display the menu
                     optionsMenu.show();
                 }
