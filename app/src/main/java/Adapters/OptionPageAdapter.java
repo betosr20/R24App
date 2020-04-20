@@ -1,9 +1,13 @@
-package Activities.ReportDetail;
+package Adapters;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import Activities.ReportDetail.GeneralInformation;
+import Activities.ReportDetail.Images;
+import Activities.ReportDetail.location;
 
 public class OptionPageAdapter extends FragmentStateAdapter {
     private String idReport;

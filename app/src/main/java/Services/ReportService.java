@@ -1,7 +1,5 @@
 package Services;
 
-import android.app.Notification;
-import android.content.Context;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
@@ -28,6 +26,27 @@ public class ReportService {
     public ReportService() {
         database = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
+        databaseReference = database.getReference();
+    }
+
+    public boolean deleteReport(Report report) {
+        final boolean[] successFulUpdate = {true};
+
+        databaseReference.child(FirebaseClasses.Report).child(String.valueOf(report.getId())).setValue(report)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                successFulUpdate[0] = false;
+            }
+        });
+
+        return successFulUpdate[0];
     }
 
     public boolean addNewReport(Report report) {
@@ -84,12 +103,5 @@ public class ReportService {
         ReportPicture reportPicture = new ReportPicture(imageName + ".jpg", reportId, imageName);
         databaseReference = database.getReference(FirebaseClasses.ReportPicture).child(reportPicture.getId());
         databaseReference.setValue(reportPicture);
-    }
-
-    public void sendNewReportNotification(Report report, Context context) {
-        NotificationHandler notificationHandler = new NotificationHandler(context);
-        Notification.Builder notification = new NotificationHandler(context).createReportNotification(report);
-        notificationHandler.getManager().notify(1, notification.build());
-        notificationHandler.publishNotificationSummaryGroup();
     }
 }

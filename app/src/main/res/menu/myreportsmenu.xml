@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:id="@+id/viewReportItem">
+        <item
+            android:id="@+id/viewReportOption"
+            android:icon="@drawable/ic_remove_red_eye_black_24dp"
+            android:orderInCategory="100"
+            android:title="@string/viewAction" />
+    </group>
+
+    <!--<group android:id="@+id/editReportItem">
+        <item
+
+            android:id="@+id/editReportOption"
+            android:orderInCategory="100"
+            android:title="@string/editAction"
+            android:icon= "@drawable/edit_16dp"
+            />
+    </group>-->
+
+    <group android:id="@+id/deleteReportItem">
+        <item
+            android:id="@+id/deleteReportOption"
+            android:icon="@drawable/trashcan"
+            android:orderInCategory="100"
+            android:title="@string/deleteAction" />
+    </group>
+</menu>

@@ -3,44 +3,31 @@ package Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 
 import com.example.r24app.R;
-import com.firebase.ui.database.FirebaseListOptions;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 
-import Activities.ReportDetail.ImageAdapter;
 import Models.Constants.FirebaseClasses;
 import Models.POJOS.User;
 
@@ -98,11 +85,15 @@ public class SearchUser extends AppCompatActivity {
 
     }
     private void loadDataIntoRecycleView(String searchText) {
-//        if (!searchText.isEmpty()) {
-//            String firstLetterCapital = searchText.substring(0, 1).toUpperCase() + searchText.substring(1);
-//            System.out.println(firstLetterCapital);
-//        }
-        Query query = databaseReference.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
+        String firstLetterCapital = searchText;
+        String realText = "";
+        if (!searchText.isEmpty()) {
+             firstLetterCapital = searchText.substring(0, 1).toUpperCase();
+            realText  =  searchText.substring(1).toLowerCase();
+            realText = firstLetterCapital + realText;
+
+        }
+        Query query = databaseReference.orderByChild(FirebaseClasses.UsersNameAttribute).startAt(realText).endAt(realText + "\uf8ff");
         options = new FirebaseRecyclerOptions.Builder<User>().setQuery(query,User.class).build();
         adapter =  new FirebaseRecyclerAdapter<User, ImageContactAdapter>(options) {
             @Override

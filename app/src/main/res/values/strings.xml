@@ -46,13 +46,19 @@
     <string name="recoverPasswordText">Recuperar contraseña</string>
     <string name="loginPageHeaderText">Bienvenido(a) a la página de inicio de sesión</string>
     <string name="reportsScreenHeader">Registre aquí su reporte</string>
+    <string name="myReportsScreenHeader">Mis reportes</string>
     <string name="title_user_profile">Mi perfil</string>
     <string name="title_activity_searchUser">Buscar usuario</string>
     <string name="editButtonText">EDITAR</string>
     <string name="saveButtonText">GUARDAR</string>
     <string name="needHelpAction">Señal de auxilio</string>
     <string name="amOkAction">Estoy bien</string>
+    <string name="editAction">Editar</string>
+    <string name="viewAction">Ver</string>
+    <string name="deleteAction">Eliminar</string>
     <string name="changeViewSwitch">Vista</string>
+    <string name="autoLocalizationSwitch">Autolocalización</string>
+    <string name="noReportsRegistered">No tienes reportes registrados</string>
     <string name="reportIncidentNotification">Nuevo reporte de incidente</string>
 
     <string-array name="disasterTypes_array">
@@ -68,6 +74,7 @@
     <string name="label_dialog_delete">Eliminar</string>
     <string name="label_dialog_cancel">Cancelar</string>
     <string name="title_activity_alerts">Alertas</string>
+    <string name="title_activity_myReports"> Mis Reportes</string>
     <string name="exitAlertTittle">¡Salir!</string>
     <string name="exitAlert">¿Está seguro que desea salir de la aplicación?</string>
     <string name="secondary_effects_label">Efectos Secundarios:</string>
