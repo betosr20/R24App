@@ -11,7 +11,7 @@
         android:id="@+id/imageButtonBack"
         android:layout_width="45dp"
         android:layout_height="65dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:backgroundTint="#B3FFFFFF"
         android:onClick="windowBack"
         app:layout_constraintStart_toStartOf="parent"

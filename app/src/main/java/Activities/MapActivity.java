@@ -237,7 +237,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void OnDetailSelected(Report report) {
         Intent intent = new Intent(this, ReportDetailContainer.class);
         String id = report.getId();
+        String type = report.getType();
         intent.putExtra("idReport", id);
+        intent.putExtra("type", type);
         startActivity(intent);
     }
 

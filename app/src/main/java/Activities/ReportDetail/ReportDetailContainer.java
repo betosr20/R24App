@@ -38,7 +38,8 @@ public class ReportDetailContainer extends AppCompatActivity {
         ViewPager2 viewPager2 = findViewById(R.id.viewPaper);
         Intent intent = getIntent();
         String idReport = intent.getStringExtra("idReport");
-        viewPager2.setAdapter(new OptionPageAdapter(this, idReport));
+        String naturalDisasterName = intent.getStringExtra("type");
+        viewPager2.setAdapter(new OptionPageAdapter(this, idReport, naturalDisasterName));
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = database.getReference(FirebaseClasses.ReportPicture);
@@ -60,11 +61,9 @@ public class ReportDetailContainer extends AppCompatActivity {
                     public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                         switch (position) {
                             case 0:
-                                tab.setText("Detalle");
                                 tab.setIcon(R.drawable.ic_info);
                                 break;
                             case 1:
-                                tab.setText("Imágenes");
                                 tab.setIcon(R.drawable.ic_images);
                                 BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
                                 badgeDrawable.setBackgroundColor(
@@ -74,8 +73,10 @@ public class ReportDetailContainer extends AppCompatActivity {
                                 badgeDrawable.setNumber(counter);
                                 break;
                             case 2:
-                                tab.setText("Ubicación");
                                 tab.setIcon(R.drawable.ic_location_on_black_24dp);
+                                break;
+                            case 3:
+                                tab.setIcon(R.drawable.secondary_effect);
                                 break;
                         }
                     }
