@@ -1,0 +1,28 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="Activities.ReportDetail.SecondaryEffect">
+    <TextView
+        android:id="@+id/tv_secondaryEffectLabel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="8dp"
+        android:textSize="20dp"
+        android:text="@string/secondary_effects_label"
+        android:layout_marginVertical="20dp"
+        android:layout_marginHorizontal="20dp"
+        android:textStyle="bold"/>
+   <androidx.core.widget.NestedScrollView
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:layout_marginVertical="60dp"
+       android:layout_marginHorizontal="20dp" >
+       <TextView
+           android:id="@+id/tv_secondaryEffectText"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:paddingHorizontal="8dp"
+           android:textSize="20dp" />
+   </androidx.core.widget.NestedScrollView>
+</FrameLayout>
