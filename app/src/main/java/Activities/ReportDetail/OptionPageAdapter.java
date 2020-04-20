@@ -7,10 +7,12 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class OptionPageAdapter extends FragmentStateAdapter {
     private String idReport;
+    private String naturalDisasterName;
 
-    public OptionPageAdapter(@NonNull FragmentActivity fragmentActivity, String idReport) {
+    public OptionPageAdapter(@NonNull FragmentActivity fragmentActivity, String idReport, String naturalDisasterName) {
         super(fragmentActivity);
         this.idReport = idReport;
+        this.naturalDisasterName = naturalDisasterName;
     }
 
     @NonNull
@@ -22,13 +24,16 @@ public class OptionPageAdapter extends FragmentStateAdapter {
                 return new GeneralInformation(this.idReport);
             case 1:
                 return new Images(this.idReport);
+            case 3:
+                return new SecondaryEffect(this.naturalDisasterName);
             default:
                 return new location(this.idReport);
+
         }
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 4;
     }
 }

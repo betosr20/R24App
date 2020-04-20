@@ -70,6 +70,7 @@
     <string name="title_activity_alerts">Alertas</string>
     <string name="exitAlertTittle">¡Salir!</string>
     <string name="exitAlert">¿Está seguro que desea salir de la aplicación?</string>
+    <string name="secondary_effects_label">Efectos Secundarios:</string>
 </resources>
 
 
