@@ -67,7 +67,6 @@ public class DistressSignalActivity extends AppCompatActivity implements OnMapRe
     private DatabaseReference databaseReference;
     private Switch switchAutoLocalization;
     private Location currentLocation;
-    private int markersCount;
     private AutocompleteSupportFragment autocompleteFragment;
 
 
@@ -128,7 +127,7 @@ public class DistressSignalActivity extends AppCompatActivity implements OnMapRe
                 googleMap.clear();
                 LatLng defaultPosition = new LatLng(9.932231, -84.091373);
                 this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(defaultPosition, 7));
-                markersCount = 0;
+                this.place = null;
             }
         });
     }
@@ -167,8 +166,8 @@ public class DistressSignalActivity extends AppCompatActivity implements OnMapRe
         View clearButton = autocompleteFragment.getView().findViewById(R.id.places_autocomplete_clear_button);
         clearButton.setOnClickListener(view -> {
             autocompleteFragment.setText("");
-            markersCount = 0;
             this.googleMap.clear();
+            this.place = null;
         });
 
         String apiKey = getString(R.string.google_api_key);
@@ -189,7 +188,6 @@ public class DistressSignalActivity extends AppCompatActivity implements OnMapRe
         );
 
         this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedPlace, 16));
-        markersCount = 1;
     }
 
     @Override
@@ -213,7 +211,7 @@ public class DistressSignalActivity extends AppCompatActivity implements OnMapRe
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (place != null && markersCount == 1) {
+                if (place != null) {
                     submitButton.setEnabled(false);
                     boolean isRegistered;
                     Models.POJOS.DistressSignal distressCall = new Models.POJOS.DistressSignal(user.getId(), user.getName(), user.getLastName(), place.getPlaceName(),
@@ -235,15 +233,10 @@ public class DistressSignalActivity extends AppCompatActivity implements OnMapRe
                     }
 
                 } else {
-                    if (markersCount > 0) {
-                        Toast.makeText(DistressSignalActivity.this, "Solo puede indicar una ubicación", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(DistressSignalActivity.this, "Debe indicar una ubicación en el mapa", Toast.LENGTH_LONG).show();
+                    Toast.makeText(DistressSignalActivity.this, "Debe indicar una ubicación en el mapa", Toast.LENGTH_LONG).show();
                     }
 
                 }
-
-            }
         });
     }
 
