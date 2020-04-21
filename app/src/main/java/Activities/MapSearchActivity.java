@@ -11,11 +11,11 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -70,7 +70,6 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
         isGPSActivated = false;
         isNetworkActivated = false;
         place = null;
-        markersCount = 0;
         currentLocation = null;
     }
 
@@ -93,6 +92,11 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
             if (isChecked) {
                 getLocation();
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            } else {
+                googleMap.clear();
+                LatLng defaultPosition = new LatLng(9.932231, -84.091373);
+                this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(defaultPosition, 7));
+                markersCount = 0;
             }
         });
     }
@@ -104,6 +108,7 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
                     try {
                         String placeName = getCurrentLocationName(currentLocation.getLongitude(), currentLocation.getLatitude());
                         place = new MapPlace(placeName, String.valueOf(currentLocation.getLatitude()), String.valueOf(currentLocation.getLongitude()));
+                        autocompleteFragment.setText("");
                         populatePins(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -125,12 +130,14 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
     public void populatePins(LatLng selectedPlace) {
+        this.googleMap.clear();
+
         this.googleMap.addMarker(new MarkerOptions()
                 .position(selectedPlace)
         );
 
         this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedPlace, 16));
-        markersCount = markersCount + 1;
+        markersCount = 1;
     }
 
     private void changeView() {
@@ -152,13 +159,10 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
                 returnIntent.putExtra("longitude", place.getLongitude());
                 returnIntent.putExtra("latitude", place.getLatitude());
                 setResult(Activity.RESULT_OK, returnIntent);
-            } else if (markersCount > 1) {
-                returnIntent.putExtra("selectedPlace", "");
-                setResult(Activity.RESULT_OK, returnIntent);
-                Toast.makeText(MapSearchActivity.this, "No puede haber más de un lugar seleccionado", Toast.LENGTH_LONG).show();
+                finish();
+            } else {
+                Toast.makeText(this, "Debe indicar una ubicación en el mapa", Toast.LENGTH_LONG).show();
             }
-
-            finish();
         });
     }
 
@@ -171,8 +175,9 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
-            public void onPlaceSelected(@NonNull Place place) {
+            public void onPlaceSelected(Place place) {
                 MapSearchActivity.this.place = new MapPlace(place.getName(), String.valueOf(place.getLatLng().latitude), String.valueOf(place.getLatLng().longitude));
+                switchAutoLocalization.setChecked(false);
                 populatePins(new LatLng(place.getLatLng().latitude, place.getLatLng().longitude));
             }
 
@@ -180,6 +185,13 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
             public void onError(Status status) {
 
             }
+        });
+
+        View clearButton = autocompleteFragment.getView().findViewById(R.id.places_autocomplete_clear_button);
+        clearButton.setOnClickListener(view -> {
+            autocompleteFragment.setText("");
+            markersCount = 0;
+            this.googleMap.clear();
         });
 
         String apiKey = getString(R.string.google_api_key);
@@ -223,6 +235,10 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
 
         LatLng defaultPosition = new LatLng(9.932231, -84.091373);
         this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(defaultPosition, 7));
+    }
+
+    public void windowBack(View v) {
+        onBackPressed();
     }
 
     @Override
