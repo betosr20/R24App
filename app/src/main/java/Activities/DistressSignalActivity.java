@@ -1,9 +1,5 @@
 package Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -20,6 +16,10 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.example.r24app.R;
 import com.google.android.gms.common.api.Status;
@@ -124,14 +124,13 @@ public class DistressSignalActivity extends AppCompatActivity implements OnMapRe
             if (isChecked) {
                 getLocation();
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            }else{
+            } else {
                 googleMap.clear();
                 LatLng defaultPosition = new LatLng(9.932231, -84.091373);
                 this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(defaultPosition, 7));
+                markersCount = 0;
             }
         });
-
-        markersCount = 0;
     }
 
     private void changeView() {
@@ -154,7 +153,6 @@ public class DistressSignalActivity extends AppCompatActivity implements OnMapRe
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-
                 DistressSignalActivity.this.place = new MapPlace(place.getName(), String.valueOf(place.getLatLng().latitude), String.valueOf(place.getLatLng().longitude));
                 switchAutoLocalization.setChecked(false);
                 populatePins(new LatLng(place.getLatLng().latitude, place.getLatLng().longitude));
@@ -164,6 +162,13 @@ public class DistressSignalActivity extends AppCompatActivity implements OnMapRe
             public void onError(Status status) {
 
             }
+        });
+
+        View clearButton = autocompleteFragment.getView().findViewById(R.id.places_autocomplete_clear_button);
+        clearButton.setOnClickListener(view -> {
+            autocompleteFragment.setText("");
+            markersCount = 0;
+            this.googleMap.clear();
         });
 
         String apiKey = getString(R.string.google_api_key);
@@ -177,14 +182,14 @@ public class DistressSignalActivity extends AppCompatActivity implements OnMapRe
     }
 
     public void populatePins(LatLng selectedPlace) {
-
         this.googleMap.clear();
+
         this.googleMap.addMarker(new MarkerOptions()
                 .position(selectedPlace)
         );
 
         this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedPlace, 16));
-        markersCount = markersCount = 1;
+        markersCount = 1;
     }
 
     @Override
@@ -203,44 +208,44 @@ public class DistressSignalActivity extends AppCompatActivity implements OnMapRe
     }
 
     private void addReportButtonListener() {
-      Button submitButton = findViewById(R.id.btnSubmitDistress);
+        Button submitButton = findViewById(R.id.btnSubmitDistress);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-           if (place != null && markersCount == 1) {
-               submitButton.setEnabled(false);
-               boolean isRegistered;
-           Models.POJOS.DistressSignal distressCall = new Models.POJOS.DistressSignal(user.getId(), user.getName(), user.getLastName(), place.getPlaceName(),
-                   place.getLatitude(),   place.getLongitude());
+            @Override
+            public void onClick(View v) {
+                if (place != null && markersCount == 1) {
+                    submitButton.setEnabled(false);
+                    boolean isRegistered;
+                    Models.POJOS.DistressSignal distressCall = new Models.POJOS.DistressSignal(user.getId(), user.getName(), user.getLastName(), place.getPlaceName(),
+                            place.getLatitude(), place.getLongitude());
 
-               DistressSignalService distressService = new DistressSignalService();
-              isRegistered = distressService.createDistressReport(distressCall);
-              if(isRegistered){
-                  Toast.makeText(DistressSignalActivity.this, "La señal de alerta se ha creado correctamente", Toast.LENGTH_LONG).show();
-                  new Handler().postDelayed(new Runnable() {
-                      @Override
-                      public void run() {
-                          startMapActivity();
-                      }
-                  }, 3500);
+                    DistressSignalService distressService = new DistressSignalService();
+                    isRegistered = distressService.createDistressReport(distressCall);
+                    if (isRegistered) {
+                        Toast.makeText(DistressSignalActivity.this, "La señal de alerta se ha creado correctamente", Toast.LENGTH_LONG).show();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                startMapActivity();
+                            }
+                        }, 3500);
 
-              }else{
-                  Toast.makeText(DistressSignalActivity.this, "Ha ocurrido un problema al registrar la señal de alerta", Toast.LENGTH_LONG).show();
-              }
+                    } else {
+                        Toast.makeText(DistressSignalActivity.this, "Ha ocurrido un problema al registrar la señal de alerta", Toast.LENGTH_LONG).show();
+                    }
 
-            }else{
-               if(markersCount > 0){
-                   Toast.makeText(DistressSignalActivity.this, "Solo puede indicar una ubicación", Toast.LENGTH_LONG).show();
-               }else{
-                   Toast.makeText(DistressSignalActivity.this, "Debe indicar una ubicación en el mapa", Toast.LENGTH_LONG).show();
-               }
+                } else {
+                    if (markersCount > 0) {
+                        Toast.makeText(DistressSignalActivity.this, "Solo puede indicar una ubicación", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(DistressSignalActivity.this, "Debe indicar una ubicación en el mapa", Toast.LENGTH_LONG).show();
+                    }
+
+                }
 
             }
-
-        }
         });
-     }
+    }
 
     /* Reference link https://www.journaldev.com/13325/android-location-api-tracking-gps*/
     private void getLocation() {
@@ -311,6 +316,7 @@ public class DistressSignalActivity extends AppCompatActivity implements OnMapRe
     public void onProviderDisabled(String provider) {
 
     }
+
     private void startMapActivity() {
         Intent mapIntent = new Intent(DistressSignalActivity.this, MapActivity.class);
         startActivity(mapIntent);
