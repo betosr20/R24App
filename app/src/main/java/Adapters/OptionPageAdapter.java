@@ -7,6 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import Activities.ReportDetail.GeneralInformation;
 import Activities.ReportDetail.Images;
+import Activities.ReportDetail.SecondaryEffect;
 import Activities.ReportDetail.location;
 
 public class OptionPageAdapter extends FragmentStateAdapter {

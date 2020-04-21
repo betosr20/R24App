@@ -219,11 +219,13 @@ public class ReportIncidentActivity extends AppCompatActivity {
         Report report = new Report(reportId, disasterType, description.getText().toString(), latitude, longitude, reportLocation.getText().toString(), isPathDisabled,
                 true, startDate.getTime(), endDate.getTime(), affectedAnimals, affectedPeople, userService.getCurrentFirebaseUserId(),
                 getStringDate(true), getStringDate(false));
-
+        Button submitReportButton = findViewById(R.id.btnSubmitReport);
+        submitReportButton.setEnabled(false);
         if (reportService.addNewReport(report) && reportService.saveReportImages(imagesUri, reportId)) {
             Toast.makeText(ReportIncidentActivity.this, "Reporte registrado exitosamente", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(ReportIncidentActivity.this, "Hubo un problema al registrar el reporte", Toast.LENGTH_LONG).show();
+            submitReportButton.setEnabled(true);
         }
 
         new Handler().postDelayed(new Runnable() {
