@@ -19,7 +19,8 @@ exports.newIncidentReport = functions.database.ref('/Report/{id}')
                 },
 
                 data: {
-                    'reportId': snapshot._data.id
+                    'reportId': snapshot._data.id,
+                    'reportType': snapshot._data.type
                 }
             };
 
@@ -46,7 +47,7 @@ exports.newIncidentReport = functions.database.ref('/Report/{id}')
                     },
 
                     data: {
-                        'reportId': snapshot._data.id
+                        'reportId': snapshot._data.id,
                     }
                 };
 
