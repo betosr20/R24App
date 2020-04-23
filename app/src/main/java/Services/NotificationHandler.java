@@ -52,6 +52,7 @@ public class NotificationHandler extends ContextWrapper {
             Intent intent = new Intent(this, ReportDetailContainer.class);
             String id = report.getId();
             intent.putExtra("idReport", id);
+            intent.putExtra("type", report.getType());
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
