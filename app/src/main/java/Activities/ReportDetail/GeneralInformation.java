@@ -18,14 +18,18 @@ import com.google.firebase.database.ValueEventListener;
 
 import Models.Constants.FirebaseClasses;
 import Models.POJOS.Report;
+import Models.POJOS.User;
 
 public class GeneralInformation extends Fragment {
     private String idReport;
     private Report report;
+    private User user;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
+    private FirebaseDatabase database_user;
+    private DatabaseReference databaseReference_user;
 
-    private TextView type, place, affectedPeople, affectedAnimals, details, startDateTextView, pathDisabled;
+    private TextView type, place, affectedPeople, affectedAnimals, details, startDateTextView, pathDisabled, userReporter;
 
     public GeneralInformation(String idReport) {
         this.idReport = idReport;
@@ -45,19 +49,37 @@ public class GeneralInformation extends Fragment {
         details = viewGeneralInformation.findViewById(R.id.DetailReport);
         startDateTextView = viewGeneralInformation.findViewById(R.id.reportStartDate);
         pathDisabled = viewGeneralInformation.findViewById(R.id.reportPathDisabled);
+        userReporter = viewGeneralInformation.findViewById(R.id.userReporter);
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     report = dataSnapshot.getValue(Report.class);
-                    setNaturalDisasterType(type, report.getType());
-                    setIconPlace(place, report.getPlace());
-                    setAffectedPeopleIcon(affectedPeople, report.getAffectedPeople());
-                    setAffectedAnimalsIcon(affectedAnimals, report.getAffectedAnimals());
-                    setEventDetailIcon(details, report.getDetail());
-                    setStarDateIcon(startDateTextView, report.getStartDateString());
-                    setPathDisabledIcon(pathDisabled, report.isPathDisabled());
+                    database_user = FirebaseDatabase.getInstance();
+                    databaseReference_user = database_user.getReference(FirebaseClasses.User).child(report.getOwnerId());
+                    user = new User();
+                    databaseReference_user.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot_user) {
+                            if (dataSnapshot_user.exists()) {
+                                user = dataSnapshot_user.getValue(User.class);
+                                setUserReporter(userReporter, user.getName() + " " + user.getLastName());
+                                setNaturalDisasterType(type, report.getType());
+                                setIconPlace(place, report.getPlace());
+                                setAffectedPeopleIcon(affectedPeople, report.getAffectedPeople());
+                                setAffectedAnimalsIcon(affectedAnimals, report.getAffectedAnimals());
+                                setEventDetailIcon(details, report.getDetail());
+                                setStarDateIcon(startDateTextView, report.getStartDateString());
+                                setPathDisabledIcon(pathDisabled, report.isPathDisabled());
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             }
 
@@ -162,5 +184,10 @@ public class GeneralInformation extends Fragment {
     public void setEventDetailIcon(TextView textView, String details) {
         textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.article, 0, 0, 0);
         textView.setText(details);
+    }
+
+    public void setUserReporter(TextView textView, String userName) {
+        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.user, 0, 0, 0);
+        textView.setText(userName);
     }
 }
