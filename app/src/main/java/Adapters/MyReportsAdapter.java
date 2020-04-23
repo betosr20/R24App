@@ -68,6 +68,7 @@ public class MyReportsAdapter extends RecyclerView.Adapter<MyReportsAdapter.MyVi
                                 case R.id.viewReportOption:
                                     Intent intent = new Intent(context, ReportDetailContainer.class);
                                     intent.putExtra("idReport", userReports.get(position).getId());
+                                    intent.putExtra("type", userReports.get(position).getType());
                                     context.startActivity(intent);
                                     return true;
                                 /*case R.id.editReportOption:
