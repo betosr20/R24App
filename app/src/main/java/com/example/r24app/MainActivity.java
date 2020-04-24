@@ -1,9 +1,11 @@
 package com.example.r24app;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +30,7 @@ import Activities.MapActivity;
 import Activities.RecoveryPassword;
 import Activities.SignUp;
 import Models.Constants.FirebaseClasses;
+import Models.POJOS.LoadingDialog;
 import Models.POJOS.User;
 import Services.UserService;
 
@@ -38,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private TextInputEditText email, password;
     private TextInputLayout inputLayoutEmail, inputLayoutPassword;
     private Button login;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,9 +80,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void login() {
         login.setEnabled(false);
+
+
         if (validateInputs()) {
             inputLayoutEmail.setError(null);
-
+            LoadingDialog loadingDialog = new LoadingDialog(MainActivity.this);
+            loadingDialog.startLoadingDialog();
             mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -95,11 +102,13 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(MainActivity.this, "Las credenciales ingresadas no son válidas", Toast.LENGTH_LONG).show();
                         }
+                        loadingDialog.dismissDialog();
                         login.setEnabled(true);
                     }
                 }
             });
         }
+        login.setEnabled(true);
     }
 
     private void getTransitionIntoMainView() {

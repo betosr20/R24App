@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -61,6 +62,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     Boolean activeHeatMap;
     Boolean view;
     private FirebaseAuth mAuth;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,6 +198,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         LatLng latLng;
         latLng = new LatLng(9.932231, -84.091373);
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 7));
+        progressBar = findViewById(R.id.loadingMapImage);
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     @Override
