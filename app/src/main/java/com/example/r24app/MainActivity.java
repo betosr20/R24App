@@ -37,14 +37,14 @@ public class MainActivity extends AppCompatActivity {
     private UserService userService = new UserService();
     private TextInputEditText email, password;
     private TextInputLayout inputLayoutEmail, inputLayoutPassword;
-
+    private Button login;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         email = findViewById(R.id.emailInput);
         password = findViewById(R.id.etLoginPassword);
-        Button login = findViewById(R.id.btnNextSignUp);
+        login = findViewById(R.id.btnNextSignUp);
         inputLayoutEmail = findViewById(R.id.emailInputLayout);
         inputLayoutPassword = findViewById(R.id.LayoutLoginPassword);
 
@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void login() {
+        login.setEnabled(false);
         if (validateInputs()) {
             inputLayoutEmail.setError(null);
 
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
                         FirebaseUser user = mAuth.getCurrentUser();
                         getTransitionIntoMainView();
                     } else {
+
                         boolean validEmailAddressFormat = android.util.Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches();
 
                         if (!validEmailAddressFormat) {
@@ -93,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(MainActivity.this, "Las credenciales ingresadas no son válidas", Toast.LENGTH_LONG).show();
                         }
+                        login.setEnabled(true);
                     }
                 }
             });
@@ -136,5 +139,8 @@ public class MainActivity extends AppCompatActivity {
         return isValid;
     }
 
+    public void windowBack(View v) {
+        finish();
+    }
 
 }
