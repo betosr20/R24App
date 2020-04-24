@@ -181,6 +181,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     if (!view) {
                         changeView();
                     }
+
+                    if(reportList.isEmpty()){
+                        Toast.makeText(getBaseContext(), "No hay ningún incidente reportado", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
 

@@ -39,6 +39,7 @@ public class PasswordValidation extends AppCompatActivity {
     private UserService userService;
     private Uri chosenImageData;
     private User refreshUser;
+    private Button btnSignUp;
 
 
     @Override
@@ -58,7 +59,7 @@ public class PasswordValidation extends AppCompatActivity {
         //profileImage = getIntent().getStringExtra("profileImage");
         chosenImageData = Uri.parse(getIntent().getStringExtra("imageUri"));
 
-        Button btnSignUp = findViewById(R.id.idbtnSigup);
+        btnSignUp = findViewById(R.id.idbtnSigup);
         password1 = findViewById(R.id.etPassword1Step2);
         //layouts
         layoutEmail = findViewById(R.id.LayoutEmailSignUp);
@@ -73,7 +74,9 @@ public class PasswordValidation extends AppCompatActivity {
     }
 
     private void registerUser() {
+
         if (validateInputs()) {
+            btnSignUp.setEnabled(false);
             layoutEmail.setError(null);
 
             mAuth.createUserWithEmailAndPassword(email.getText().toString(), password1.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -100,6 +103,7 @@ public class PasswordValidation extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         } else {
+                            btnSignUp.setEnabled(true);
                             Toast.makeText(PasswordValidation.this, "Error durante el proceso de registro", Toast.LENGTH_LONG).show();
                         }
                     } else {
@@ -111,6 +115,7 @@ public class PasswordValidation extends AppCompatActivity {
                         } else {
                             Toast.makeText(PasswordValidation.this, "Esta dirección de correo ya existe en la base de datos", Toast.LENGTH_LONG).show();
                         }
+                        btnSignUp.setEnabled(true);
                     }
                 }
             });

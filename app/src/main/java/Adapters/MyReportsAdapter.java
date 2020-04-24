@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -77,18 +78,13 @@ public class MyReportsAdapter extends RecyclerView.Adapter<MyReportsAdapter.MyVi
                                 case R.id.deleteReportOption:
                                     ReportService reportService = new ReportService();
                                     userReports.get(position).setActive(false);
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                                            .setTitle("¡Eliminar!")
+                                            .setMessage("¿Está seguro que desea eliminar el reporte?")
+                                            .setPositiveButton("Eliminar", (dialogInterface, i) -> deleteReport(position))
+                                            .setNegativeButton(R.string.label_dialog_cancel, null);
+                                    builder.show();
 
-                                    if (reportService.deleteReport(userReports.get(position))) {
-                                        userReports.remove(position);
-                                        notifyDataSetChanged();
-                                        Toast.makeText(context, "Reporte eliminado exitosamente", Toast.LENGTH_LONG).show();
-
-                                        if (userReports.size() == 0) {
-                                            ((MyReportsActivity) context).checkExistingElements();
-                                        }
-                                    } else {
-                                        Toast.makeText(context, "Error durante el proceso de eliminación", Toast.LENGTH_LONG).show();
-                                    }
                                     return true;
                                 default:
                                     return false;
@@ -124,6 +120,23 @@ public class MyReportsAdapter extends RecyclerView.Adapter<MyReportsAdapter.MyVi
             reportType = itemView.findViewById(R.id.reportType);
             reportDate = itemView.findViewById(R.id.reportDate);
             moreOptionsButton = itemView.findViewById(R.id.moreOptionsButton);
+        }
+    }
+
+    private void deleteReport(int position){
+        ReportService reportService = new ReportService();
+        userReports.get(position).setActive(false);
+
+        if (reportService.deleteReport(userReports.get(position))) {
+            userReports.remove(position);
+            notifyDataSetChanged();
+            Toast.makeText(context, "Reporte eliminado exitosamente", Toast.LENGTH_LONG).show();
+
+            if (userReports.size() == 0) {
+                ((MyReportsActivity) context).checkExistingElements();
+            }
+        } else {
+            Toast.makeText(context, "Error durante el proceso de eliminación", Toast.LENGTH_LONG).show();
         }
     }
 }
