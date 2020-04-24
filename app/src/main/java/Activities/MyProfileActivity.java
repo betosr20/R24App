@@ -204,7 +204,7 @@ public class MyProfileActivity extends AppCompatActivity {
                         }
                     }, 3600);
 
-                    getCurrentUserInfo();
+                    //getCurrentUserInfo();
                 } else {
                     Toast.makeText(MyProfileActivity.this, "Error durante el proceso de actualización", Toast.LENGTH_LONG).show();
                     progressBar.setVisibility(View.INVISIBLE);
