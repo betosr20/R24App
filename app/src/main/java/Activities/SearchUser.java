@@ -7,6 +7,7 @@ import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -139,6 +140,12 @@ public class SearchUser extends AppCompatActivity {
         };
         adapter.startListening();
         recyclerView.setAdapter(adapter);
+    }
+
+    public void windowBack(View v) {
+        Intent intent = new Intent(this, MapActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }

@@ -190,7 +190,7 @@ public class MyProfileActivity extends AppCompatActivity {
                     try {
                         MyProfileActivity.this.uploadTheSelectedImageToServer();
                         Toast.makeText(MyProfileActivity.this, "Datos actualizados exitosamente", Toast.LENGTH_LONG).show();
-
+                        progressBar.setVisibility(View.INVISIBLE);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -200,7 +200,7 @@ public class MyProfileActivity extends AppCompatActivity {
                         public void run() {
                             Toast.makeText(MyProfileActivity.this, "Los cambios pueden tomar varios minutos en reflejarse", Toast.LENGTH_LONG).show();
                             editSaveButton.setEnabled(true);
-                            progressBar.setVisibility(View.INVISIBLE);
+
                         }
                     }, 3600);
 
@@ -401,6 +401,8 @@ public class MyProfileActivity extends AppCompatActivity {
     }
 
     public void windowBack(View v) {
-        onBackPressed();
+        Intent intent = new Intent(this, MapActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

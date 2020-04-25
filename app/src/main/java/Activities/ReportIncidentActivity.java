@@ -309,6 +309,8 @@ public class ReportIncidentActivity extends AppCompatActivity {
     }
 
     public void windowBack(View v) {
-        onBackPressed();
+        Intent intent = new Intent(this, MapActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

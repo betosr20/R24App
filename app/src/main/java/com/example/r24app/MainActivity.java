@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private TextInputEditText email, password;
     private TextInputLayout inputLayoutEmail, inputLayoutPassword;
     private Button login;
+    private LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (validateInputs()) {
             inputLayoutEmail.setError(null);
-            LoadingDialog loadingDialog = new LoadingDialog(MainActivity.this);
+            loadingDialog = new LoadingDialog(MainActivity.this);
             loadingDialog.startLoadingDialog();
             mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
@@ -115,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MapActivity.class);
         startActivity(intent);
         finish();
+
     }
 
     private void transitionSingUpView() {

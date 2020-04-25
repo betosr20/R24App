@@ -3,15 +3,20 @@ package Activities;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -23,6 +28,11 @@ import androidx.appcompat.view.menu.MenuPopupHelper;
 
 import com.example.r24app.MainActivity;
 import com.example.r24app.R;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ActionItemTarget;
+import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
+import com.github.amlcurran.showcaseview.targets.Target;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -61,17 +71,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     Boolean activeMarker;
     Boolean activeHeatMap;
     Boolean view;
+    private View view2;
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
+    private MenuPopupHelper optionsMenu;
+    private MenuBuilder menuBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-
         //Setear el onclick del boton del PopUp
         Button buttonPopUpMenu;
-
         mAuth = FirebaseAuth.getInstance();
         switchButtonPins = findViewById(R.id.switchButtonPins);
         switchButtonHeatMap = findViewById(R.id.switchButtonHeat);
@@ -79,6 +90,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         String id = userService.getCurrentFirebaseUserId();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = database.getReference(FirebaseClasses.User).child(id);
+
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -200,6 +212,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 7));
         progressBar = findViewById(R.id.loadingMapImage);
         progressBar.setVisibility(View.INVISIBLE);
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        // Check if we need to display our OnboardingSupportFragment
+        if (!sharedPreferences.getBoolean(
+                "COMPLETED_ONBOARDING_PREF_NAME",false)) {
+            // The user hasn't seen the OnboardingSupportFragment yet, so show it
+            createAppWalthrough();
+        }
+
     }
 
     @Override
@@ -333,10 +354,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @SuppressLint("RestrictedApi")
     public void showPopup(View v) {
         Context wrapper = new ContextThemeWrapper(this, R.style.AppTheme_CustomPopupStyle);
-        MenuBuilder menuBuilder = new MenuBuilder(this);
+        menuBuilder = new MenuBuilder(this);
         MenuInflater inflater = new MenuInflater(this);
         inflater.inflate(R.menu.menu_main, menuBuilder);
-        MenuPopupHelper optionsMenu = new MenuPopupHelper(wrapper, menuBuilder, v);
+        optionsMenu = new MenuPopupHelper(wrapper, menuBuilder, v);
 
         optionsMenu.setForceShowIcon(true);
         Context context2 = this;
@@ -384,6 +405,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     case R.id.report:
                         Intent reportActivity = new Intent(context2, ReportIncidentActivity.class);
                         startActivity(reportActivity);
+                        finish();
                         return true;
                     case R.id.myProfile:
                         Intent profileActivity = new Intent(context2, MyProfileActivity.class);
@@ -417,5 +439,91 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 .setPositiveButton("Salir", (dialogInterface, i) -> signOut())
                 .setNegativeButton(R.string.label_dialog_cancel, null);
         builder.show();
+    }
+
+    private void createAppWalthrough() {
+        //   final SharedPreferences tutorialShowcases = getSharedPreferences("showcaseTutorial", MODE_PRIVATE);
+
+        // boolean run;
+
+        //run = tutorialShowcases.getBoolean("run?", true);
+
+        SharedPreferences.Editor sharedPreferencesEditor =
+                PreferenceManager.getDefaultSharedPreferences(this).edit();
+        sharedPreferencesEditor.putBoolean(
+                "COMPLETED_ONBOARDING_PREF_NAME", true);
+        sharedPreferencesEditor.apply();
+        ShowcaseView showcaseView;
+
+        //This code creates a new layout parameter so the button in the showcase can move to a new spot.
+        final RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        // This aligns button to the bottom left side of screen
+        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        lps.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        // Set margins to the button, we add 16dp margins here
+        int margin = ((Number) (getResources().getDisplayMetrics().density * 16)).intValue();
+        lps.setMargins(margin, margin, margin, margin);
+
+
+        //This creates the first showcase.
+        showcaseView = new ShowcaseView.Builder(this)
+                .withMaterialShowcase()
+                .setContentTitle("¡Bienvenido a R24App!")
+                .setContentText("Le vamos a dar un pequeño tour por las principales funcionalidades de la aplicación")
+                .setStyle(R.style.WalkthroughStyle)
+                .build();
+        showcaseView.setButtonText("Siguiente");
+
+
+        //When the button is clicked then the switch statement will check the counter and make the new showcase.
+        showcaseView.overrideButtonClick(new View.OnClickListener() {
+            int count1 = 0;
+
+            @Override
+            public void onClick(View v) {
+                count1++;
+                switch (count1) {
+                    case 1:
+                        showcaseView.setContentTitle("Mapa Principal");
+                        showcaseView.setContentText("El mapa actual muestra los incidentes reportados actualmente (en caso de haber reportes)");
+                        break;
+
+                    case 2:
+
+
+                        showcaseView.setTarget(new ViewTarget( ((View) findViewById(R.id.switchButtonHeat)) ));
+                        showcaseView.setContentTitle("Switch de calor");
+                        showcaseView.setContentText("Este swith le permite mostrar u ocultar el mapa de calor");
+                        break;
+
+                    case 3:
+                        showcaseView.setTarget(new ViewTarget( ((View) findViewById(R.id.switchButtonPins)) ));
+                        showcaseView.setContentTitle("Switch de Pines");
+                        showcaseView.setContentText("Este switch le permite mostrar u ocultar los pines en el mapa");
+                        break;
+
+                    case 4:
+
+                        showcaseView.setTarget(new ViewTarget( ((View) findViewById(R.id.switchButtonView)) ));
+                        showcaseView.setContentTitle("Switch de Vista del mapa");
+                        showcaseView.setContentText("Este switch le permite cambiar la vista del mapa entre terrestre y satelital");
+                        break;
+
+                    case 5:
+                        showcaseView.setTarget(new ViewTarget( ((View) findViewById(R.id.buttonPopUpMenu)) ));
+                        showcaseView.setContentTitle("Menú principal de la aplicación");
+                        showcaseView.setContentText("Este es el menú principal de la aplicación desde el cual puede accesar las diferentes" +
+                                "funcionalidades de la aplicación");
+                        showcaseView.setButtonText("Finalizar");
+                        break;
+
+                    case 6:
+
+                        showcaseView.hide();
+                        break;
+                }
+            }
+        });
+
     }
 }

@@ -109,4 +109,10 @@ public class MyReportsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void windowBack(View v) {
+        Intent intent = new Intent(this, MapActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }
