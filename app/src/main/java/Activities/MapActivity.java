@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.ContextThemeWrapper;
 import android.view.Menu;
@@ -29,9 +28,6 @@ import androidx.appcompat.view.menu.MenuPopupHelper;
 import com.example.r24app.MainActivity;
 import com.example.r24app.R;
 import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.ActionItemTarget;
-import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
-import com.github.amlcurran.showcaseview.targets.Target;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -196,7 +192,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         changeView();
                     }
 
-                    if(reportList.isEmpty()){
+                    if (reportList.isEmpty()) {
                         Toast.makeText(getBaseContext(), "No hay ningún incidente reportado", Toast.LENGTH_LONG).show();
                     }
                 }
@@ -216,7 +212,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 PreferenceManager.getDefaultSharedPreferences(this);
         // Check if we need to display our OnboardingSupportFragment
         if (!sharedPreferences.getBoolean(
-                "COMPLETED_ONBOARDING_PREF_NAME",false)) {
+                "COMPLETED_ONBOARDING_PREF_NAME", false)) {
             // The user hasn't seen the OnboardingSupportFragment yet, so show it
             createAppWalthrough();
         }
@@ -373,7 +369,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         Intent intent = new Intent(context2, MapActivity.class);
                         startActivity(intent);
                         return true;
-
                     case R.id.needHelp:
                         if (user.isNeedHelp()) {
                             Toast.makeText(getBaseContext(), "Usted ya reportó una señal de auxilio, primero debe indicar que esta bien para poder reportar otra", Toast.LENGTH_LONG).show();
@@ -383,7 +378,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         }
 
                         return true;
-
                     case R.id.okButton:
 
                         if (!user.isNeedHelp()) {
@@ -401,7 +395,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                         }
                         return true;
-
                     case R.id.report:
                         Intent reportActivity = new Intent(context2, ReportIncidentActivity.class);
                         startActivity(reportActivity);
@@ -418,6 +411,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     case R.id.myReports:
                         Intent myReportsIntent = new Intent(context2, MyReportsActivity.class);
                         startActivity(myReportsIntent);
+                        return true;
+                    case R.id.userManualButton:
+                        Intent pdfViewer = new Intent(context2, UserManualActivity.class);
+                        startActivity(pdfViewer);
                         return true;
                     default:
                         return false;
@@ -491,26 +488,26 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     case 2:
 
 
-                        showcaseView.setTarget(new ViewTarget( ((View) findViewById(R.id.switchButtonHeat)) ));
+                        showcaseView.setTarget(new ViewTarget(((View) findViewById(R.id.switchButtonHeat))));
                         showcaseView.setContentTitle("Switch de calor");
                         showcaseView.setContentText("Este swith le permite mostrar u ocultar el mapa de calor");
                         break;
 
                     case 3:
-                        showcaseView.setTarget(new ViewTarget( ((View) findViewById(R.id.switchButtonPins)) ));
+                        showcaseView.setTarget(new ViewTarget(((View) findViewById(R.id.switchButtonPins))));
                         showcaseView.setContentTitle("Switch de Pines");
                         showcaseView.setContentText("Este switch le permite mostrar u ocultar los pines en el mapa");
                         break;
 
                     case 4:
 
-                        showcaseView.setTarget(new ViewTarget( ((View) findViewById(R.id.switchButtonView)) ));
+                        showcaseView.setTarget(new ViewTarget(((View) findViewById(R.id.switchButtonView))));
                         showcaseView.setContentTitle("Switch de Vista del mapa");
                         showcaseView.setContentText("Este switch le permite cambiar la vista del mapa entre terrestre y satelital");
                         break;
 
                     case 5:
-                        showcaseView.setTarget(new ViewTarget( ((View) findViewById(R.id.buttonPopUpMenu)) ));
+                        showcaseView.setTarget(new ViewTarget(((View) findViewById(R.id.buttonPopUpMenu))));
                         showcaseView.setContentTitle("Menú principal de la aplicación");
                         showcaseView.setContentText("Este es el menú principal de la aplicación desde el cual puede accesar las diferentes" +
                                 "funcionalidades de la aplicación");
