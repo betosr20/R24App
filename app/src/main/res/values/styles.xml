@@ -78,5 +78,15 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <!-- Aplica el estilo para el wizard del Walkthrough -->
+    <style name="WalkthroughStyle" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="sv_backgroundColor">#80202227</item>
+        <item name="sv_titleTextAppearance">@style/CustomTitle2</item>
+
+    </style>
+
+    <style name="CustomTitle2" parent="TextAppearance.ShowcaseView.Title">
+        <item name="android:textColor">@color/quantum_grey900</item>
+    </style>
 
 </resources>

@@ -63,7 +63,7 @@ public class MyProfileActivity extends AppCompatActivity {
     }
 
     public void setProgressBar() {
-        progressBar = findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar3);
         progressBar.setIndeterminate(true);
         progressBar.setVisibility(View.VISIBLE);
         progressBarHide = false;
@@ -181,6 +181,7 @@ public class MyProfileActivity extends AppCompatActivity {
         currentUser.setCellPhone(phoneNumberInput.getText().toString());
         currentUser.setAddress(addressInput.getText().toString());
         Toast.makeText(MyProfileActivity.this, "Por favor espere...", Toast.LENGTH_LONG).show();
+        progressBar.setVisibility(View.VISIBLE);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -189,6 +190,7 @@ public class MyProfileActivity extends AppCompatActivity {
                     try {
                         MyProfileActivity.this.uploadTheSelectedImageToServer();
                         Toast.makeText(MyProfileActivity.this, "Datos actualizados exitosamente", Toast.LENGTH_LONG).show();
+                        progressBar.setVisibility(View.INVISIBLE);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -198,12 +200,14 @@ public class MyProfileActivity extends AppCompatActivity {
                         public void run() {
                             Toast.makeText(MyProfileActivity.this, "Los cambios pueden tomar varios minutos en reflejarse", Toast.LENGTH_LONG).show();
                             editSaveButton.setEnabled(true);
+
                         }
                     }, 3600);
 
-                    getCurrentUserInfo();
+                    //getCurrentUserInfo();
                 } else {
                     Toast.makeText(MyProfileActivity.this, "Error durante el proceso de actualización", Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
             }
         }, 3600);
@@ -397,6 +401,8 @@ public class MyProfileActivity extends AppCompatActivity {
     }
 
     public void windowBack(View v) {
-        onBackPressed();
+        Intent intent = new Intent(this, MapActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
