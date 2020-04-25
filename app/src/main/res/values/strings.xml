@@ -53,6 +53,7 @@
     <string name="saveButtonText">GUARDAR</string>
     <string name="needHelpAction">Señal de auxilio</string>
     <string name="amOkAction">Estoy bien</string>
+    <string name="userManualButton">Manual del usuario</string>
     <string name="editAction">Editar</string>
     <string name="viewAction">Ver</string>
     <string name="deleteAction">Eliminar</string>
