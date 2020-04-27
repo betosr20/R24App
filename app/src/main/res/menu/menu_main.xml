@@ -70,6 +70,15 @@
             android:icon="@drawable/ic_okstatus"/>
     </group >
 
+    <group android:id="@+id/settings9">
+        <item
+            android:id="@+id/userManualButton"
+            android:orderInCategory="100"
+            android:title="@string/userManualButton"
+            app:showAsAction="never"
+            android:icon="@drawable/usermanual"/>
+    </group >
+
     <group android:id="@+id/settings4">
         <item
             android:id="@+id/action_settings"

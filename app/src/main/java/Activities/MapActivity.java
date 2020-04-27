@@ -212,17 +212,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 7));
         progressBar = findViewById(R.id.loadingMapImage);
         progressBar.setVisibility(View.INVISIBLE);
+
         SharedPreferences sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(this);
         // Check if we need to display our OnboardingSupportFragment
-        //if (!sharedPreferences.getBoolean(
-           //     "COMPLETED_ONBOARDING_PREF_NAME",false)) {
+      //  if (!sharedPreferences.getBoolean(
+         //       "COMPLETED_ONBOARDING_PREF_NAME", false)) {
             // The user hasn't seen the OnboardingSupportFragment yet, so show it
-            createAppWalthrough();
-       // }
+      //      createAppWalthrough();
+     //   }
 
-
-
+        createAppWalthrough();
     }
 
     @Override
@@ -407,7 +407,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     case R.id.report:
                         Intent reportActivity = new Intent(context2, ReportIncidentActivity.class);
                         startActivity(reportActivity);
-                        finish();
                         return true;
                     case R.id.myProfile:
                         Intent profileActivity = new Intent(context2, MyProfileActivity.class);
@@ -421,6 +420,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         Intent myReportsIntent = new Intent(context2, MyReportsActivity.class);
                         startActivity(myReportsIntent);
                         return true;
+
+                    case R.id.userManualButton:
+                        Intent pdfViewer = new Intent(context2, UserManualActivity.class);
+                        startActivity(pdfViewer);
+                        return true;
+
                     default:
                         return false;
                 }
@@ -444,17 +449,19 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void createAppWalthrough() {
-        //   final SharedPreferences tutorialShowcases = getSharedPreferences("showcaseTutorial", MODE_PRIVATE);
-
-        // boolean run;
-
-        //run = tutorialShowcases.getBoolean("run?", true);
 
         SharedPreferences.Editor sharedPreferencesEditor =
                 PreferenceManager.getDefaultSharedPreferences(this).edit();
         sharedPreferencesEditor.putBoolean(
                 "COMPLETED_ONBOARDING_PREF_NAME", true);
         sharedPreferencesEditor.apply();
+        //   final SharedPreferences tutorialShowcases = getSharedPreferences("showcaseTutorial", MODE_PRIVATE);
+
+        // boolean run;
+
+        //run = tutorialShowcases.getBoolean("run?", true);
+
+
         ShowcaseView showcaseView;
 
         //This code creates a new layout parameter so the button in the showcase can move to a new spot.
@@ -471,8 +478,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         showcaseView = new ShowcaseView.Builder(this)
                 .withMaterialShowcase()
                 .setContentTitle("¡Bienvenido a R24App!")
-                .setContentText("Le vamos a dar un pequeño recorrido por las principales funcionalidades de la aplicación. " + "\n" +
-                        "Presione siguiente para continuar con el recorrido")
+                .setContentText("Le vamos a dar un pequeño tour por las principales funcionalidades de la aplicación"  + "\n"
+                        + "Por favor presione siguiente para continuar con el recorrido")
                 .setStyle(R.style.WalkthroughStyle)
                 .build();
         showcaseView.setButtonText("Siguiente");
@@ -508,7 +515,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     case 4:
 
                         showcaseView.setTarget(new ViewTarget( ((View) findViewById(R.id.switchButtonView)) ));
-                        showcaseView.setContentTitle("Botón de Vista del Mapa");
+                        showcaseView.setContentTitle("Botón de Vista del mapa");
                         showcaseView.setContentText("Este botón le permite cambiar la vista del mapa entre terrestre y satelital");
                         break;
 
@@ -516,8 +523,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         showcaseView.setTarget(new ViewTarget( ((View) findViewById(R.id.buttonPopUpMenu)) ));
                         showcaseView.setContentTitle("Menú principal de la aplicación");
                         showcaseView.setContentText("Este es el menú principal de la aplicación desde el cual puede accesar las diferentes " +
-                                "funcionalidades de la aplicación");
-                        showcaseView.setButtonText("Finalizar");
+                                "funcionalidades");
+
                         break;
 
                     case 6:
