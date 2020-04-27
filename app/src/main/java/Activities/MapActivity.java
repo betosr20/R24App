@@ -216,13 +216,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         SharedPreferences sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(this);
         // Check if we need to display our OnboardingSupportFragment
-      //  if (!sharedPreferences.getBoolean(
-         //       "COMPLETED_ONBOARDING_PREF_NAME", false)) {
+        if (!sharedPreferences.getBoolean(
+                "COMPLETED_ONBOARDING_PREF_NAME", false)) {
             // The user hasn't seen the OnboardingSupportFragment yet, so show it
-      //      createAppWalthrough();
-     //   }
+            createAppWalthrough();
+        }
 
-        createAppWalthrough();
     }
 
     @Override
