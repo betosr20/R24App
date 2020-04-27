@@ -215,11 +215,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         SharedPreferences sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(this);
         // Check if we need to display our OnboardingSupportFragment
-        if (!sharedPreferences.getBoolean(
-                "COMPLETED_ONBOARDING_PREF_NAME",false)) {
+        //if (!sharedPreferences.getBoolean(
+           //     "COMPLETED_ONBOARDING_PREF_NAME",false)) {
             // The user hasn't seen the OnboardingSupportFragment yet, so show it
             createAppWalthrough();
-        }
+       // }
+
+
 
     }
 
@@ -469,7 +471,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         showcaseView = new ShowcaseView.Builder(this)
                 .withMaterialShowcase()
                 .setContentTitle("¡Bienvenido a R24App!")
-                .setContentText("Le vamos a dar un pequeño tour por las principales funcionalidades de la aplicación")
+                .setContentText("Le vamos a dar un pequeño recorrido por las principales funcionalidades de la aplicación. " + "\n" +
+                        "Presione siguiente para continuar con el recorrido")
                 .setStyle(R.style.WalkthroughStyle)
                 .build();
         showcaseView.setButtonText("Siguiente");
@@ -492,27 +495,27 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
 
                         showcaseView.setTarget(new ViewTarget( ((View) findViewById(R.id.switchButtonHeat)) ));
-                        showcaseView.setContentTitle("Switch de calor");
-                        showcaseView.setContentText("Este swith le permite mostrar u ocultar el mapa de calor");
+                        showcaseView.setContentTitle("Botón de calor");
+                        showcaseView.setContentText("Este botón le permite mostrar u ocultar el mapa de calor");
                         break;
 
                     case 3:
                         showcaseView.setTarget(new ViewTarget( ((View) findViewById(R.id.switchButtonPins)) ));
-                        showcaseView.setContentTitle("Switch de Pines");
-                        showcaseView.setContentText("Este switch le permite mostrar u ocultar los pines en el mapa");
+                        showcaseView.setContentTitle("Botón de Pines");
+                        showcaseView.setContentText("Este botón le permite mostrar u ocultar los pines en el mapa");
                         break;
 
                     case 4:
 
                         showcaseView.setTarget(new ViewTarget( ((View) findViewById(R.id.switchButtonView)) ));
-                        showcaseView.setContentTitle("Switch de Vista del mapa");
-                        showcaseView.setContentText("Este switch le permite cambiar la vista del mapa entre terrestre y satelital");
+                        showcaseView.setContentTitle("Botón de Vista del Mapa");
+                        showcaseView.setContentText("Este botón le permite cambiar la vista del mapa entre terrestre y satelital");
                         break;
 
                     case 5:
                         showcaseView.setTarget(new ViewTarget( ((View) findViewById(R.id.buttonPopUpMenu)) ));
                         showcaseView.setContentTitle("Menú principal de la aplicación");
-                        showcaseView.setContentText("Este es el menú principal de la aplicación desde el cual puede accesar las diferentes" +
+                        showcaseView.setContentText("Este es el menú principal de la aplicación desde el cual puede accesar las diferentes " +
                                 "funcionalidades de la aplicación");
                         showcaseView.setButtonText("Finalizar");
                         break;

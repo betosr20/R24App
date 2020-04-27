@@ -86,7 +86,7 @@
     </style>
 
     <style name="CustomTitle2" parent="TextAppearance.ShowcaseView.Title">
-        <item name="android:textColor">@color/quantum_grey900</item>
+        <item name="android:textColor">@color/quantum_indigo100</item>
     </style>
 
 </resources>
